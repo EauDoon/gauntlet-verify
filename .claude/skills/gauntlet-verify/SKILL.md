@@ -1,11 +1,11 @@
 ---
-name: gauntlet-loop
+name: gauntlet-verify
 description: "Build-to-a-bar loop and isolated verifier formation for work that cannot be wrong. Use WHENEVER a build misses a named bar: \"as good as X\", \"AAA quality\", \"it still looks like an LLM made it\", \"do another pass\"; if no shipped artifact is named, ask. Use UNPROMPTED on heavy research when being wrong costs money or reputation, or it feeds a public statement or decision. Not Gauntlet the DeFi risk manager. Runs mid-build, not on finished work."
 ---
 
-# Gauntlet Loop
+# Gauntlet Verify
 
-The loop for work that cannot afford to be mediocre or wrong, in two modes. Reference mode drives an unfinished build toward a specific shipped artifact whose bar cannot be written down. Verification mode fields isolated verifiers over heavy research whose facts must be correct without fail. This skill owns the formations and the loop, not the domain: a research method says what must be true, a design or deck skill supplies the domain reference, a routing layer picks the models, and a rubric review closes the finished artifact at ship. Where one of those neighbors is not installed, do its job inline and say so.
+The Gauntlet Loop for work that cannot afford to be mediocre or wrong, in two modes. Reference mode drives an unfinished build toward a specific shipped artifact whose bar cannot be written down. Verification mode fields isolated verifiers over heavy research whose facts must be correct without fail. This skill owns the formations and the loop, not the domain: a research method says what must be true, a design or deck skill supplies the domain reference, a routing layer picks the models, and a rubric review closes the finished artifact at ship. Where one of those neighbors is not installed, do its job inline and say so.
 
 A **seat** is one isolated agent role: builder, critic, judge, or verifier. A **formation** is how many seats a job gets. A **ceiling** is the budget in rounds or tokens, written down before any isolated seat is spawned. A **tell** is what gave the attempt away to a judge.
 

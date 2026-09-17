@@ -15,7 +15,7 @@ The Gauntlet Loop is [Matt Shumer's](https://github.com/mshumer) technique. This
 
 It needs an agent that can run subagents or fresh contexts (sequential works), a browser or screenshot tool when the reference is a live page, and web access for verification mode. One full-formation round, measured once, used about 325k subagent tokens, so the skill writes a ceiling before it spends.
 
-The skill folder is named `gauntlet-loop`, the same as upstream, so install one or the other. Copying this folder over an upstream install replaces it. If one copy is in `~/.claude/skills` and the other in a project's `.claude/skills`, Claude Code runs the personal one.
+The skill is named `gauntlet-verify`, so it installs beside upstream's `gauntlet-loop` without replacing it. Keep only one of the two enabled, or both may answer the same request.
 
 ```bash
 git clone https://github.com/EauDoon/gauntlet-verify
@@ -24,25 +24,25 @@ git clone https://github.com/EauDoon/gauntlet-verify
 For every project (personal skills):
 
 ```bash
-mkdir -p ~/.claude/skills && cp -r gauntlet-verify/.claude/skills/gauntlet-loop ~/.claude/skills/
+mkdir -p ~/.claude/skills && cp -r gauntlet-verify/.claude/skills/gauntlet-verify ~/.claude/skills/
 ```
 
 For one project:
 
 ```bash
-mkdir -p your-project/.claude/skills && cp -r gauntlet-verify/.claude/skills/gauntlet-loop your-project/.claude/skills/
+mkdir -p your-project/.claude/skills && cp -r gauntlet-verify/.claude/skills/gauntlet-verify your-project/.claude/skills/
 ```
 
-For the Claude apps, turn on code execution, zip the `gauntlet-loop` folder itself so the folder sits at the zip root, and upload the zip under Customize > Skills. The apps trigger it from its description.
+For the Claude apps, turn on code execution, zip the `.claude/skills/gauntlet-verify` folder itself so the folder sits at the zip root, and upload the zip under Customize > Skills. The apps trigger it from its description.
 
 ```bash
-cd gauntlet-verify/.claude/skills && zip -r gauntlet-loop.zip gauntlet-loop
+cd gauntlet-verify/.claude/skills && zip -r gauntlet-verify.zip gauntlet-verify
 ```
 
 In Claude Code, call it by name or just work. It fires on its own when a build in progress falls short of a named reference, and on heavy research where being wrong costs money or reputation, or the result feeds a public statement or a decision someone will act on.
 
 ```
-/gauntlet-loop build me a pricing page as good as Linear's
+/gauntlet-verify build me a pricing page as good as Linear's
 ```
 
 ```
@@ -145,11 +145,12 @@ Light-formation costs stay estimates, and full verification mode stays unmeasure
 | Spend | Fan out every time; a budget line only if the user names one | Light or full formation set by stakes; a ceiling always written first |
 | Stop | Ours wins the blind comparison, or the user stops | Only identity tells remain, the delta stops, the user stops, or the ceiling parks it |
 | Memory | None | One log line per run, so estimates become measurements |
+| Skill name | `gauntlet-loop` | `gauntlet-verify`, so it does not overwrite upstream |
 
 ## Repo layout
 
 ```
-.claude/skills/gauntlet-loop/
+.claude/skills/gauntlet-verify/
 └── SKILL.md              # the whole skill, one file
 .github/workflows/
 └── check.yml             # runs the check on pushes to main and on pull requests
