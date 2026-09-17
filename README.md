@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/banner.png" alt="gauntlet verify: the gauntlet loop, in reference mode and verification mode" width="100%">
+  <img src="assets/banner.jpg" alt="gauntlet verify: the gauntlet loop, in reference mode and verification mode, on cyan glass" width="100%">
 </p>
 
 # gauntlet-verify
@@ -159,7 +159,7 @@ evals/
 scripts/
 └── check_skill.py        # frontmatter, dash, and link checks
 assets/
-├── banner.png
+├── banner.jpg
 └── src/banner.html       # banner source
 CHANGELOG.md
 LICENSE                   # CC BY 4.0

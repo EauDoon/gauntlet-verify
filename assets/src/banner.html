@@ -1,44 +1,163 @@
 <!doctype html>
 <!--
-  Source for assets/banner.png. Render at 3200x1000, for example:
-  msedge --headless --hide-scrollbars --virtual-time-budget=8000 --window-size=3200,1000 --screenshot=banner.png banner.html
+  Source for assets/banner.jpg. Render at 3200x1000 with Chromium (backdrop-filter needs it), for example:
+  chrome --headless=new --hide-scrollbars --virtual-time-budget=8000 --window-size=3200,1000 --screenshot=banner.jpg banner.html
 -->
 <html>
 <head>
 <meta charset="utf-8">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500&family=JetBrains+Mono:wght@400&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600&family=JetBrains+Mono:wght@500&display=block" rel="stylesheet">
 <style>
+  :root {
+    --ink: #eafcff;
+    --deep: #021419;
+  }
   html, body { margin: 0; padding: 0; }
-  body { width: 3200px; height: 1000px; background: #16140f; overflow: hidden; position: relative; font-family: Outfit, "Segoe UI", Arial, sans-serif; }
-  canvas { position: absolute; left: 0; bottom: 0; }
-  .title { position: absolute; top: 215px; width: 100%; text-align: center; color: #ece6d8; font-size: 250px; font-weight: 500; letter-spacing: -6px; line-height: 1; }
-  .modes { position: absolute; top: 505px; width: 100%; text-align: center; font-family: "JetBrains Mono", Consolas, monospace; font-size: 46px; color: #8f887a; letter-spacing: 1px; }
-  .modes b { font-weight: 400; color: #ece6d8; }
-  .modes i { font-style: normal; color: #f26a1b; padding: 0 28px; }
-  .modes i.cmd { padding: 0 56px 0 0; }
+  body {
+    width: 3200px; height: 1000px; overflow: hidden; position: relative;
+    background:
+      radial-gradient(1700px 900px at 50% 115%, #0e7490 0%, transparent 70%),
+      radial-gradient(1200px 800px at 0% 0%, #0b4f5e 0%, transparent 70%),
+      radial-gradient(1000px 700px at 100% 10%, #075985 0%, transparent 70%),
+      linear-gradient(160deg, #06303a 0%, #042a33 50%, #021a21 100%);
+    font-family: "Inter Tight", "Segoe UI", Arial, sans-serif;
+  }
+
+  /* light sources behind the glass */
+  .blob { position: absolute; border-radius: 50%; filter: blur(90px); }
+  .b1 { width: 900px; height: 900px; left: 380px; top: -260px; background: radial-gradient(circle, #06b6d4 0%, rgba(6,182,212,0) 70%); opacity: .95; }
+  .b2 { width: 1000px; height: 800px; right: -80px; top: 380px; background: radial-gradient(circle, #22d3ee 0%, rgba(34,211,238,0) 70%); opacity: .8; }
+  .b3 { width: 1400px; height: 520px; left: 900px; top: 330px; background: radial-gradient(circle, #0891b2 0%, rgba(8,145,178,0) 70%); opacity: .9; }
+  .b4 { width: 600px; height: 600px; right: -120px; top: -180px; background: radial-gradient(circle, #38bdf8 0%, rgba(56,189,248,0) 70%); opacity: .55; }
+
+  /* solid glossy shapes that the glass bends and blurs */
+  .orb { position: absolute; border-radius: 50%; }
+  .o1 { width: 420px; height: 420px; left: 360px; top: 70px;
+        background: radial-gradient(circle at 32% 28%, #ecfeff 0%, #67e8f9 18%, #06b6d4 48%, #0e7490 78%, #083344 100%);
+        box-shadow: 0 60px 120px rgba(0,0,0,.45); }
+  .o2 { width: 300px; height: 300px; right: 300px; top: 660px;
+        background: radial-gradient(circle at 30% 26%, #f0fdff 0%, #a5f3fc 16%, #22d3ee 45%, #0369a1 85%, #082f49 100%);
+        box-shadow: 0 50px 100px rgba(0,0,0,.45); }
+  .o3 { width: 150px; height: 150px; right: 330px; top: 110px;
+        background: radial-gradient(circle at 30% 28%, #ffffff 0%, #cffafe 20%, #22d3ee 60%, #155e75 100%); }
+  .ring { position: absolute; left: 2080px; top: -140px; width: 520px; height: 520px; border-radius: 50%;
+          border: 46px solid transparent;
+          background: conic-gradient(from 200deg, #0e7490, #67e8f9, #ecfeff, #22d3ee, #0e7490) border-box;
+          -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+          -webkit-mask-composite: xor; mask-composite: exclude;
+          opacity: .85; transform: rotate(-18deg); }
+
+  canvas { position: absolute; left: 0; top: 0; }
+
+  /* glass */
+  .glass {
+    position: absolute; overflow: hidden;
+    background: linear-gradient(145deg, rgba(255,255,255,.20) 0%, rgba(255,255,255,.07) 38%, rgba(255,255,255,.04) 62%, rgba(255,255,255,.12) 100%);
+    backdrop-filter: url(#refract) blur(26px) saturate(185%) brightness(1.06);
+    box-shadow:
+      inset 0 3px 1px rgba(255,255,255,.55),
+      inset 0 -2px 1px rgba(255,255,255,.18),
+      inset 3px 0 2px rgba(255,255,255,.18),
+      inset -3px 0 2px rgba(255,255,255,.10),
+      inset 0 0 80px rgba(165,243,252,.10),
+      0 50px 140px rgba(0,10,16,.55),
+      0 8px 30px rgba(0,10,16,.35);
+  }
+  /* rim light */
+  .glass::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 2.5px;
+    background: linear-gradient(135deg, rgba(255,255,255,.95) 0%, rgba(255,255,255,.15) 28%, rgba(255,255,255,0) 50%, rgba(165,243,252,.35) 78%, rgba(255,255,255,.8) 100%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    pointer-events: none;
+  }
+  /* specular sheen */
+  .glass::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit;
+    background:
+      radial-gradient(120% 70% at 20% -10%, rgba(255,255,255,.26) 0%, rgba(255,255,255,.06) 45%, rgba(255,255,255,0) 70%),
+      radial-gradient(60% 50% at 90% 120%, rgba(165,243,252,.16) 0%, rgba(165,243,252,0) 70%);
+    pointer-events: none;
+  }
+
+  .slab { left: 460px; top: 200px; width: 2280px; height: 600px; border-radius: 110px; }
+
+  .title {
+    position: absolute; left: 0; right: 0; top: 118px; text-align: center;
+    font-size: 238px; font-weight: 600; letter-spacing: -9px; line-height: 1.05;
+    background: linear-gradient(180deg, #ffffff 0%, #ecfeff 55%, #a5f3fc 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 6px 24px rgba(2,20,25,.45));
+  }
+  .chips { position: absolute; left: 0; right: 0; top: 408px; display: flex; justify-content: center; gap: 30px; }
+  .chip {
+    position: relative; height: 96px; padding: 0 46px; border-radius: 999px;
+    display: flex; align-items: center; gap: 20px;
+    font-size: 50px; font-weight: 500; color: var(--ink); letter-spacing: -.5px;
+  }
+  .chip.cmd { font-family: "JetBrains Mono", Consolas, monospace; font-size: 46px; color: #cffafe;
+              background: linear-gradient(145deg, rgba(34,211,238,.42), rgba(8,145,178,.22)); }
+  .dot { width: 22px; height: 22px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ecfeff, #22d3ee 60%, #0e7490); box-shadow: 0 0 18px rgba(103,232,249,.9); }
+  .check { width: 44px; height: 44px; }
+
+  /* small floating glass tiles */
+  .tile { width: 250px; height: 250px; border-radius: 70px; }
+  .t1 { left: 150px; top: 610px; transform: rotate(-12deg); }
+  .t2 { left: 2860px; top: 150px; width: 200px; height: 200px; border-radius: 58px; transform: rotate(14deg); }
+  .pill { left: 2560px; top: 800px; width: 420px; height: 130px; border-radius: 999px; transform: rotate(-6deg); }
 </style>
 </head>
 <body>
-  <div class="title">gauntlet verify</div>
-  <div class="modes"><i class="cmd">/gauntlet-verify</i><b>reference mode</b><i>+</i><b>verification mode</b></div>
-  <canvas id="c" width="3200" height="420"></canvas>
+  <svg width="0" height="0" style="position:absolute">
+    <filter id="refract" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.0035 0.006" numOctaves="2" seed="7" result="noise"/>
+      <feGaussianBlur in="noise" stdDeviation="6" result="soft"/>
+      <feDisplacementMap in="SourceGraphic" in2="soft" scale="70" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </svg>
+
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="blob b4"></div>
+  <canvas id="c" width="3200" height="1000"></canvas>
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+  <div class="orb o3"></div>
+  <div class="ring"></div>
+
+  <div class="glass tile t1"></div>
+  <div class="glass tile t2"></div>
+  <div class="glass pill"></div>
+
+  <div class="glass slab">
+    <div class="title">gauntlet verify</div>
+    <div class="chips">
+      <div class="glass chip cmd">/gauntlet-verify</div>
+      <div class="glass chip"><span class="dot"></span>reference mode</div>
+      <div class="glass chip">
+        <svg class="check" viewBox="0 0 24 24" fill="none" stroke="#67e8f9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" stroke-opacity=".55"/><path d="M7.5 12.5l3 3 6-6.5"/></svg>
+        verification mode
+      </div>
+    </div>
+  </div>
+
 <script>
-  // Deterministic dot field: gray for claims that survived, orange for kills.
+  // Deterministic dot lattice in cyan, brighter points scattered through it.
   let seed = 20260918;
   const rand = () => { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; };
   const ctx = document.getElementById('c').getContext('2d');
-  const step = 32;
-  for (let row = 0; row < 13; row++) {
-    const y = 420 - 16 - row * step;
-    const density = 0.92 - row * 0.07;
-    for (let x = 16; x < 3200; x += step) {
-      if (rand() > density) continue;
-      const kill = rand() < 0.16;
-      const r = 2 + rand() * (row < 4 ? 6 : 4);
+  const step = 40;
+  for (let y = 20; y < 1000; y += step) {
+    for (let x = 20; x < 3200; x += step) {
+      const fade = Math.max(0, (y - 380) / 620);
+      if (rand() > 0.25 + fade * 0.7) continue;
+      const bright = rand() < 0.12;
+      const r = bright ? 3 + rand() * 3 : 1.6 + rand() * 2.2;
       ctx.beginPath();
       ctx.arc(x, y, r, 0, Math.PI * 2);
-      const a = (0.35 + rand() * 0.65) * (1 - row * 0.05);
-      ctx.fillStyle = kill ? `rgba(242,106,27,${a})` : `rgba(120,116,108,${a * 0.8})`;
+      const a = (0.18 + rand() * 0.45) * (0.35 + fade);
+      ctx.fillStyle = bright ? `rgba(165,243,252,${Math.min(1, a * 1.6)})` : `rgba(34,211,238,${a})`;
       ctx.fill();
     }
   }

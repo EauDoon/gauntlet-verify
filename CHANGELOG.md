@@ -2,6 +2,10 @@
 
 Dates are DD-MM-YYYY. Upstream dates are the upstream author's local time (UTC+10).
 
+## 18-09-2026, banner redesigned
+
+- New banner in a cyan, translucent glass style: frosted glass panels with rim light over glowing cyan shapes. It ships as `assets/banner.jpg` (159 KB) in place of `banner.png`, and its source stays in `assets/src/banner.html`.
+
 ## 18-09-2026, skill renamed
 
 - The skill is now `gauntlet-verify`, matching the repo: the folder is `.claude/skills/gauntlet-verify` and the command is `/gauntlet-verify`. It installs beside upstream's `gauntlet-loop` instead of replacing it. Anyone who installed this fork as `gauntlet-loop` should delete that folder and copy the new one.
