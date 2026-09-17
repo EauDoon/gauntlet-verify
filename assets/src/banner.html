@@ -1,0 +1,47 @@
+<!doctype html>
+<!--
+  Source for assets/banner.png. Render at 3200x1000, for example:
+  msedge --headless --hide-scrollbars --virtual-time-budget=8000 --window-size=3200,1000 --screenshot=banner.png banner.html
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500&family=JetBrains+Mono:wght@400&display=block" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; }
+  body { width: 3200px; height: 1000px; background: #16140f; overflow: hidden; position: relative; font-family: Outfit, "Segoe UI", Arial, sans-serif; }
+  canvas { position: absolute; left: 0; bottom: 0; }
+  .title { position: absolute; top: 215px; width: 100%; text-align: center; color: #ece6d8; font-size: 250px; font-weight: 500; letter-spacing: -6px; line-height: 1; }
+  .modes { position: absolute; top: 505px; width: 100%; text-align: center; font-family: "JetBrains Mono", Consolas, monospace; font-size: 46px; color: #8f887a; letter-spacing: 1px; }
+  .modes b { font-weight: 400; color: #ece6d8; }
+  .modes i { font-style: normal; color: #f26a1b; padding: 0 28px; }
+  .modes i.cmd { padding: 0 56px 0 0; }
+</style>
+</head>
+<body>
+  <div class="title">gauntlet verify</div>
+  <div class="modes"><i class="cmd">/gauntlet-loop</i><b>reference mode</b><i>+</i><b>verification mode</b></div>
+  <canvas id="c" width="3200" height="420"></canvas>
+<script>
+  // Deterministic dot field: gray for claims that survived, orange for kills.
+  let seed = 20260918;
+  const rand = () => { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; };
+  const ctx = document.getElementById('c').getContext('2d');
+  const step = 32;
+  for (let row = 0; row < 13; row++) {
+    const y = 420 - 16 - row * step;
+    const density = 0.92 - row * 0.07;
+    for (let x = 16; x < 3200; x += step) {
+      if (rand() > density) continue;
+      const kill = rand() < 0.16;
+      const r = 2 + rand() * (row < 4 ? 6 : 4);
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      const a = (0.35 + rand() * 0.65) * (1 - row * 0.05);
+      ctx.fillStyle = kill ? `rgba(242,106,27,${a})` : `rgba(120,116,108,${a * 0.8})`;
+      ctx.fill();
+    }
+  }
+</script>
+</body>
+</html>
