@@ -2,6 +2,10 @@
 
 Dates are DD-MM-YYYY. Upstream dates are the upstream author's local time (UTC+10).
 
+## 18-09-2026, skill renamed
+
+- The skill is now `gauntlet-verify`, matching the repo: the folder is `.claude/skills/gauntlet-verify` and the command is `/gauntlet-verify`. It installs beside upstream's `gauntlet-loop` instead of replacing it. Anyone who installed this fork as `gauntlet-loop` should delete that folder and copy the new one.
+
 ## 18-09-2026, fork rewrite
 
 The skill now runs the loop in session, instead of writing a paste-ready prompt and offering to run it. These changes were developed and first measured in a private copy from 08-08-2026 and are published here for the first time. Compared with [robonuggets/gauntlet-loop](https://github.com/robonuggets/gauntlet-loop) at `9b1975a`:
