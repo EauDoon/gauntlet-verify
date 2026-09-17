@@ -33,7 +33,7 @@ For one project:
 mkdir -p your-project/.claude/skills && cp -r gauntlet-verify/.claude/skills/gauntlet-verify your-project/.claude/skills/
 ```
 
-For the Claude apps, turn on code execution, zip the `.claude/skills/gauntlet-verify` folder itself so the folder sits at the zip root, and upload the zip under Customize > Skills. The apps trigger it from its description.
+For the Claude apps, turn on code execution, download [gauntlet-verify.zip](https://github.com/EauDoon/gauntlet-verify/releases/latest/download/gauntlet-verify.zip) from the latest release, and upload it under Customize > Skills. The apps trigger it from its description. To build the zip yourself, keep the skill folder at the zip root:
 
 ```bash
 cd gauntlet-verify/.claude/skills && zip -r gauntlet-verify.zip gauntlet-verify
