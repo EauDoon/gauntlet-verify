@@ -2,6 +2,10 @@
 
 Dates are DD-MM-YYYY. Upstream dates are the upstream author's local time (UTC+10).
 
+## v1.0.0, 18-09-2026
+
+First release. It packages every 18-09-2026 change below, with the skill attached as `gauntlet-verify.zip` for the Claude apps.
+
 ## 18-09-2026, banner redesigned
 
 - New banner in a cyan, translucent glass style: frosted glass panels with rim light over glowing cyan shapes. It ships as `assets/banner.jpg` (159 KB) in place of `banner.png`, and its source stays in `assets/src/banner.html`.
