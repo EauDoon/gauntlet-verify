@@ -6,6 +6,40 @@ Dates are DD-MM-YYYY. Upstream dates are the upstream author's local time (UTC+1
 
 First release. It packages every 18-09-2026 change below, with the skill attached as `gauntlet-verify.zip` for the Claude apps.
 
+### Divergence from upstream
+
+This fork rebuilds [robonuggets/gauntlet-loop](https://github.com/robonuggets/gauntlet-loop) (commit `9b1975a`) for day-to-day use. The full Added, Changed, Removed, and Kept list is in the 18-09-2026 "fork rewrite" entry below; the short version:
+
+Added
+
+- Verification mode for high-stakes research; isolated verifiers run kill tests on every load-bearing claim.
+- Formations (light by default, full on stakes) with a ceiling written before any seat runs.
+- Gates that keep reference mode from running without a named reference, a bar that cannot be written as criteria, an unfinished build, and the intent to keep pressing.
+- An unattended brake: the ceiling parks the loop and ships nothing on its own.
+- An assembler rule: assembly is mechanical; anything it would patch goes back to the owning builder.
+- A run log, one line per run, so estimates become measurements.
+- Evals, a structural check script with CI, a new banner, and this changelog.
+
+Changed
+
+- Judge question from "which is better" to "which is the attempt, and what gave it away", with every tell tagged craft or identity.
+- Always write a ceiling in rounds or tokens before any agent runs.
+- Decomposition is explicit: one builder per area that fails independently, against a slot contract.
+- Critic returns ranked findings, each mapped to one area and one edit; separate blind judges run the comparison (2 to 3 at full formation, across model families where possible).
+- Stop when only identity tells remain, the stalled delta holds, the user calls it, or the ceiling parks the loop.
+
+Removed
+
+- The paste-ready prompt template and the 120 to 180 word length rule.
+- The 2 or 3 candidate bars flow and the bars-by-goal-type table.
+- The two filled examples.
+- The measurable-half rule and the live progress page line.
+- Upstream's trigger phrases and any-goal scope; the description now triggers on a missed named bar or on high-stakes research.
+
+Kept
+
+- The named and fetchable bar, the harsh isolated critic, the blind comparison, no fixed round count, the Matt Shumer credit, and CC BY 4.0.
+
 ## 18-09-2026, banner redesigned
 
 - New banner in a cyan, translucent glass style: frosted glass panels with rim light over glowing cyan shapes. It ships as `assets/banner.jpg` (159 KB) in place of `banner.png`, and its source stays in `assets/src/banner.html`.
