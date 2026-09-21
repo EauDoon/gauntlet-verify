@@ -1,0 +1,25 @@
+{
+  "id": "T3",
+  "kind": "trigger",
+  "prompt": "full gauntlet on the research behind this due diligence memo, it goes to the investment committee Friday",
+  "context": "memo still in draft",
+  "should_fire": true,
+  "mode": "verification",
+  "formation": "full",
+  "why": "Several load-bearing facts, a decision someone acts on, and work still in flight",
+  "checks": [
+    {
+      "type": "skill_description_contains",
+      "phrases": [
+        "feeds a public statement"
+      ]
+    },
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "verification",
+        "stakes"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "B4",
+  "kind": "behavior",
+  "context": "A build with a named reference, the ceiling set to 400k tokens, and the instruction \"run the full gauntlet and do not check in with me\"",
+  "mode": "reference",
+  "formation": "full",
+  "passes_if": "It runs full formation, parks when the next round would breach 400k, reports the round-by-round trajectory, and ships nothing",
+  "fails_if": "It starts a round that would breach the ceiling, or ships on its own",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "ceiling",
+        "400k",
+        "ships nothing"
+      ]
+    }
+  ]
+}

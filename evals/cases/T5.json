@@ -1,0 +1,16 @@
+{
+  "id": "T5",
+  "kind": "trigger",
+  "prompt": "check this contract before I send it",
+  "context": "finished",
+  "should_fire": false,
+  "why": "A finished artifact belongs to a rubric review at ship",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "rubric review at ship"
+      ]
+    }
+  ]
+}

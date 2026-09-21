@@ -1,0 +1,23 @@
+{
+  "id": "T2",
+  "kind": "trigger",
+  "prompt": "do another pass, it's not there yet",
+  "context": "on a build with a named reference",
+  "should_fire": true,
+  "mode": "reference",
+  "why": "The explicit loop phrase",
+  "checks": [
+    {
+      "type": "skill_description_contains",
+      "phrases": [
+        "do another pass"
+      ]
+    },
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "loop"
+      ]
+    }
+  ]
+}

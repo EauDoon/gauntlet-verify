@@ -1,0 +1,24 @@
+{
+  "id": "T1",
+  "kind": "trigger",
+  "prompt": "this landing page still looks like an LLM made it, get it to the level of stripe.com's homepage",
+  "should_fire": true,
+  "mode": "reference",
+  "why": "A build in flight, a named shipped bar",
+  "checks": [
+    {
+      "type": "skill_description_contains",
+      "phrases": [
+        "still looks like an LLM made it"
+      ]
+    },
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "named reference",
+        "shipped",
+        "build"
+      ]
+    }
+  ]
+}

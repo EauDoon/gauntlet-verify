@@ -1,0 +1,17 @@
+{
+  "id": "T7",
+  "kind": "trigger",
+  "prompt": "make it look like our dark house style",
+  "should_fire": "conditional",
+  "fire_unless": "a specific shipped page is named and the build misses it",
+  "why": "A style name is not a reference",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "not a style name",
+        "house aesthetic"
+      ]
+    }
+  ]
+}
