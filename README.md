@@ -4,6 +4,10 @@
 
 # gauntlet-verify
 
+[![build](https://img.shields.io/github/actions/workflow/status/EauDoon/gauntlet-verify/check.yml?branch=main)](https://github.com/EauDoon/gauntlet-verify/actions)
+[![license](https://img.shields.io/github/license/EauDoon/gauntlet-verify)](https://github.com/EauDoon/gauntlet-verify/blob/main/LICENSE)
+[![last commit](https://img.shields.io/github/last-commit/EauDoon/gauntlet-verify)](https://github.com/EauDoon/gauntlet-verify)
+
 A Claude skill for work that cannot afford to be mediocre or wrong.
 
 - Point it at a shipped thing you want to match. It runs builders, an isolated critic, and blind judges until the judges can only tell your build from the original by brand, age, or adoption, never by craft.
