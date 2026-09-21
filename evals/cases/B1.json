@@ -1,0 +1,28 @@
+{
+  "id": "B1",
+  "kind": "behavior",
+  "prompt": "build me a pricing page as good as Linear's",
+  "mode": "reference",
+  "formation": "light",
+  "passes_if": "Reference mode. Before generating, it names the reference, the single matched property, how the judge will see it, the formation, and the ceiling. It picks light formation (no stakes named), decomposes by independent area, and states the craft-tell stop condition.",
+  "fails_if": "It writes a rubric in place of a reference, or starts building before the ceiling is written",
+  "checks": [
+    {
+      "type": "skill_has_section",
+      "heading": "Protocol, reference mode"
+    },
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "Name the reference",
+        "single matched property",
+        "how the judge will see it",
+        "ceiling",
+        "light",
+        "independent",
+        "craft",
+        "tell"
+      ]
+    }
+  ]
+}

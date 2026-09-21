@@ -1,0 +1,27 @@
+{
+  "id": "B2",
+  "kind": "behavior",
+  "prompt": "dig into whether Hyperliquid's fee revenue really passed Ethereum's, it goes in a public thread this week",
+  "mode": "verification",
+  "formation": "full",
+  "passes_if": "Verification mode fires unprompted at full formation, because the output feeds a public statement. Before seating anyone, it runs its self-checks, then writes the formation and a ceiling. Verifiers are isolated and told which primary-data tools they have, each runs every kill test on every claim, and every claim ships labeled verified, reported, or unverified",
+  "fails_if": "The drafting context's self-checks stand in for the isolated verifiers, or any claim ships unlabeled",
+  "checks": [
+    {
+      "type": "skill_has_section",
+      "heading": "Protocol, verification mode"
+    },
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "self-check",
+        "isolated",
+        "primary-data",
+        "kill test",
+        "verified",
+        "reported",
+        "unverified"
+      ]
+    }
+  ]
+}

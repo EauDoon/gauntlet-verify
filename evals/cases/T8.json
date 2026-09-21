@@ -1,0 +1,16 @@
+{
+  "id": "T8",
+  "kind": "trigger",
+  "prompt": "this one tweet sounds generated",
+  "should_fire": false,
+  "why": "A style edit; one post does not decompose into independent areas",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "style edit",
+        "decompose"
+      ]
+    }
+  ]
+}

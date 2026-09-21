@@ -1,0 +1,17 @@
+﻿{
+  "id": "T4",
+  "kind": "trigger",
+  "prompt": "what's the current ETH price",
+  "should_fire": false,
+  "why": "A quick lookup raises no formation",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "quick lookup"
+      ]
+    }
+  ]
+}
+
+

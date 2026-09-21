@@ -1,0 +1,15 @@
+{
+  "id": "T6",
+  "kind": "trigger",
+  "prompt": "what are Gauntlet's recommended risk parameters for this lending market",
+  "should_fire": false,
+  "why": "Gauntlet the DeFi risk manager, not this loop",
+  "checks": [
+    {
+      "type": "skill_description_contains",
+      "phrases": [
+        "Not Gauntlet the DeFi risk manager"
+      ]
+    }
+  ]
+}

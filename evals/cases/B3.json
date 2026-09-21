@@ -1,0 +1,18 @@
+{
+  "id": "B3",
+  "kind": "behavior",
+  "prompt": "get this dashboard to AAA quality",
+  "context": "on a build in progress with no reference named",
+  "mode": "reference",
+  "passes_if": "It asks for a specific shipped artifact to use as the bar before any agent runs",
+  "fails_if": "It picks a category (\"modern SaaS design\") and starts looping",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "no reference is named",
+        "ask"
+      ]
+    }
+  ]
+}
