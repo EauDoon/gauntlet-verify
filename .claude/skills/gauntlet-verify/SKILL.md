@@ -1,6 +1,6 @@
 ---
 name: gauntlet-verify
-description: "Build-to-a-bar loop and isolated verifier formation for work that cannot be wrong. Use WHENEVER a build misses a named bar: \"as good as X\", \"AAA quality\", \"it still looks like an LLM made it\", \"do another pass\"; if no shipped artifact is named, ask. Use UNPROMPTED on heavy research when being wrong costs money or reputation, or it feeds a public statement or decision. Not Gauntlet the DeFi risk manager. Runs mid-build, not on finished work."
+description: "Build-to-a-bar loop and isolated verifier formation. Use WHENEVER a build misses a named bar: \"as good as X\", \"AAA quality\", \"it still looks like an LLM made it\", \"do another pass\"; if no shipped artifact is named, ask. Use UNPROMPTED on heavy research when being wrong costs money or reputation, or it feeds a public statement or decision. Not the research method, and not Gauntlet the DeFi risk manager. Runs mid-build, not on finished work."
 ---
 
 # Gauntlet Verify
@@ -161,10 +161,10 @@ In Claude Code, fan out with subagents or a workflow script, and use `/loop` to 
 
 ## Dated context, 18-09-2026
 
-- Origin: Matt Shumer ran the loop in the prompt behind Claude of Duty and named it the Gauntlet Loop in a write-up dated 27-07-2026. RoboNuggets packaged it as a skill that writes a paste-ready loop prompt. This version runs the loop in session and adds verification mode, used privately from 08-08-2026 and published 18-09-2026. Verification mode knowingly risks collisions with the research method and the rubric review; if a request misroutes, add or sharpen a clause in the description that separates this skill from the one that took it, and keep the description under 450 characters. The current description has such a clause for the rubric review only.
+- Origin: Matt Shumer ran the loop in the prompt behind Claude of Duty and named it the Gauntlet Loop in a write-up dated 27-07-2026. RoboNuggets packaged it as a skill that writes a paste-ready loop prompt. This version runs the loop in session and adds verification mode, used privately from 08-08-2026 and published 18-09-2026. Verification mode knowingly risks collisions with the research method and the rubric review; if a request misroutes, add or sharpen a clause in the description that separates this skill from the one that took it, and keep the description under 450 characters. The description separates this skill from the research method and from the rubric review at ship.
 - First measured run, 08-08-2026, reference mode smoke test (a README driven at sharkdp/bat's README): one full-formation round, 3 workhorse builders, 1 frontier critic, 2 judges, roughly 325k subagent tokens and 8 minutes wall. Both judges said NOT THERE, agreeing with the critic. The critic caught an output block the assembler had doctored, so isolation held. The 400k ceiling parked the loop before round 2, so the unattended brake held on its first live test.
 - Step 4's question and table were rewritten 08-08-2026 after that run: the question then in use was answered by brand recognition, not craft, so the pick carried no information about the gap. Craft-versus-identity tells are the fix.
-- Routing checks, 08-08-2026, on earlier and longer descriptions: 23 of 24 correct across two blind seats, then 5 of 5 after a fix to the clause separating this skill from the research method. The current, shorter description drops that clause and has not been rerun.
+- Routing checks, 08-08-2026, on earlier and longer descriptions: 23 of 24 correct across two blind seats, then 5 of 5 after a fix to the clause separating this skill from the research method. The description names that separation again. The 08-08-2026 counts were measured on the earlier wording, not on this text.
 - Keep the description under 450 characters and lead with the trigger phrases. Skill listings have a character budget; in Claude Code it scales with the context window, and on overflow the least-used skills lose their descriptions first and keep only their names.
 
 ## Eval

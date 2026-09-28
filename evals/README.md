@@ -23,6 +23,7 @@ Run each case in a fresh session with the skill installed. A trigger case passes
 | "what are Gauntlet's recommended risk parameters for this lending market" | No | Gauntlet the DeFi risk manager, not this loop |
 | "make it look like our dark house style" | No, unless a specific shipped page is named and the build misses it | A style name is not a reference |
 | "this one tweet sounds generated" | No | A style edit; one post does not decompose into independent areas |
+| "grade the sources for this memo" | No | Source grading belongs to the research method; this skill seats the verifiers |
 
 ## Recording results
 

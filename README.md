@@ -134,7 +134,7 @@ Verification mode seats verifiers only. It does not seat a critic or judges. The
 | Date | Run | Result |
 |---|---|---|
 | 08-08-2026 | Reference mode smoke test: a project README driven at [sharkdp/bat](https://github.com/sharkdp/bat)'s README, full formation | 1 round, 3 builders, 1 critic, 2 judges, about 325k subagent tokens, 8 minutes. Both judges NOT THERE, matching the critic. The critic caught an output block the assembler had doctored. The 400k ceiling parked the loop before round 2. |
-| 08-08-2026 | Routing checks on earlier, longer descriptions, two blind seats | 23 of 24 correct, then 5 of 5 after a fix to the clause separating it from the research method. The current, shorter description drops that clause and has not been rerun. |
+| 08-08-2026 | Routing checks on earlier, longer descriptions, two blind seats | 23 of 24 correct, then 5 of 5 after a fix to the clause separating it from the research method. The description names that separation again. Those counts were measured on the earlier wording, not on this text. |
 
 Light-formation costs stay estimates, and full verification mode stays unmeasured, until three runs of each are logged.
 
