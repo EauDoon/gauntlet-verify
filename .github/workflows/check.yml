@@ -16,5 +16,10 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
       - run: python -m pip install pyyaml
       - run: python scripts/check_skill.py
+      - run: npm test
+      - run: npm run evals
