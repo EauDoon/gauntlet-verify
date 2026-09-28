@@ -14,29 +14,30 @@ const SKILL_PATH = join(REPO, ".claude", "skills", "gauntlet-verify", "SKILL.md"
 const CASES_DIR = join(REPO, "evals", "cases");
 const CHECK_SCRIPT = join(REPO, "scripts", "check_skill.py");
 
+function descriptionFromFrontmatter(front) {
+  const python = resolvePython();
+  const program = [
+    "import sys, yaml",
+    "data = yaml.safe_load(sys.stdin.read())",
+    "desc = data.get('description') if isinstance(data, dict) else None",
+    "if not isinstance(desc, str):",
+    "    sys.exit(2)",
+    "sys.stdout.write(desc)",
+  ].join("\n");
+  const r = spawnSync(python, ["-c", program], { input: front, encoding: "utf8" });
+  if (r.status !== 0) {
+    throw new Error(
+      `description YAML parse failed (exit ${r.status}): ${(r.stderr || "").trim()}`,
+    );
+  }
+  return r.stdout;
+}
+
 function loadSkill() {
   const text = readFileSync(SKILL_PATH, "utf8");
   const m = /^---\r?\n(.*?)\r?\n---\r?\n/s.exec(text);
   if (!m) throw new Error("SKILL.md frontmatter not found");
-  const front = m[1];
-  const descMatch = /^description:\s*(?:>-\s*\n(?:\s{4,}.+\n?)+|["']?(.+?)["']?\s*$)/m.exec(front);
-  // Robust extraction: read description block, supporting both inline and folded scalar.
-  const descLines = [];
-  const lines = front.split(/\r?\n/);
-  let inDesc = false;
-  for (const line of lines) {
-    if (!inDesc) {
-      const m2 = /^description:\s*(.*)$/.exec(line);
-      if (m2) {
-        inDesc = true;
-        if (m2[1]) descLines.push(m2[1].replace(/^["']|["']$/g, ""));
-      }
-      continue;
-    }
-    if (/^[a-zA-Z_]/.test(line)) break;
-    descLines.push(line.trim());
-  }
-  const description = descLines.join(" ").trim();
+  const description = descriptionFromFrontmatter(m[1]);
   const body = text.slice(m[0].length);
   return { description: description.toLowerCase(), body: body.toLowerCase() };
 }
@@ -160,6 +161,6 @@ function isDirectRun() {
   return resolve(entry) === fileURLToPath(import.meta.url);
 }
 
-export { resolvePython, checks };
+export { resolvePython, checks, descriptionFromFrontmatter };
 
 if (isDirectRun()) main();
