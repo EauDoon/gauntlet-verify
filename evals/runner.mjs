@@ -65,6 +65,11 @@ function normalize(s) {
   return s.toLowerCase();
 }
 
+function headingPattern(heading) {
+  const escaped = heading.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`^#{2,}\\s+${escaped}\\s*$`, "im");
+}
+
 // GitHub's setup-python provides `python`. A typical Ubuntu image provides
 // only `python3`. Either name is fine when it can import PyYAML.
 function resolvePython() {
@@ -90,7 +95,7 @@ const checks = {
   },
   skill_has_section({ heading }, skill) {
     // Match a markdown heading (## or deeper) with the given text.
-    const re = new RegExp(`^#{2,}\\s+${heading.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\\\$&")}\\s*$`, "im");
+    const re = headingPattern(heading);
     return re.test(skill.body)
       ? { ok: true }
       : { ok: false, detail: `section not found: ${heading}` };
@@ -161,6 +166,6 @@ function isDirectRun() {
   return resolve(entry) === fileURLToPath(import.meta.url);
 }
 
-export { resolvePython, checks, descriptionFromFrontmatter };
+export { resolvePython, checks, descriptionFromFrontmatter, headingPattern };
 
 if (isDirectRun()) main();
