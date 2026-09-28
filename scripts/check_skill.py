@@ -3,8 +3,9 @@
 Checks every .claude/skills/*/SKILL.md for frontmatter that a YAML loader
 accepts and that meets the Agent Skills field rules, and every Markdown and
 HTML file for em or en dashes and for relative links that do not resolve
-inside the repo. Descriptions must stay under 450 characters, the listing
-budget the skill states. Exits 1 on any failure. Needs PyYAML.
+inside the repo, including reference-style links whose labels are never
+defined. Descriptions must stay under 450 characters, the listing budget the
+skill states. Exits 1 on any failure. Needs PyYAML.
 """
 
 import re
@@ -37,6 +38,24 @@ LINK_RES = [
     re.compile(r"<(?:img|a)\b[^>]*?\s(?:src|href)\s*=\s*[\"']([^\"']+)[\"']", re.I),
 ]
 EXTERNAL_RE = re.compile(r"^(?:[A-Za-z][A-Za-z0-9+.-]+:|//)")
+REF_DEF_RE = re.compile(r"^\s{0,3}\[([^\]]+)\]:", re.M)
+REF_USE_RE = re.compile(r"!?\[([^\]]+)\]\s*\[([^\]]*)\]")
+
+
+def norm_label(label):
+    return re.sub(r"\s+", " ", label).strip().casefold()
+
+
+def check_undefined_references(prose, rel, errors):
+    defined = {norm_label(match.group(1)) for match in REF_DEF_RE.finditer(prose)}
+    reported = set()
+    for match in REF_USE_RE.finditer(prose):
+        raw = match.group(2) if match.group(2).strip() else match.group(1)
+        key = norm_label(raw)
+        if not key or key in defined or key in reported:
+            continue
+        reported.add(key)
+        errors.append(f"{rel}: undefined reference link '{raw.strip()}'")
 
 
 def check_skills(errors):
@@ -104,6 +123,7 @@ def check_text(errors):
                 resolved = (base / target.lstrip("/")).resolve()
                 if not resolved.is_relative_to(ROOT) or not resolved.exists():
                     errors.append(f"{rel}: broken relative link '{target}'")
+        check_undefined_references(prose, rel, errors)
 
 
 def main():
