@@ -102,7 +102,7 @@ The brief tells each verifier which claims are already labeled unsourced (declar
 3. Recompute any number that can be recomputed.
 4. Re-fetch every figure quoted from a live source and compare figure, source, and as-of date.
 5. Check the date on every figure.
-6. Label it: **verified** (one primary source, or two independent sources that are named-author reporting at established outlets or counterparty documents), **reported** (one such source), or **unverified** (everything else, including anything resting on aggregators).
+6. Label it: **verified** (one tier A source, or two independent tier B), **reported** (a single tier B), or **unverified** (everything else, including anything resting on aggregators). Tier A is a primary source. Tier B is named-author reporting at an established outlet, or a counterparty document.
 
 Kills and survivals are asymmetric. One kill backed by a quote or a primary trace stands. A claim survives only if every test was run. Unverified claims can still ship, labeled, with what would settle them. If no isolated verifier could run, the deliverable says so.
 
