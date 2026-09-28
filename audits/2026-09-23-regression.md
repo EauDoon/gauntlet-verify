@@ -1,4 +1,4 @@
-# Portfolio triage phase 9 — 2026-09-23
+# Portfolio triage phase 9 - 2026-09-23
 
 Repository: EauDoon/gauntlet-verify
 Branch: imp/portfolio-triage-phase9-2026-09-23
