@@ -126,10 +126,34 @@ def check_text(errors):
         check_undefined_references(prose, rel, errors)
 
 
+def check_claim_labels(errors):
+    """README's verified/reported rule must match the skill's tier rule.
+
+    "one such source" also fits a single primary source, which the skill
+    labels verified. Reported is only a single tier B source.
+    """
+    readme_path = ROOT / "README.md"
+    skill_path = ROOT / ".claude" / "skills" / "gauntlet-verify" / "SKILL.md"
+    if not readme_path.is_file() or not skill_path.is_file():
+        return
+    readme = readme_path.read_text(encoding="utf-8").replace("**", "")
+    skill = skill_path.read_text(encoding="utf-8")
+    rule = "reported (a single tier B)"
+    if rule not in skill:
+        errors.append(f"{skill_path.relative_to(ROOT).as_posix()}: missing verification label rule '{rule}'")
+    if rule not in readme:
+        errors.append(f"README.md: reported label does not match the skill rule '{rule}'")
+    if "one such source" in readme:
+        errors.append(
+            "README.md: 'one such source' also describes a single primary source, which the skill labels verified"
+        )
+
+
 def main():
     errors = []
     check_skills(errors)
     check_text(errors)
+    check_claim_labels(errors)
     for error in errors:
         print(f"FAIL {error}")
     print("PASS" if not errors else f"{len(errors)} failure(s)")
