@@ -64,6 +64,16 @@ function normalize(s) {
   return s.toLowerCase();
 }
 
+// GitHub's setup-python provides `python`. A typical Ubuntu image provides
+// only `python3`. Either name is fine when it can import PyYAML.
+function resolvePython() {
+  for (const bin of ["python3", "python"]) {
+    const probe = spawnSync(bin, ["-c", "import yaml"], { encoding: "utf8" });
+    if (probe.status === 0) return bin;
+  }
+  return "python3";
+}
+
 const checks = {
   skill_description_contains({ phrases }, skill) {
     const missing = phrases.filter((p) => !skill.description.includes(normalize(p)));
@@ -86,7 +96,8 @@ const checks = {
   },
   skill_structure_passes() {
     // Delegate to scripts/check_skill.py for the structural check.
-    const r = spawnSync("python", [CHECK_SCRIPT], { cwd: REPO, encoding: "utf8" });
+    const python = resolvePython();
+    const r = spawnSync(python, [CHECK_SCRIPT], { cwd: REPO, encoding: "utf8" });
     if (r.status !== 0) {
       return { ok: false, detail: `check_skill.py exit ${r.status}: ${(r.stdout || r.stderr || "").trim().split(/\r?\n/).slice(-3).join(" | ")}` };
     }
@@ -143,4 +154,12 @@ function truncate(s, n) {
   return s.length > n ? s.slice(0, n - 1) + "\u2026" : s;
 }
 
-main();
+function isDirectRun() {
+  const entry = process.argv[1];
+  if (!entry) return false;
+  return resolve(entry) === fileURLToPath(import.meta.url);
+}
+
+export { resolvePython, checks };
+
+if (isDirectRun()) main();

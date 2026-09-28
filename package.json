@@ -5,6 +5,7 @@
   "description": "Build-to-a-bar loop and isolated verifier formation evals",
   "type": "module",
   "scripts": {
-    "evals": "node evals/runner.mjs"
+    "evals": "node evals/runner.mjs",
+    "test": "node --test evals/*.test.mjs"
   }
 }
