@@ -39,8 +39,10 @@ Two levels. Light is the default; spend follows consequence, not effort.
 
 | Formation | Seats | When | Cost anchor |
 |---|---|---|---|
-| Light | One builder or the drafting session itself, one isolated critic or verifier, one judge when the build is ready to ship | Default. Stakes contained, whatever the area count | 100k to 150k tokens, estimated |
-| Full | A builder or verifier per area or claim cluster, an isolated critic, a panel of 2 to 3 judges | Stakes test passes: money, reputation, public statement, acted-on decision. Or the user says full gauntlet | About 325k subagent tokens per round, measured once in reference mode (08-08-2026); verification mode unmeasured |
+| Light | Reference: the drafting session, one isolated critic, and one judge when the build is ready to ship. Verification: one isolated verifier for all claims | Default. Stakes contained, whatever the area count | 100k to 150k tokens, estimated |
+| Full | Reference: one builder per area, one isolated critic, and a panel of 2 to 3 judges. Verification: one isolated verifier per claim cluster | Stakes test passes: money, reputation, public statement, acted-on decision. Or the user says full gauntlet | About 325k subagent tokens per round, measured once in reference mode (08-08-2026); verification mode unmeasured |
+
+Verification mode seats verifiers only: one isolated verifier for all claims at light, and one isolated verifier per claim cluster at full. Verification mode does not seat a critic or judges.
 
 The stakes test decides, whatever the area count: a high-stakes job with two claim clusters still runs full, one verifier per cluster. Escalation is automatic on the stakes test and overridden in either direction by the user's word. A loop may drop to light for a cleanup round; it never climbs silently, it names the escalation and the reason in one line. Unattended, escalation follows the same rule and the written ceiling stays the brake.
 

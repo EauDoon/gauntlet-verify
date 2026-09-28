@@ -112,10 +112,10 @@ Spend follows consequence, not effort.
 
 | Formation | Seats | When | Cost anchor |
 |---|---|---|---|
-| Light | The drafting session plus one isolated critic or verifier; one judge when the build is ready to ship | Default, whenever the stakes test fails | 100k to 150k tokens, estimated |
-| Full | A builder or verifier per area or claim cluster, an isolated critic, 2 to 3 judges | Money, reputation, a public statement, a decision someone acts on, or "full gauntlet" | About 325k subagent tokens per round, measured once in reference mode; verification unmeasured |
+| Light | Reference: the drafting session, one isolated critic, and one judge when the build is ready to ship. Verification: one isolated verifier for all claims | Default, whenever the stakes test fails | 100k to 150k tokens, estimated |
+| Full | Reference: one builder per area, one isolated critic, and 2 to 3 judges. Verification: one isolated verifier per claim cluster | Money, reputation, a public statement, a decision someone acts on, or "full gauntlet" | About 325k subagent tokens per round, measured once in reference mode; verification unmeasured |
 
-The stakes test decides, whatever the area count. In reference mode, builders run on a cheaper workhorse model; only the critic and judges pay frontier prices. Judges come from at least two model families where the stack allows, because a same-family judge shares the priors that produced the gap. Escalation is automatic on stakes and always announced in one line.
+Verification mode seats verifiers only. It does not seat a critic or judges. The stakes test decides, whatever the area count. In reference mode, builders run on a cheaper workhorse model; only the critic and judges pay frontier prices. Judges come from at least two model families where the stack allows, because a same-family judge shares the priors that produced the gap. Escalation is automatic on stakes and always announced in one line.
 
 ## What breaks it
 
