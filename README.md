@@ -157,7 +157,7 @@ Light-formation costs stay estimates, and full verification mode stays unmeasure
 .claude/skills/gauntlet-verify/
 └── SKILL.md              # the whole skill, one file
 .github/workflows/
-└── check.yml             # runs the check on pushes to main and on pull requests
+└── check.yml             # structural check, unit tests, and evals on main and pull requests
 evals/
 └── README.md             # trigger and behavior cases
 scripts/
