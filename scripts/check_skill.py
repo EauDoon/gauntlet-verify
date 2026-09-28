@@ -3,7 +3,8 @@
 Checks every .claude/skills/*/SKILL.md for frontmatter that a YAML loader
 accepts and that meets the Agent Skills field rules, and every Markdown and
 HTML file for em or en dashes and for relative links that do not resolve
-inside the repo. Exits 1 on any failure. Needs PyYAML.
+inside the repo. Descriptions must stay under 450 characters, the listing
+budget the skill states. Exits 1 on any failure. Needs PyYAML.
 """
 
 import re
@@ -17,6 +18,8 @@ ROOT = Path(__file__).resolve().parent.parent
 NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 MAX_NAME = 64
 MAX_DESCRIPTION = 1024
+# SKILL.md: keep the description under 450 characters so listings do not drop it.
+LISTING_DESCRIPTION = 450
 EM, EN = chr(0x2014), chr(0x2013)
 DASHES = {
     EM: "em dash", EN: "en dash",
@@ -68,6 +71,10 @@ def check_skills(errors):
             errors.append(f"{rel}: name contains a reserved word")
         if not description.strip():
             errors.append(f"{rel}: description is empty")
+        if len(description) >= LISTING_DESCRIPTION:
+            errors.append(
+                f"{rel}: description is {len(description)} characters; the skill listing budget is under {LISTING_DESCRIPTION}"
+            )
         if len(description) > MAX_DESCRIPTION:
             errors.append(f"{rel}: description is {len(description)} characters, limit {MAX_DESCRIPTION}")
         if re.search(r"<[^>]+>", description):
