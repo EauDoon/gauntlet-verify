@@ -1,0 +1,15 @@
+{
+  "id": "T9",
+  "kind": "trigger",
+  "prompt": "grade the sources for this memo",
+  "should_fire": false,
+  "why": "Source grading belongs to the research method; this skill seats the verifiers",
+  "checks": [
+    {
+      "type": "skill_description_contains",
+      "phrases": [
+        "not the research method"
+      ]
+    }
+  ]
+}
