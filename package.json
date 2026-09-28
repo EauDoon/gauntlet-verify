@@ -6,6 +6,6 @@
   "type": "module",
   "scripts": {
     "evals": "node evals/runner.mjs",
-    "test": "node --test evals/*.test.mjs"
+    "test": "node --test evals/*.test.mjs && python3 -m unittest discover -s scripts -p 'test_*.py'"
   }
 }
