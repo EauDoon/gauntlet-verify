@@ -1,0 +1,27 @@
+{
+  "id": "B5",
+  "kind": "behavior",
+  "context": "Stop a reference run and a verification run in a shared project, first without a log and then with an existing log; repeat verification without an isolated verifier",
+  "passes_if": "Each run creates the log if absent, appends exactly one complete dated line in one write, reads it back, and preserves earlier lines. Verification records claim clusters and the verifier trajectory, or not run when no isolated verifier ran.",
+  "fails_if": "It skips verification logging, rewrites history, uses scratch or built-in memory, omits readback, or claims a failed append succeeded",
+  "checks": [
+    {
+      "type": "skill_has_section",
+      "heading": "7. Log the run"
+    },
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "logs/verification-runs.md",
+        "Create the `logs` directory and file if absent",
+        "Append the complete line in one write",
+        "read the line back",
+        "Never edit an earlier line",
+        "report the logging failure",
+        "DD-MM-YYYY | gauntlet-verify | mode | formation | artifact | reference or claim set | areas or clusters | rounds | tokens | judge or verifier trajectory",
+        "Log the run as reference step 7 says, with the claim clusters in the areas field and the verifier trajectory last",
+        "record `not run` in the trajectory"
+      ]
+    }
+  ]
+}

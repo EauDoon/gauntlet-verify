@@ -39,10 +39,12 @@ Two levels. Light is the default; spend follows consequence, not effort.
 
 | Formation | Seats | When | Cost anchor |
 |---|---|---|---|
-| Light | Reference: the drafting session, one isolated critic, and one judge when the build is ready to ship. Verification: one isolated verifier for all claims | Default. Stakes contained, whatever the area count | 100k to 150k tokens, estimated |
+| Light | Reference: the drafting session, one isolated critic, and one judge when the build is ready to ship. Verification: one isolated verifier for all claims | Default. Stakes contained, whatever the area count | 100k to 150k tokens, estimated. One logged light skill test (29-09-2026), including two additional test drives, used about 750k subagent tokens over five leaves |
 | Full | Reference: one builder per area, one isolated critic, and a panel of 2 to 3 judges. Verification: one isolated verifier per claim cluster | Stakes test passes: money, reputation, public statement, acted-on decision. Or the user says full gauntlet | About 325k subagent tokens per round, measured once in reference mode (08-08-2026); verification mode unmeasured |
 
 Verification mode seats verifiers only: one isolated verifier for all claims at light, and one isolated verifier per claim cluster at full. Verification mode does not seat a critic or judges.
+
+The measured light run included two additional test drives, so it is not a baseline for a plain light run. Keep the estimate until three light runs are logged; 150k is not a spending cap. The ceiling written for each run remains the brake.
 
 The stakes test decides, whatever the area count: a high-stakes job with two claim clusters still runs full, one verifier per cluster. Escalation is automatic on the stakes test and overridden in either direction by the user's word. A loop may drop to light for a cleanup round; it never climbs silently, it names the escalation and the reason in one line. Unattended, escalation follows the same rule and the written ceiling stays the brake.
 
@@ -106,10 +108,20 @@ There is no round cap. The loop stops on the user's call, on judges that stop sp
 
 ### 7. Log the run
 
-One line at the moment the loop stops: mode, formation, artifact, reference or claim set, areas, rounds, tokens, and the judge or verifier trajectory. The line goes to durable notes (a memory file, a project log), never only the session's scratch directory, which is discarded with the session. Once three runs each of light formation and of verification mode are logged, use those numbers in place of the estimates in the Formations table. A loop that does not log pays for the same lesson every time.
+When the loop stops, append one line to `logs/verification-runs.md` in the shared project folder: `/mnt/project-files/` in a project thread, the connected folder in Cowork, or the durable project folder on other agents. Other review skills can use the same log; the skill-name field identifies this run. Never use the session's scratch directory or the agent's built-in memory as the run log.
+
+Create the `logs` directory and file if absent. Append the complete line in one write, then read the line back to confirm it was saved. Never edit an earlier line. If the project folder is unavailable or the append or readback fails, report the logging failure; do not claim the run was saved. Write `unknown` for an unmeasured value.
+
+Use this shape, with dates in DD-MM-YYYY:
+
+```text
+DD-MM-YYYY | gauntlet-verify | mode | formation | artifact | reference or claim set | areas or clusters | rounds | tokens | judge or verifier trajectory
+```
+
+Once three runs each of light formation and of verification mode are logged, use those numbers in place of the estimates in the Formations table. A loop that does not log pays for the same lesson every time.
 
 ```
-08-08-2026 | reference | full | project README | ref: sharkdp/bat README | 3 areas | 1 round | ~325k subagent tokens | judges: NOT THERE, NOT THERE | parked at 400k ceiling
+08-08-2026 | gauntlet-verify | reference | full | project README | ref: sharkdp/bat README | 3 areas | 1 round | ~325k subagent tokens | judges: NOT THERE, NOT THERE; parked at 400k ceiling
 ```
 
 ## Protocol, verification mode
@@ -132,6 +144,7 @@ The research method runs scoping, fan-out search, and source grading in the draf
 5. Kills and survivals are asymmetric. Any kill with a quote or a primary-source trace stands. Survival requires the verifier to have run every test, not to have found nothing while skimming.
 6. Fix or relabel, re-verify only the claims that changed, stop. Unverified claims ship only labeled, with what would settle them. The step 2 ceiling and the unattended brake from reference mode step 6 apply unchanged.
 7. Say when it did not run. Where no isolated verifier can be seated, run the self-checks and state in the deliverable that no independent verification pass ran.
+8. Log the run as reference step 7 says, with the claim clusters in the areas field and the verifier trajectory last. If no isolated verifier was seated, record `not run` in the trajectory instead of implying independent verification passed.
 
 Source tiers the verifiers grade against:
 
@@ -167,9 +180,15 @@ In Claude Code, fan out with subagents or a workflow script, and use `/loop` to 
 - Routing checks, 08-08-2026, on earlier and longer descriptions: 23 of 24 correct across two blind seats, then 5 of 5 after a fix to the clause separating this skill from the research method. The description names that separation again. The 08-08-2026 counts were measured on the earlier wording, not on this text.
 - Keep the description under 450 characters and lead with the trigger phrases. Skill listings have a character budget; in Claude Code it scales with the context window, and on overflow the least-used skills lose their descriptions first and keep only their names.
 
+## Dated context, 21-10-2026
+
+- The author's separate installed copy loaded on both prompts in trigger eval v2 (08-10-2026, blind router): first on the build prompt and second behind the research method on the research prompt. This result was not measured on this repository's description.
+- The 22-prompt routing set of 24-09-2026 has not been rerun on the installed copy's current description. This repository has no recorded result from that set for its description. The repository's static eval checks do not establish live routing behavior. A full routing rerun remains pending.
+
 ## Eval
 
 1. Give it "build me a pricing page as good as Linear's". Passes if, before generating, it names the reference, the single matched property, how the judge will see it, the formation, and the ceiling, then decomposes by independent area (one builder per area only at full formation) and states the craft-tell stop condition. Fails if it writes a rubric in place of a reference.
 2. Give it "dig into whether Hyperliquid's fee revenue really passed Ethereum's, it goes in a public thread this week". Passes if verification mode fires unprompted at full formation (public statement), seats isolated verifiers told which primary-data tools they have, each verifier runs every kill test on every claim, and every claim ships labeled verified, reported, or unverified. Fails if the drafting context's self-checks stand in for the isolated verifiers, or if a "check this before I send it" request on a finished artifact gets taken from the rubric review.
+3. Stop one reference run and one verification run in a shared project, first with no log and then with an existing log. Passes if each appends exactly one complete line to `logs/verification-runs.md` in one write, reads it back, leaves every earlier line unchanged, and uses the dated shape above. The verification line names claim clusters and the verifier trajectory. Repeat without an isolated verifier; its trajectory must say `not run`. Fails if it logs only reference mode, writes to scratch or built-in memory, rewrites history, or claims a failed write succeeded.
 
 Adapted from [robonuggets/gauntlet-loop](https://github.com/robonuggets/gauntlet-loop) (Jay E, RoboNuggets) under CC BY 4.0. Source, changes, and more eval cases: [EauDoon/gauntlet-verify](https://github.com/EauDoon/gauntlet-verify).

@@ -2,6 +2,8 @@
 
 Run each case in a fresh session with the skill installed. A trigger case passes on the routing decision alone. A behavior case passes only if every listed condition holds; conditions about the plan (reference, matched property, how the judge sees it, formation, ceiling) must hold before any agent is spawned.
 
+`npm run evals` checks the required instructions in the skill text. It does not run live agents, test filesystem behavior, or replace the fresh-session cases below. The 08-10-2026 two-prompt blind routing result was measured on the author's separate installed copy, not this repository's description. The 24-09-2026 22-prompt routing set remains unrerun on that copy's current description; this repository has no recorded result from that set for its description.
+
 ## Behavior cases
 
 | # | Setup and prompt | Passes if | Fails if |
@@ -10,6 +12,7 @@ Run each case in a fresh session with the skill installed. A trigger case passes
 | B2 | "dig into whether Hyperliquid's fee revenue really passed Ethereum's, it goes in a public thread this week" | Verification mode fires unprompted at full formation, because the output feeds a public statement. Before seating anyone, it runs its self-checks, then writes the formation and a ceiling. Verifiers are isolated and told which primary-data tools they have, each runs every kill test on every claim, and every claim ships labeled verified, reported, or unverified. Verification mode does not seat a critic or judges | The drafting context's self-checks stand in for the isolated verifiers, any claim ships unlabeled, or a verification job seats a critic or judges |
 | B3 | "get this dashboard to AAA quality", on a build in progress with no reference named | It asks for a specific shipped artifact to use as the bar before any agent runs | It picks a category ("modern SaaS design") and starts looping |
 | B4 | A build with a named reference, the ceiling set to 400k tokens, and the instruction "run the full gauntlet and do not check in with me" | It runs full formation, parks when the next round would breach 400k, reports the round-by-round trajectory, and ships nothing | It starts a round that would breach the ceiling, or ships on its own |
+| B5 | Stop a reference run and a verification run in a shared project, first without a log and then with an existing log; repeat verification without an isolated verifier | Each run creates the log if absent, appends exactly one complete dated line to `logs/verification-runs.md` in one write, reads it back, and preserves all earlier lines. The record includes the skill name; verification records claim clusters and the verifier trajectory, or `not run` when no isolated verifier ran | It skips verification logging, rewrites history, uses scratch or built-in memory, omits readback, or claims a failed append succeeded |
 
 ## Trigger cases
 
