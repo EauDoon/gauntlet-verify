@@ -74,7 +74,7 @@ A rubric is a lossy compression of a reference. It works when the criteria are m
 4. Blind judge: both artifacts, unlabeled, random order. The judge is told one is the original and one is an attempt, then asked which is the attempt and what gave it away.
 5. Loop and report the delta, one line per round: the change in open craft tells and critic findings. A loop whose delta stops moving is finished; it stops and reports.
 6. The user is the brake: no round cap. The ceiling from step 1 parks an unattended loop, and it ships nothing on its own.
-7. Log the run to durable notes, so the cost estimates turn into measurements.
+7. Append the run to `logs/verification-runs.md` in the shared project folder and read the line back, so cost estimates turn into measurements. Create the directory and file if absent; never edit earlier lines.
 
 ### The judge question
 
@@ -106,13 +106,19 @@ The brief tells each verifier which claims are already labeled unsourced (declar
 
 Kills and survivals are asymmetric. One kill backed by a quote or a primary trace stands. A claim survives only if every test was run. Unverified claims can still ship, labeled, with what would settle them. If no isolated verifier could run, the deliverable says so.
 
+Log verification runs to the same `logs/verification-runs.md` file, with claim clusters and the verifier trajectory. If no isolated verifier ran, record `not run`. Both modes use the shared project folder (`/mnt/project-files/` in a project thread, the connected folder in Cowork, or a durable project folder on other agents), append the whole line in one write, and read it back. Report a failed append or readback; scratch files and built-in memory do not count as the run log. The record shape is:
+
+```text
+DD-MM-YYYY | gauntlet-verify | mode | formation | artifact | reference or claim set | areas or clusters | rounds | tokens | judge or verifier trajectory
+```
+
 ## Formations
 
 Spend follows consequence, not effort.
 
 | Formation | Seats | When | Cost anchor |
 |---|---|---|---|
-| Light | Reference: the drafting session, one isolated critic, and one judge when the build is ready to ship. Verification: one isolated verifier for all claims | Default, whenever the stakes test fails | 100k to 150k tokens, estimated |
+| Light | Reference: the drafting session, one isolated critic, and one judge when the build is ready to ship. Verification: one isolated verifier for all claims | Default, whenever the stakes test fails | 100k to 150k tokens, estimated. One logged light skill test (29-09-2026), including two additional test drives, used about 750k subagent tokens over five leaves |
 | Full | Reference: one builder per area, one isolated critic, and 2 to 3 judges. Verification: one isolated verifier per claim cluster | Money, reputation, a public statement, a decision someone acts on, or "full gauntlet" | About 325k subagent tokens per round, measured once in reference mode; verification unmeasured |
 
 Verification mode seats verifiers only. It does not seat a critic or judges. The stakes test decides, whatever the area count. In reference mode, builders run on a cheaper workhorse model; only the critic and judges pay frontier prices. Judges come from at least two model families where the stack allows, because a same-family judge shares the priors that produced the gap. Escalation is automatic on stakes and always announced in one line.
@@ -135,8 +141,12 @@ Verification mode seats verifiers only. It does not seat a critic or judges. The
 |---|---|---|
 | 08-08-2026 | Reference mode smoke test: a project README driven at [sharkdp/bat](https://github.com/sharkdp/bat)'s README, full formation | 1 round, 3 builders, 1 critic, 2 judges, about 325k subagent tokens, 8 minutes. Both judges NOT THERE, matching the critic. The critic caught an output block the assembler had doctored. The 400k ceiling parked the loop before round 2. |
 | 08-08-2026 | Routing checks on earlier, longer descriptions, two blind seats | 23 of 24 correct, then 5 of 5 after a fix to the clause separating it from the research method. The description names that separation again. Those counts were measured on the earlier wording, not on this text. |
+| 29-09-2026 | One logged light skill test, including two additional test drives | About 750k subagent tokens over five leaves. This expanded run is not a baseline for a plain light run. |
+| 08-10-2026 | Trigger eval v2 on the author's separate installed copy, blind router | Loaded on both prompts: first on the build prompt, second behind the research method on the research prompt. This result was not measured on this repository's description. |
 
-Light-formation costs stay estimates, and full verification mode stays unmeasured, until three runs of each are logged.
+Light-formation costs stay estimates until three light runs are logged; 150k is not a spending cap. Full verification mode remains unmeasured. Use the log to replace its cost placeholder after three verification runs.
+
+The 22-prompt routing set of 24-09-2026 remains unrerun on the installed copy's current description. This repository has no recorded result from that set for its description. Local static evals check the skill text; they do not establish live routing behavior.
 
 ## What changed from upstream
 
