@@ -153,6 +153,14 @@ Light-formation costs stay estimates until three light runs are logged; 150k is 
 
 The 22-prompt routing set of 24-09-2026 remains unrerun on the installed copy's current description. This repository has no recorded result from that set for its description. Local static evals check the skill text; they do not establish live routing behavior.
 
+## Maintaining the skill
+
+- Keep the description under 450 characters and lead with the trigger phrases. Skill listings have a character budget; in Claude Code it scales with the context window, and on overflow the least-used skills lose their descriptions first and keep only their names.
+- Verification mode knowingly risks collisions with the research method and the rubric review. If a request misroutes, add or sharpen a clause in the description that separates this skill from the one that took it.
+- Keep the instructions, everything in SKILL.md before its `## Eval` section, under 20,000 bytes. After a conversation compacts, Claude Code re-attaches only the first 5,000 tokens of each invoked skill ([skill content lifecycle](https://code.claude.com/docs/en/skills)), and 20,000 bytes is about 5,000 tokens at an estimated 4 bytes per token. Past that point an instruction is lost mid-loop. Dated measurements belong in Measured so far above, not in the skill.
+
+`scripts/check_skill.py` enforces the description and size limits.
+
 ## What changed from upstream
 
 | | [robonuggets/gauntlet-loop](https://github.com/robonuggets/gauntlet-loop) | This fork |
@@ -181,7 +189,7 @@ evals/
 ├── runner.mjs            # npm run evals: checks each case's phrases against SKILL.md
 └── *.test.mjs            # runner, case file, README sync, and mutation tests
 scripts/
-├── check_skill.py        # frontmatter, dash, link, and claim label checks
+├── check_skill.py        # frontmatter, size, dash, link, and claim label checks
 └── test_*.py             # unit tests for check_skill.py and the CI workflow
 audits/                   # dated audit reports (coverage, lint, Quick Start, regression)
 assets/

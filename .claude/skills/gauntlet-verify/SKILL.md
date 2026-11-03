@@ -15,8 +15,6 @@ A rubric is a lossy compression of a reference. It survives compression when the
 
 So do not write the criteria. Name a specific artifact that already clears the bar, and make the pass condition comparative rather than absolute: a judge who never saw the build can name nothing but identity tells to separate it from the reference (step 4).
 
-Verification mode is the deliberate exception. Its bar is statable, the kill tests below, and it lives here anyway so that one skill owns the isolated-agent machinery for both kinds of unforgiving work.
-
 ## The gates, one per mode
 
 Reference mode runs only when all four hold.
@@ -39,12 +37,10 @@ Two levels. Light is the default; spend follows consequence, not effort.
 
 | Formation | Seats | When | Cost anchor |
 |---|---|---|---|
-| Light | Reference: the drafting session, one isolated critic, and one judge when the build is ready to ship. Verification: one isolated verifier for all claims | Default. Stakes contained, whatever the area count | 100k to 150k tokens, estimated. One logged light skill test (29-09-2026), including two additional test drives, used about 750k subagent tokens over five leaves |
+| Light | Reference: the drafting session, one isolated critic, and one judge when the build is ready to ship. Verification: one isolated verifier for all claims | Default. Stakes contained, whatever the area count | 100k to 150k tokens, estimated; not a spending cap |
 | Full | Reference: one builder per area, one isolated critic, and a panel of 2 to 3 judges. Verification: one isolated verifier per claim cluster | Stakes test passes: money, reputation, public statement, acted-on decision. Or the user says full gauntlet | About 325k subagent tokens per round, measured once in reference mode (08-08-2026); verification mode unmeasured |
 
-Verification mode seats verifiers only: one isolated verifier for all claims at light, and one isolated verifier per claim cluster at full. Verification mode does not seat a critic or judges.
-
-The measured light run included two additional test drives, so it is not a baseline for a plain light run. Keep the estimate until three light runs are logged; 150k is not a spending cap. The ceiling written for each run remains the brake.
+Verification mode does not seat a critic or judges.
 
 The stakes test decides, whatever the area count: a high-stakes job with two claim clusters still runs full, one verifier per cluster. Escalation is automatic on the stakes test and overridden in either direction by the user's word. A loop may drop to light for a cleanup round; it never climbs silently, it names the escalation and the reason in one line. Unattended, escalation follows the same rule and the written ceiling stays the brake.
 
@@ -156,6 +152,10 @@ Source tiers the verifiers grade against:
 
 Two outlets citing the same press release are one source. A figure a data tool proxies from a vendor grades as that vendor, never as the tool, and counts as that vendor for independence. Never average conflicting numbers: resolve the conflict, or present both with the reason they differ.
 
+## Portability
+
+In Claude Code, fan out with subagents or a workflow script, and use `/loop` to pace rounds. The keyword `ultracode` in a typed prompt runs that one task as an orchestrated workflow, which suits a full-formation loop; `/effort ultracode` does the same for the whole session. The keyword does not fire in `-p` runs or scheduled tasks, so a scheduled loop fans out with subagents instead. On any other agent, run each seat as a fresh context with only its brief; sequential works, shared context does not. Some chat surfaces can spawn only one model family, so the two-family judge rule degrades to two tiers there. Say so in the log line.
+
 ## Boundaries
 
 | Neighbor | Owns | Split |
@@ -167,23 +167,6 @@ Two outlets citing the same press release are one source. A figure a data tool p
 | Skill standard | The bar an instruction or skill is held to | It sets bars; this one chases one |
 | Model routing | Which model runs which seat | It routes seats; this decides the formation exists |
 | In-context self-check | Checking while drafting | Continuous and internal versus blind and isolated |
-
-## Portability
-
-In Claude Code, fan out with subagents or a workflow script, and use `/loop` to pace rounds. The keyword `ultracode` in a prompt runs that one task as an orchestrated workflow, which suits a full-formation loop; `/effort ultracode` does the same for the whole session. On any other agent, run each seat as a fresh context with only its brief; sequential works, shared context does not. Some chat surfaces can spawn only one model family, so the two-family judge rule degrades to two tiers there. Say so in the log line.
-
-## Dated context, 18-09-2026
-
-- Origin: Matt Shumer ran the loop in the prompt behind Claude of Duty and named it the Gauntlet Loop in a write-up dated 27-07-2026. RoboNuggets packaged it as a skill that writes a paste-ready loop prompt. This version runs the loop in session and adds verification mode, used privately from 08-08-2026 and published 18-09-2026. Verification mode knowingly risks collisions with the research method and the rubric review; if a request misroutes, add or sharpen a clause in the description that separates this skill from the one that took it, and keep the description under 450 characters. The description separates this skill from the research method and from the rubric review at ship.
-- First measured run, 08-08-2026, reference mode smoke test (a README driven at sharkdp/bat's README): one full-formation round, 3 workhorse builders, 1 frontier critic, 2 judges, roughly 325k subagent tokens and 8 minutes wall. Both judges said NOT THERE, agreeing with the critic. The critic caught an output block the assembler had doctored, so isolation held. The 400k ceiling parked the loop before round 2, so the unattended brake held on its first live test.
-- Step 4's question and table were rewritten 08-08-2026 after that run: the question then in use was answered by brand recognition, not craft, so the pick carried no information about the gap. Craft-versus-identity tells are the fix.
-- Routing checks, 08-08-2026, on earlier and longer descriptions: 23 of 24 correct across two blind seats, then 5 of 5 after a fix to the clause separating this skill from the research method. The description names that separation again. The 08-08-2026 counts were measured on the earlier wording, not on this text.
-- Keep the description under 450 characters and lead with the trigger phrases. Skill listings have a character budget; in Claude Code it scales with the context window, and on overflow the least-used skills lose their descriptions first and keep only their names.
-
-## Dated context, 21-10-2026
-
-- The author's separate installed copy loaded on both prompts in trigger eval v2 (08-10-2026, blind router): first on the build prompt and second behind the research method on the research prompt. This result was not measured on this repository's description.
-- The 22-prompt routing set of 24-09-2026 has not been rerun on the installed copy's current description. This repository has no recorded result from that set for its description. The repository's static eval checks do not establish live routing behavior. A full routing rerun remains pending.
 
 ## Eval
 
