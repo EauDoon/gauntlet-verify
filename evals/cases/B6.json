@@ -1,0 +1,25 @@
+{
+  "id": "B6",
+  "kind": "behavior",
+  "context": "Full formation, round 3 of a build with a named reference. Of three judges, one cannot choose; two name inconsistent card spacing as the tell, one of them only when the attempt is shown first",
+  "mode": "reference",
+  "formation": "full",
+  "passes_if": "It reads the round as not there and briefs the spacing tell as the next round. Each judge ran twice in fresh contexts, once in each order, on a pair captured at the same viewport and format",
+  "fails_if": "It stops because the panel split or a judge could not choose, drops the tell because it appeared in one order only, or runs each judge once",
+  "checks": [
+    {
+      "type": "skill_has_section",
+      "heading": "4. Blind judge, the actual stop condition"
+    },
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "Any judge, in either order, names a craft tell an edit can close",
+        "once in each order",
+        "same viewport",
+        "A wrong pick, no pick, or a split panel is not a pass on its own",
+        "Every judge, in both orders, names only identity tells or none"
+      ]
+    }
+  ]
+}

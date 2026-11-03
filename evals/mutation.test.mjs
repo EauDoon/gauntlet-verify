@@ -21,6 +21,9 @@ const MUTATIONS = [
   { id: "B4", from: "A round that would breach the ceiling mid-flight does not start. ", to: "" },
   { id: "B4", from: "and ships nothing on its own", to: "and ships the latest round" },
   { id: "B5", from: "Never edit an earlier line. ", to: "" },
+  { id: "B6", from: "Any judge, in either order, names a craft tell an edit can close", to: "Every judge names a craft tell an edit can close" },
+  { id: "B6", from: "Run each judge twice, once in each order, each run", to: "Run each judge once, each run" },
+  { id: "B6", from: "Every judge, in both orders, names only identity tells or none", to: "Names only identity tells, or the panel splits" },
   { id: "T6", from: "not Gauntlet the DeFi risk manager", to: "not a risk manager" },
 ];
 

@@ -88,13 +88,13 @@ The critic's instructions, verbatim:
 
 ### 4. Blind judge, the actual stop condition
 
-Show the judge both artifacts, unlabeled, in random order, and say what the pair is: one shipped by the reference author, one an attempt to match it. Ask which is the attempt and what gave it away, every tell tagged either craft, fixable by editing the artifact, or identity (age, adoption, ecosystem, brand), which no edit reaches. Do not ask which is better, which invites diplomacy. Do not ask which one the reference author made and leave it there: a famous reference is recognized on sight, so the bare pick measures recognition, not the gap. The pick saturates; the tells carry the verdict.
+Show the judge both artifacts, unlabeled, and say what the pair is: one shipped by the reference author, one an attempt to match it. Capture both the same way, at the same viewport, crop, resolution, length, and format, so presentation is not the tell. Run each judge twice, once in each order, each run a fresh context that never sees the other run, earlier verdicts, or the critic's findings; judges favor one position, most when the gap is small. Ask which is the attempt and what gave it away, every tell tagged either craft, fixable by editing the artifact, or identity (age, adoption, ecosystem, brand), which no edit reaches. Do not ask which is better, which invites diplomacy. Do not ask which one the reference author made and leave it there: a famous reference is recognized on sight, so the bare pick measures recognition, not the gap. The pick saturates; the tells carry the verdict. A wrong pick, no pick, or a split panel is not a pass on its own: judges often fail to separate real from generated work while a gap remains.
 
 | Judge says | Read |
 |---|---|
-| Spots the attempt and names a craft tell an edit can close | Not there. The top craft tell is the next round's brief |
-| Spots the attempt but names only craft tells that do not matter | Close. Press the single property from step 1 |
-| Names only identity tells, or picks the reference as the attempt, or cannot choose, or the panel splits | Done. Stop, ship it |
+| Any judge, in either order, names a craft tell an edit can close | Not there. The top craft tell is the next round's brief |
+| The only craft tells named do not matter | Close. Press the single property from step 1 |
+| Every judge, in both orders, names only identity tells or none | Done. Stop, ship it |
 
 At full formation run 2 to 3 judges across at least two model families where the stack allows; a same-family judge shares the priors that produced the gap. One judge guessing right is coin-flip evidence. Where only one family is available, use two model tiers and say the verdict is weaker. Where the reference cannot be shown, one judge holds the written spec and the verdict is weak; say so.
 

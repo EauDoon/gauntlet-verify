@@ -71,7 +71,7 @@ A rubric is a lossy compression of a reference. It works when the criteria are m
 1. Name the reference before building: a specific shipped thing the build does not match today, the one property being matched, how the judge will see it, the formation, and the ceiling. "Linear's settings page" passes. "Good design" does not. Your own best past work is the strongest reference of all.
 2. Decompose and fan out: one builder per area that fails independently (structure, visual system, motion, copy, data, edge cases). The orchestrating session assembles mechanically; anything it is tempted to patch goes back to that area's builder.
 3. Critic that never saw the build: fresh context, the artifact and the reference, nothing else. It names specific gaps, maps each to one area and one edit, and ranks by impact. No praise.
-4. Blind judge: both artifacts, unlabeled, random order. The judge is told one is the original and one is an attempt, then asked which is the attempt and what gave it away.
+4. Blind judge: both artifacts, captured the same way and unlabeled. Each judge runs twice in fresh contexts, once in each order, because judges favor one position. The judge is told one is the original and one is an attempt, then asked which is the attempt and what gave it away.
 5. Loop and report the delta, one line per round: the change in open craft tells and critic findings. A loop whose delta stops moving is finished; it stops and reports.
 6. The user is the brake: no round cap. The ceiling from step 1 parks an unattended loop, and it ships nothing on its own.
 7. Append the run to `logs/verification-runs.md` in the shared project folder and read the line back, so cost estimates turn into measurements. Create the directory and file if absent; never edit earlier lines.
@@ -87,9 +87,11 @@ Upstream asks which one is better. That invites diplomacy. Asking only which one
 
 | Judge says | Read |
 |---|---|
-| Spots the attempt and names a craft tell | Not there |
-| Spots the attempt, names only craft tells that do not matter | Close, press the one property |
-| Names only identity tells, picks the original as the attempt, cannot choose, or the panel splits | Done, ship it |
+| Any judge, in either order, names a craft tell | Not there |
+| The only craft tells named do not matter | Close, press the one property |
+| Every judge, in both orders, names only identity tells or none | Done, ship it |
+
+A wrong pick, no pick, or a split panel is not a pass on its own: judges often fail to tell real work from generated work while a gap remains, so only the tells count.
 
 ## Verification mode
 
@@ -129,6 +131,7 @@ Verification mode seats verifiers only. It does not seat a critic or judges. The
 - A critic or verifier that shares the builder's context. It inherits the builder's satisfaction.
 - Asking "which is better", or only "which is the original". The first invites diplomacy; against a famous reference the second measures recognition.
 - Stills for a motion property. The static frame converges while the real gap stays open.
+- A pair captured differently, or judged in one order only. The judge spots the format or the position, not the craft.
 - An assembler that quietly patches. The fix belongs to the area's builder, or the critic's findings stop meaning anything.
 - Changing the artifact while the critic or judges are reading it. The verdict cannot be attributed to a version.
 - Unpinned seats. Some orchestrators do not pass the session's model choice to subagents, so check the model each agent actually ran on.
