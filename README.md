@@ -174,7 +174,7 @@ evals/
 ├── README.md             # trigger and behavior cases, run by hand in a fresh session
 ├── cases/                # B1 to B5 behavior and T1 to T9 trigger cases as JSON
 ├── runner.mjs            # npm run evals: checks each case's phrases against SKILL.md
-└── *.test.mjs            # unit tests for the runner and case files, plus the mutation test
+└── *.test.mjs            # runner, case file, README sync, and mutation tests
 scripts/
 ├── check_skill.py        # frontmatter, dash, link, and claim label checks
 └── test_*.py             # unit tests for check_skill.py and the CI workflow

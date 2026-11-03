@@ -1,4 +1,4 @@
-﻿{
+{
   "id": "T4",
   "kind": "trigger",
   "prompt": "what's the current ETH price",
@@ -13,5 +13,3 @@
     }
   ]
 }
-
-

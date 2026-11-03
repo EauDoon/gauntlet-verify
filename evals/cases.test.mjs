@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
@@ -85,6 +85,15 @@ test("a well-formed case has no problems", () => {
 test("every shipped case is well formed and has a unique id", () => {
   for (const { file, problems } of loadCases()) {
     assert.deepEqual(problems, [], file);
+  }
+});
+
+test("every shipped case is plain UTF-8 without a byte order mark", () => {
+  // The runner tolerates a BOM, but Python's json.load and other strict
+  // parsers reject it, so a case with one cannot be read outside this runner.
+  const dir = fileURLToPath(new URL("./cases/", import.meta.url));
+  for (const name of readdirSync(dir).filter((f) => f.endsWith(".json"))) {
+    assert.notEqual(readFileSync(join(dir, name), "utf8").charCodeAt(0), 0xfeff, name);
   }
 });
 
