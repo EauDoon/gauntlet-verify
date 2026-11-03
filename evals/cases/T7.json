@@ -9,8 +9,8 @@
     {
       "type": "skill_contains_all",
       "phrases": [
-        "not a style name",
-        "house aesthetic"
+        "not a category and not a style name",
+        "Neither does a house aesthetic"
       ]
     }
   ]

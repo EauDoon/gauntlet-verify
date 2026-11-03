@@ -1,4 +1,4 @@
-// Each behavior case must fail when the sentence it stands for is changed.
+// Each case must fail when the sentence it stands for is changed.
 // Every mutation below edits one instruction in SKILL.md and expects the case
 // to go red. If a pinned sentence is reworded, the test fails and names it, so
 // the pin and the case can be updated together.
@@ -33,7 +33,17 @@ const MUTATIONS = [
   { id: "B8", from: ", or the source covers the topic without stating the claim,", to: "" },
   { id: "B9", from: "re-verify the claims that changed and every claim that rests on one of them", to: "re-verify only the claims that changed" },
   { id: "B9", from: "A kill stands when its quote or primary-source trace matches the claim's entity, metric, period, and unit.", to: "Any kill with a quote or a primary-source trace stands." },
+  { id: "T1", from: "it still looks like an LLM made it", to: "it looks unfinished" },
+  { id: "T1", from: "A named reference exists and is out of reach", to: "A reference style is chosen" },
+  { id: "T2", from: "do another pass", to: "make it better" },
+  { id: "T3", from: "or it feeds a public statement or decision", to: "or it is long" },
+  { id: "T3", from: "Verification mode fires unprompted when both hold", to: "Verification mode fires when asked and both hold" },
+  { id: "T4", from: "A quick lookup or a single figure does not raise a formation", to: "A quick lookup raises a light formation" },
+  { id: "T5", from: "the check that applies is the rubric review at ship", to: "the loop applies again" },
   { id: "T6", from: "not Gauntlet the DeFi risk manager", to: "not a risk manager" },
+  { id: "T7", from: "Neither does a house aesthetic", to: "So does a house aesthetic" },
+  { id: "T8", from: "belongs to a style edit", to: "belongs to this loop" },
+  { id: "T9", from: "Not the research method, and ", to: "" },
 ];
 
 function passes(caseObj, text) {
@@ -50,8 +60,8 @@ for (const { id, from, to } of MUTATIONS) {
   });
 }
 
-test("every behavior case is pinned by at least one mutation", () => {
+test("every case is pinned by at least one mutation", () => {
   const pinned = new Set(MUTATIONS.map((m) => m.id));
-  const unpinned = [...CASES.values()].filter((c) => c.kind === "behavior" && !pinned.has(c.id)).map((c) => c.id);
+  const unpinned = [...CASES.values()].filter((c) => !pinned.has(c.id)).map((c) => c.id);
   assert.deepEqual(unpinned, []);
 });
