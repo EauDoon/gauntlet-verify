@@ -89,7 +89,7 @@ Upstream asks which one is better. That invites diplomacy. Asking only which one
 |---|---|
 | Any judge, in either order, names a craft tell | Not there |
 | The only craft tells named do not matter | Close, press the one property |
-| Every judge, in both orders, names only identity tells or none | Done, ship it |
+| Every judge, in both orders, names only identity tells or none | Done, ship it; unattended, park it as ready |
 
 A wrong pick, no pick, or a split panel is not a pass on its own: judges often fail to tell real work from generated work while a gap remains, so only the tells count.
 
@@ -106,7 +106,7 @@ The brief tells each verifier which claims are already labeled unsourced (declar
 5. Check the date on every figure.
 6. Label it: **verified** (one tier A source, or two independent tier B), **reported** (a single tier B), or **unverified** (everything else, including anything resting on aggregators). Tier A is a primary source. Tier B is named-author reporting at an established outlet, or a counterparty document.
 
-Claims are split into atomic facts first, one entity, figure, period, or definition each, and a claim is verified only if every fact is. Kills and survivals are asymmetric. A kill stands when its quote matches the claim's entity, metric, period, and unit; the drafting session may contest it once, and a fresh verifier settles it. A claim survives only if every test was run. A fix is re-verified along with every claim that rests on it. Unverified claims can still ship, labeled, with what would settle them. If no isolated verifier could run, the deliverable says so.
+Claims are split into atomic facts first, one entity, figure, period, or definition each, and a claim is verified only if every fact is. Kills and survivals are asymmetric. A kill stands when its quote matches the claim's entity, metric, period, and unit; the drafting session may contest it once, and a fresh verifier given only the claim and both quotes settles it. A claim survives only if every test was run. A fix is re-verified along with every claim that rests on it. Unverified claims can still ship, labeled, with what would settle them. If no isolated verifier could run, the deliverable says so.
 
 Log verification runs to the same `logs/verification-runs.md` file, with claim clusters and the verifier trajectory. If no isolated verifier ran, record `not run`. Both modes use the shared project folder (`/mnt/project-files/` in a project thread, the connected folder in Cowork, or a durable project folder on other agents), append the whole line in one write, and read it back. Report a failed append or readback; scratch files and built-in memory do not count as the run log. The record shape is:
 
@@ -121,7 +121,7 @@ Spend follows consequence, not effort.
 | Formation | Seats | When | Cost anchor |
 |---|---|---|---|
 | Light | Reference: the drafting session, one isolated critic, and one judge when the build is ready to ship. Verification: one isolated verifier for all claims | Default, whenever the stakes test fails | 100k to 150k tokens, estimated. One logged light skill test (29-09-2026), including two additional test drives, used about 750k subagent tokens over five leaves |
-| Full | Reference: one builder per area, one isolated critic, and 2 to 3 judges. Verification: one isolated verifier per claim cluster | Money, reputation, a public statement, a decision someone acts on, or "full gauntlet" | About 325k subagent tokens per round, measured once in reference mode; verification unmeasured |
+| Full | Reference: one builder per area, one isolated critic, and 2 to 3 judges. Verification: one isolated verifier per claim cluster | Money, reputation, a public statement, a decision someone acts on, or "full gauntlet" | About 325k subagent tokens per round, measured once in reference mode before judges ran in both orders, which adds judge runs; verification unmeasured |
 
 Verification mode seats verifiers only. It does not seat a critic or judges. The stakes test decides, whatever the area count. In reference mode, builders run on a cheaper workhorse model; only the critic and judges pay frontier prices. Judges come from at least two model families where the stack allows, because a same-family judge shares the priors that produced the gap. Escalation is automatic on stakes and always announced in one line.
 
@@ -139,6 +139,23 @@ Verification mode seats verifiers only. It does not seat a critic or judges. The
 - Unpinned seats. Some orchestrators do not pass the session's model choice to subagents, so check the model each agent actually ran on.
 - Starting the loop and accepting round one. Fan-out prices for a single draft.
 - Not logging. The next run pays for the same lesson.
+
+## Evidence behind the rules
+
+The 03-11-2026 rules rest on these sources. They were checked through abstracts, summaries, and the repositories themselves, not full paper text.
+
+| Rule | Source |
+|---|---|
+| Each judge runs in both orders, on a pair captured the same way | Zheng et al., "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena", NeurIPS 2023; Wang et al., "Large Language Models are not Fair Evaluators", arXiv 2305.17926 |
+| A wrong pick, no pick, or a split panel is not a pass; only tells count | Clark et al., "All That's 'Human' Is Not Gold", ACL 2021; Rathi et al., arXiv 2407.08853 (displaced Turing test judges) |
+| Judges are fresh each round and never see earlier verdicts | Pan et al., "Spontaneous Reward Hacking in Iterative Self-Refinement", arXiv 2407.04549 |
+| Snapshot every round, recheck passed areas, keep the best snapshot | Huang et al., "Large Language Models Cannot Self-Correct Reasoning Yet", ICLR 2024; [Claude of Duty process note](https://github.com/mshumer/Claude-of-Duty#process-note), 25-07-2026 |
+| One owner per coupled system; the builder owns the diagnosis | Claude of Duty process note |
+| Claims split into atomic facts | Min et al., "FActScore", EMNLP 2023; Wei et al., "Long-form factuality in large language models" (SAFE), NeurIPS 2024 |
+| The source must state the claim with the same metric, period, and unit | Liu, Zhang, and Liang, "Evaluating Verifiability in Generative Search Engines", Findings of EMNLP 2023 |
+| A kill must match the claim and can be contested once | Wang et al., "Factcheck-Bench", Findings of EMNLP 2024 |
+| The verifier answers the open question before comparing | Dhuliawala et al., "Chain-of-Verification Reduces Hallucination in Large Language Models", Findings of ACL 2024 |
+| Instructions stay under 20,000 bytes | Claude Code docs, [skill content lifecycle](https://code.claude.com/docs/en/skills) |
 
 ## Measured so far
 

@@ -11,7 +11,7 @@
       "phrases": [
         "every claim that rests on one of them",
         "matches the claim's entity, metric, period, and unit",
-        "a fresh verifier settles it"
+        "a fresh verifier, given only the claim and both quotes, settles it"
       ]
     }
   ]

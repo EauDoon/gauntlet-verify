@@ -38,7 +38,7 @@ Two levels. Light is the default; spend follows consequence, not effort.
 | Formation | Seats | When | Cost anchor |
 |---|---|---|---|
 | Light | Reference: the drafting session, one isolated critic, and one judge when the build is ready to ship. Verification: one isolated verifier for all claims | Default. Stakes contained, whatever the area count | 100k to 150k tokens, estimated; not a spending cap |
-| Full | Reference: one builder per area, one isolated critic, and a panel of 2 to 3 judges. Verification: one isolated verifier per claim cluster | Stakes test passes: money, reputation, public statement, acted-on decision. Or the user says full gauntlet | About 325k subagent tokens per round, measured once in reference mode (08-08-2026); verification mode unmeasured |
+| Full | Reference: one builder per area, one isolated critic, and a panel of 2 to 3 judges. Verification: one isolated verifier per claim cluster | Stakes test passes: money, reputation, public statement, acted-on decision. Or the user says full gauntlet | About 325k subagent tokens per round, measured once in reference mode (08-08-2026) before judges ran in both orders; verification mode unmeasured |
 
 Verification mode does not seat a critic or judges.
 
@@ -68,7 +68,7 @@ Split the build into areas that fail independently: structure, visual system, mo
 
 Name the assembler before the fan-out. The orchestrating session splices the areas into one artifact against a slot contract agreed up front: the list of sections each builder fills. Assembly is mechanical; an unfilled slot, an orphaned block, or an edit the assembler is tempted to make is a finding for that area's builder, never something the assembler quietly patches. A finding that spans two areas is split by the assembler into one edit per owning builder.
 
-Builders run on a workhorse seat, a cheaper and faster model. Only the critic and the judge pay frontier prices. Pin the model on every seat and check the model each agent actually ran on; in some orchestrators the session's model choice does not reach subagents. Where the surface cannot spawn parallel agents, run the areas sequentially in fresh contexts; the isolation is the requirement, the parallelism is only the speed.
+At full formation, builders run on a workhorse seat, a cheaper and faster model. Only the critic and the judge pay frontier prices. Pin the model on every seat and check the model each agent actually ran on; in some orchestrators the session's model choice does not reach subagents.
 
 ### 3. Critic that never saw the build
 
@@ -90,13 +90,13 @@ Show the judge both artifacts, unlabeled, and say what the pair is: one shipped 
 |---|---|
 | Any judge, in either order, names a craft tell that matters and an edit can close | Not there. The top craft tell is the next round's brief |
 | The only craft tells named do not matter | Close. Press the single property from step 1 |
-| Every judge, in both orders, names only identity tells or none | Done. Stop, ship it |
+| Every judge, in both orders, names only identity tells or none | Done. Stop and ship it; unattended, park it as ready |
 
 At full formation run 2 to 3 judges across at least two model families where the stack allows; a same-family judge shares the priors that produced the gap. One judge guessing right is coin-flip evidence. Where only one family is available, use two model tiers and say the verdict is weaker. Where the reference cannot be shown, one judge holds the written spec and the verdict is weak; say so.
 
 ### 5. Loop, and report the delta
 
-Each round: critic findings, builders fix their own area only, judges re-run (every round at full; at light, one judge when the build is ready to ship, and a craft tell from it opens another round). The builder owns the diagnosis: a builder whose measurement contradicts a finding's edit reports the measurement and closes the gap another way; the finding stands. Snapshot the artifact at the end of every round. The critic rechecks every area that passed in an earlier round against that round's snapshot; a regression is a finding for the builder whose edit caused it. Report one line per round with the delta, the change in open craft tells and critic findings since the previous round, so the trend is visible. A loop whose delta stops moving, two rounds in a row with no drop in the combined count, is finished whatever the judge says: stop and report the trajectory. On a Done verdict the judged snapshot is the candidate; at any other stop or park, it is the snapshot with the fewest open craft tells and critic findings, not the last round.
+Each round: critic findings, builders fix their own area only, judges re-run (every round at full; at light, one judge when the build is ready to ship, and a craft tell from it opens another round). The builder owns the diagnosis: a builder whose measurement contradicts a finding's edit reports the measurement and closes the gap another way; the finding stands. Snapshot the artifact at the end of every round. The critic rechecks every area that passed in an earlier round against that round's snapshot; a regression is a finding for the builder whose edit caused it. Report one line per round with the delta, the change in open craft tells and critic findings since the previous round, so the trend is visible. A loop whose delta stops moving, two rounds in a row with no drop in the combined count, is finished whatever the judge says: stop and report the trajectory. On a Done verdict the judged snapshot is the candidate; at any other stop or park, it is the snapshot with the fewest open craft tells and critic findings (critic findings alone where no judge ran), not the last round.
 
 ### 6. The user is the brake
 
@@ -127,13 +127,13 @@ The research method runs scoping, fan-out search, and source grading in the draf
    - which self-checks ran and what each found, so they re-run each one independently rather than trust it;
    - which primary-data tools are available and how to load them. A verifier that does not know a tool exists reverts to web search and the kill tests weaken.
 4. Run the kill tests, verbatim, on every claim.
-   1. Answer the open question behind the claim (what was X in period Y) from your own search, then compare with the draft and search for the direct contradiction. Where a seat can be messaged twice, send the open questions first and the draft's values after.
+   1. Answer the open question behind the claim (what was X in period Y) from your own search, then compare with the claim and search for the direct contradiction. Where a seat can be messaged twice, send the open questions first and the draft's values after.
    2. Trace to the primary source and quote the passage that states the claim with the same metric, period, and unit. If the chain ends at an aggregator, or the source covers the topic without stating the claim, the claim is unverified.
    3. Recompute any number that can be recomputed. For on-chain figures, a direct contract or storage read at a stated block is the recompute path.
    4. Re-fetch every figure quoted from a live source and compare the figure, the source, and the as-of date against what the draft says.
    5. Check the date on every figure. Flag anything older than its natural refresh cycle.
    6. Label the survivors: verified (one tier A source, or two independent tier B), reported (a single tier B), unverified (everything else).
-5. Kills and survivals are asymmetric. A kill stands when its quote or primary-source trace matches the claim's entity, metric, period, and unit. The drafting context may contest a kill once with a counter-quote; a fresh verifier settles it. Survival requires the verifier to have run every test, not to have found nothing while skimming.
+5. Kills and survivals are asymmetric. A kill stands when its quote or primary-source trace matches the claim's entity, metric, period, and unit. The drafting context may contest a kill once with a counter-quote; a fresh verifier, given only the claim and both quotes, settles it. Survival requires the verifier to have run every test, not to have found nothing while skimming.
 6. Fix or relabel, re-verify the claims that changed and every claim that rests on one of them, stop. Unverified claims ship only labeled, with what would settle them. The step 2 ceiling and the unattended brake from reference mode step 6 apply unchanged.
 7. Say when it did not run. Where no isolated verifier can be seated, run the self-checks and state in the deliverable that no independent verification pass ran.
 8. Log the run as reference step 7 says, with the claim clusters in the areas field and the verifier trajectory last. If no isolated verifier was seated, record `not run` in the trajectory instead of implying independent verification passed.

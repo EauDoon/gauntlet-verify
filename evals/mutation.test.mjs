@@ -27,7 +27,7 @@ const MUTATIONS = [
   { id: "B6", from: "Every judge, in both orders, names only identity tells or none", to: "Names only identity tells, or the panel splits" },
   { id: "B7", from: "The critic rechecks every area that passed in an earlier round against that round's snapshot; a regression is a finding for the builder whose edit caused it. ", to: "" },
   { id: "B7", from: ", two rounds in a row with no drop in the combined count,", to: "" },
-  { id: "B7", from: "it is the snapshot with the fewest open craft tells and critic findings, not the last round", to: "it is the last round" },
+  { id: "B7", from: "it is the snapshot with the fewest open craft tells and critic findings (critic findings alone where no judge ran), not the last round", to: "it is the last round" },
   { id: "B7", from: "The builder owns the diagnosis: a builder whose measurement contradicts a finding's edit reports the measurement and closes the gap another way; the finding stands. ", to: "" },
   { id: "B8", from: "Split each claim into atomic facts that stand alone, one entity, figure, period, or definition each; a claim is verified only if every one of its facts is. ", to: "" },
   { id: "B8", from: ", or the source covers the topic without stating the claim,", to: "" },
