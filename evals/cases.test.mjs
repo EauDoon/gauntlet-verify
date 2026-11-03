@@ -78,3 +78,19 @@ test("a malformed case fails on its own and the other cases still run", () => {
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test("an empty or missing cases directory fails instead of passing", () => {
+  const dir = mkdtempSync(join(tmpdir(), "gauntlet-cases-"));
+  try {
+    const empty = spawnSync(process.execPath, [RUNNER, dir], { encoding: "utf8" });
+    assert.equal(empty.status, 1, empty.stdout);
+    assert.match(empty.stdout, /^FAIL Z2 cases .*\n\s+no \.json case files found$/m);
+    assert.match(empty.stdout, /^1 passed, 1 failed$/m);
+    const missing = spawnSync(process.execPath, [RUNNER, join(dir, "absent")], { encoding: "utf8" });
+    assert.equal(missing.status, 1, missing.stdout + missing.stderr);
+    assert.match(missing.stdout, /^FAIL Z2 cases .*\n\s+cannot read the cases directory: ENOENT/m);
+    assert.equal(missing.stderr, "");
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});

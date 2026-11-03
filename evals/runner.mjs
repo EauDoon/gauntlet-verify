@@ -227,10 +227,38 @@ function main(casesDir = CASES_DIR) {
     console.log(`      ${structCheck.detail}`);
   }
 
-  const skill = loadSkill();
-  const cases = loadCases(casesDir);
   let pass = structCheck.ok ? 1 : 0;
   let fail = structCheck.ok ? 0 : 1;
+  const finish = () => {
+    console.log(`\n${pass} passed, ${fail} failed`);
+    process.exit(fail === 0 ? 0 : 1);
+  };
+
+  let skill;
+  try {
+    skill = loadSkill();
+  } catch (err) {
+    console.log(`FAIL Z1 skill-load ${relative(REPO, SKILL_PATH)}`);
+    console.log(`      ${err.message}`);
+    fail += 1;
+    return finish();
+  }
+
+  // No cases is a failure, not a pass: an empty or missing directory would
+  // otherwise report green with nothing checked.
+  let cases = [];
+  let casesError = null;
+  try {
+    cases = loadCases(casesDir);
+  } catch (err) {
+    casesError = `cannot read the cases directory: ${err.message}`;
+  }
+  if (casesError || cases.length === 0) {
+    console.log(`FAIL Z2 cases ${casesDir}`);
+    console.log(`      ${casesError ?? "no .json case files found"}`);
+    fail += 1;
+    return finish();
+  }
 
   for (const { file, data, problems } of cases) {
     if (problems.length) {
@@ -254,8 +282,7 @@ function main(casesDir = CASES_DIR) {
     }
   }
 
-  console.log(`\n${pass} passed, ${fail} failed`);
-  process.exit(fail === 0 ? 0 : 1);
+  finish();
 }
 
 function truncate(s, n) {
