@@ -42,23 +42,89 @@ function loadSkill() {
   return { description: description.toLowerCase(), body: body.toLowerCase() };
 }
 
-function caseFiles() {
-  return readdirSync(CASES_DIR)
+function caseFiles(dir) {
+  return readdirSync(dir)
     .filter((f) => f.endsWith(".json"))
     .sort()
-    .map((f) => join(CASES_DIR, f));
+    .map((f) => join(dir, f));
 }
 
-function loadCase(path) {
-  let raw = readFileSync(path, "utf8");
-  if (raw.charCodeAt(0) === 0xfeff) raw = raw.slice(1);
-  const data = JSON.parse(raw);
-  for (const key of ["id", "kind", "checks"]) {
-    if (data[key] === undefined) {
-      throw new Error(`case ${path} missing required field ${key}`);
-    }
+const CASE_KINDS = new Set(["behavior", "trigger"]);
+const PHRASE_CHECKS = new Set(["skill_description_contains", "skill_contains_all"]);
+
+function isObject(value) {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+// A case that checks nothing must not report PASS. Return every reason the
+// case cannot be run as written; an empty list means it is well formed.
+function validateCase(data) {
+  if (!isObject(data)) return ["case is not a JSON object"];
+  const problems = [];
+  if (typeof data.id !== "string" || !data.id.trim()) {
+    problems.push("id must be a non-empty string");
   }
-  return data;
+  if (!CASE_KINDS.has(data.kind)) {
+    problems.push(`kind must be behavior or trigger, got ${JSON.stringify(data.kind)}`);
+  }
+  if (!Array.isArray(data.checks) || data.checks.length === 0) {
+    problems.push("checks must be a non-empty array");
+    return problems;
+  }
+  data.checks.forEach((check, i) => {
+    const at = `checks[${i}]`;
+    if (!isObject(check)) {
+      problems.push(`${at} is not an object`);
+      return;
+    }
+    if (typeof check.type !== "string" || !Object.hasOwn(checks, check.type)) {
+      problems.push(`${at} has unknown type ${JSON.stringify(check.type)}`);
+      return;
+    }
+    if (PHRASE_CHECKS.has(check.type)) {
+      if (!Array.isArray(check.phrases) || check.phrases.length === 0) {
+        problems.push(`${at} phrases must be a non-empty array`);
+      } else if (check.phrases.some((p) => typeof p !== "string" || !p.trim())) {
+        problems.push(`${at} phrases must all be non-empty strings`);
+      }
+    }
+    if (check.type === "skill_has_section" && (typeof check.heading !== "string" || !check.heading.trim())) {
+      problems.push(`${at} heading must be a non-empty string`);
+    }
+  });
+  return problems;
+}
+
+// Read one case file. A file that cannot be parsed or validated comes back
+// with its problems, so it fails on its own and the other cases still run.
+function readCase(path) {
+  const file = relative(REPO, path);
+  let raw;
+  try {
+    raw = readFileSync(path, "utf8");
+  } catch (err) {
+    return { file, data: null, problems: [`unreadable: ${err.message}`] };
+  }
+  if (raw.charCodeAt(0) === 0xfeff) raw = raw.slice(1);
+  let data;
+  try {
+    data = JSON.parse(raw);
+  } catch (err) {
+    return { file, data: null, problems: [`invalid JSON: ${err.message}`] };
+  }
+  return { file, data, problems: validateCase(data) };
+}
+
+function loadCases(dir = CASES_DIR) {
+  const entries = caseFiles(dir).map(readCase);
+  const seen = new Map();
+  for (const entry of entries) {
+    if (entry.problems.length) continue;
+    const prior = seen.get(entry.data.id);
+    if (prior) entry.problems.push(`duplicate id ${entry.data.id}, also in ${prior}`);
+    else seen.set(entry.data.id, entry.file);
+  }
+  return entries;
 }
 
 function normalize(s) {
@@ -114,7 +180,7 @@ const checks = {
 function runCase(caseObj, skill) {
   const results = [];
   for (const check of caseObj.checks) {
-    const fn = checks[check.type];
+    const fn = Object.hasOwn(checks, check.type) ? checks[check.type] : undefined;
     if (!fn) return [{ ok: false, detail: `unknown check type: ${check.type}` }];
     try {
       results.push(fn(check, skill));
@@ -125,7 +191,7 @@ function runCase(caseObj, skill) {
   return results;
 }
 
-function main() {
+function main(casesDir = CASES_DIR) {
   // Baseline: skill structure must pass (delegates to existing check_skill.py).
   const structCheck = checks.skill_structure_passes();
   console.log(`${structCheck.ok ? "PASS" : "FAIL"} Z0 skill-structure scripts/check_skill.py`);
@@ -134,11 +200,19 @@ function main() {
   }
 
   const skill = loadSkill();
-  const cases = caseFiles().map(loadCase);
+  const cases = loadCases(casesDir);
   let pass = structCheck.ok ? 1 : 0;
   let fail = structCheck.ok ? 0 : 1;
 
-  for (const caseObj of cases) {
+  for (const { file, data, problems } of cases) {
+    if (problems.length) {
+      fail += 1;
+      const label = isObject(data) && typeof data.id === "string" && data.id.trim() ? data.id : file;
+      console.log(`FAIL ${label} invalid ${file}`);
+      console.log(`      ${problems.join("; ")}`);
+      continue;
+    }
+    const caseObj = data;
     const results = runCase(caseObj, skill);
     const allOk = results.every((r) => r.ok);
     const firstFail = results.find((r) => !r.ok);
@@ -166,6 +240,7 @@ function isDirectRun() {
   return resolve(entry) === fileURLToPath(import.meta.url);
 }
 
-export { resolvePython, checks, descriptionFromFrontmatter, headingPattern };
+export { resolvePython, checks, descriptionFromFrontmatter, headingPattern, validateCase, loadCases };
 
-if (isDirectRun()) main();
+// Optional argument: a directory of case files to run in place of evals/cases.
+if (isDirectRun()) main(process.argv[2] ? resolve(process.argv[2]) : CASES_DIR);
