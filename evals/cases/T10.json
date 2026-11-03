@@ -1,0 +1,17 @@
+{
+  "kind": "trigger",
+  "id": "T10",
+  "prompt": "the hero still doesn't feel like Apple's iPhone page, keep going",
+  "context": "on a landing page build in progress",
+  "should_fire": true,
+  "mode": "reference",
+  "why": "A build in flight, casual phrasing, and a named shipped bar",
+  "checks": [
+    {
+      "type": "skill_description_contains",
+      "phrases": [
+        "a build misses a named bar"
+      ]
+    }
+  ]
+}

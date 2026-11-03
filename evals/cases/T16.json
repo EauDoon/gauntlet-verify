@@ -1,0 +1,15 @@
+{
+  "kind": "trigger",
+  "id": "T16",
+  "prompt": "the homepage shipped last week, give it a final review before we announce it",
+  "should_fire": false,
+  "why": "Finished work belongs to the rubric review at ship",
+  "checks": [
+    {
+      "type": "skill_description_contains",
+      "phrases": [
+        "Runs mid-build, not on finished work"
+      ]
+    }
+  ]
+}

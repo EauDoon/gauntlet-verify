@@ -17,8 +17,8 @@
     {
       "type": "skill_contains_all",
       "phrases": [
-        "verification",
-        "stakes"
+        "Verification mode fires unprompted when both hold",
+        "The stakes test passes"
       ]
     }
   ]

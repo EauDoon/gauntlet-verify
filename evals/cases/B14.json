@@ -1,0 +1,17 @@
+{
+  "kind": "behavior",
+  "id": "B14",
+  "context": "A light reference run on an investor update; in round 2 the user says it goes to the board on Friday",
+  "mode": "reference",
+  "passes_if": "The stakes test now passes, so it escalates to full and names the escalation and the reason in one line before the next round; the written ceiling still holds unless the user raises it",
+  "fails_if": "It stays light, or escalates without saying so",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "Escalation is automatic on the stakes test",
+        "it never climbs silently, it names the escalation and the reason in one line"
+      ]
+    }
+  ]
+}

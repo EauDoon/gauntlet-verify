@@ -1,0 +1,15 @@
+{
+  "kind": "trigger",
+  "id": "T18",
+  "prompt": "make the API reference meet these three rules: every endpoint has an example, every error code is listed, every parameter has a type",
+  "should_fire": false,
+  "why": "The bar is statable as quotable criteria, so a rubric review applies, not the loop",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "If you can write three quotable criteria for the finished artifact"
+      ]
+    }
+  ]
+}

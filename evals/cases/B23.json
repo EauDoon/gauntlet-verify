@@ -1,0 +1,18 @@
+{
+  "kind": "behavior",
+  "id": "B23",
+  "context": "A full reference run with a 400k ceiling; 300k is spent after round 2, and round 2 measured 120k",
+  "mode": "reference",
+  "formation": "full",
+  "passes_if": "It predicts round 3 at 120k, sees that 300k plus 120k passes 400k, does not start the round, and parks with the trajectory",
+  "fails_if": "It starts round 3 because the ceiling has not been reached yet",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "spend so far plus the last round's measured cost",
+        "Where token spend cannot be read, write the ceiling in rounds"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "kind": "behavior",
+  "id": "B24",
+  "context": "Full formation before round one; of three judges shown the current build and the reference in both orders, one names no craft tell",
+  "mode": "reference",
+  "formation": "full",
+  "passes_if": "It replaces that judge before round one, because gate 1 says the build misses the reference, so a judge that finds no craft tell there cannot see the gap. If no judge can, it says the verdict is weak",
+  "fails_if": "It keeps the judge on the panel, or reads its silence as a sign that the build is already close",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "calibrate each judge before round one",
+        "a judge that names no craft tell there cannot see the gap"
+      ]
+    }
+  ]
+}

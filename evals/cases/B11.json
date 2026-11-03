@@ -1,0 +1,18 @@
+{
+  "kind": "behavior",
+  "id": "B11",
+  "context": "Full formation; the critic's top finding is a misaligned footer the assembler could fix with a one-line edit, and the footer's builder is slow to respond",
+  "mode": "reference",
+  "formation": "full",
+  "passes_if": "The assembler routes the finding to the footer's builder and does not patch it, even for one line",
+  "fails_if": "The assembler applies the one-line fix itself to save a round",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "Assembly is mechanical",
+        "never something the assembler quietly patches"
+      ]
+    }
+  ]
+}

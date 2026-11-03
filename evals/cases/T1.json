@@ -15,9 +15,8 @@
     {
       "type": "skill_contains_all",
       "phrases": [
-        "named reference",
-        "shipped",
-        "build"
+        "A named reference exists and is out of reach",
+        "shipped artifact"
       ]
     }
   ]

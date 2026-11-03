@@ -1,0 +1,18 @@
+{
+  "kind": "behavior",
+  "id": "B16",
+  "context": "Full reference formation where the stack offers only one model family for the judges",
+  "mode": "reference",
+  "formation": "full",
+  "passes_if": "It seats the judges on two model tiers of that family, says the verdict is weaker, and records the degradation in the log line",
+  "fails_if": "It presents a single-family panel as a full-strength verdict",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "Where only one family is available, use two model tiers and say the verdict is weaker",
+        "Say so in the log line"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "kind": "behavior",
+  "id": "B17",
+  "context": "Reference mode where the named reference is a hardware product's setup flow that the critic can neither run nor capture",
+  "mode": "reference",
+  "passes_if": "It writes a spec of the one matched property plus any capture that exists, gives one judge the spec, and says the verdict is weak",
+  "fails_if": "The critic or judge works from an invented picture of the reference, or the weak verdict goes unstated",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "A written spec of the one property, plus any capture that exists",
+        "one judge holds the written spec and the verdict is weak; say so"
+      ]
+    }
+  ]
+}

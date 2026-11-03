@@ -1,0 +1,17 @@
+{
+  "kind": "behavior",
+  "id": "B13",
+  "context": "Round 2 of a reference loop; the critic asks to read the builders' design notes to understand their intent",
+  "mode": "reference",
+  "passes_if": "The critic keeps only the artifact, the reference, the area names, and the earlier snapshots; the design notes stay out",
+  "fails_if": "The critic reads the design notes or any account of how the artifact was made",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "and nothing about how the artifact was made",
+        "A critic in the builder's context inherits the builder's satisfaction"
+      ]
+    }
+  ]
+}

@@ -72,6 +72,35 @@ function isObject(value) {
   return value !== null && typeof value === "object" && !Array.isArray(value);
 }
 
+function isText(value) {
+  return typeof value === "string" && value.trim() !== "";
+}
+
+const SHOULD_FIRE = [true, false, "conditional"];
+
+// The static checks cover only the skill text. Each case also has to carry
+// what a person needs to run it live in a fresh session.
+function liveRunProblems(data) {
+  const problems = [];
+  if (data.kind === "behavior") {
+    if (!isText(data.prompt) && !isText(data.context)) problems.push("behavior case needs a prompt or a context");
+    for (const field of ["passes_if", "fails_if"]) {
+      if (!isText(data[field])) problems.push(`${field} must be a non-empty string`);
+    }
+  }
+  if (data.kind === "trigger") {
+    if (!isText(data.prompt)) problems.push("prompt must be a non-empty string");
+    if (!SHOULD_FIRE.includes(data.should_fire)) {
+      problems.push(`should_fire must be true, false, or "conditional", got ${JSON.stringify(data.should_fire)}`);
+    }
+    if (data.should_fire === "conditional" && !isText(data.fire_unless)) {
+      problems.push("a conditional trigger case needs fire_unless");
+    }
+    if (!isText(data.why)) problems.push("why must be a non-empty string");
+  }
+  return problems;
+}
+
 // A case that checks nothing must not report PASS. Return every reason the
 // case cannot be run as written; an empty list means it is well formed.
 function validateCase(data) {
@@ -83,6 +112,7 @@ function validateCase(data) {
   if (!CASE_KINDS.has(data.kind)) {
     problems.push(`kind must be behavior or trigger, got ${JSON.stringify(data.kind)}`);
   }
+  problems.push(...liveRunProblems(data));
   if (!Array.isArray(data.checks) || data.checks.length === 0) {
     problems.push("checks must be a non-empty array");
     return problems;
@@ -227,10 +257,38 @@ function main(casesDir = CASES_DIR) {
     console.log(`      ${structCheck.detail}`);
   }
 
-  const skill = loadSkill();
-  const cases = loadCases(casesDir);
   let pass = structCheck.ok ? 1 : 0;
   let fail = structCheck.ok ? 0 : 1;
+  const finish = () => {
+    console.log(`\n${pass} passed, ${fail} failed`);
+    process.exit(fail === 0 ? 0 : 1);
+  };
+
+  let skill;
+  try {
+    skill = loadSkill();
+  } catch (err) {
+    console.log(`FAIL Z1 skill-load ${relative(REPO, SKILL_PATH)}`);
+    console.log(`      ${err.message}`);
+    fail += 1;
+    return finish();
+  }
+
+  // No cases is a failure, not a pass: an empty or missing directory would
+  // otherwise report green with nothing checked.
+  let cases = [];
+  let casesError = null;
+  try {
+    cases = loadCases(casesDir);
+  } catch (err) {
+    casesError = `cannot read the cases directory: ${err.message}`;
+  }
+  if (casesError || cases.length === 0) {
+    console.log(`FAIL Z2 cases ${casesDir}`);
+    console.log(`      ${casesError ?? "no .json case files found"}`);
+    fail += 1;
+    return finish();
+  }
 
   for (const { file, data, problems } of cases) {
     if (problems.length) {
@@ -254,8 +312,7 @@ function main(casesDir = CASES_DIR) {
     }
   }
 
-  console.log(`\n${pass} passed, ${fail} failed`);
-  process.exit(fail === 0 ? 0 : 1);
+  finish();
 }
 
 function truncate(s, n) {

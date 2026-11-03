@@ -1,0 +1,17 @@
+{
+  "kind": "trigger",
+  "id": "T13",
+  "prompt": "verify the claims in my research notes on restaking yields, a light pass, it is just for me",
+  "should_fire": true,
+  "mode": "verification",
+  "formation": "light",
+  "why": "The user asked for verification, so the stakes test does not gate it, and the user set light",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "When the user asks for verification, gate 1 still applies and gate 2 does not"
+      ]
+    }
+  ]
+}

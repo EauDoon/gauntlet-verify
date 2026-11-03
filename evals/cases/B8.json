@@ -1,0 +1,19 @@
+{
+  "id": "B8",
+  "kind": "behavior",
+  "context": "In verification mode, a draft says \"Protocol X's Q3 2026 fees were $40M, up 60% on Q2\" and cites a dashboard page that shows Q3 trading volume but no fee figure",
+  "mode": "verification",
+  "passes_if": "It splits the sentence into atomic facts (Q3 fees, Q2 fees, the growth rate) and checks each. The dashboard covers the topic but states no fee figure, so the fee facts stay unverified until a source quotes them, and the growth rate is recomputed from the two figures. The claim is verified only if every fact is",
+  "fails_if": "It checks the sentence as one unit, or labels it verified because the cited source is on the topic",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "Split each claim into atomic facts",
+        "a claim is verified only if every one of its facts is",
+        "quote the passage that states the claim with the same metric, period, and unit",
+        "or the source covers the topic without stating the claim"
+      ]
+    }
+  ]
+}

@@ -30,5 +30,5 @@ test("the shipped skill keeps its instructions and drops only the Eval section",
   assert.ok(skill.text.includes("## eval"), "the shipped skill has an Eval section");
   assert.equal(skill.body.includes("## eval"), false);
   assert.ok(skill.body.includes("## portability"));
-  assert.ok(skill.body.includes("## dated context, 21-10-2026"));
+  assert.ok(skill.body.includes("## boundaries"));
 });

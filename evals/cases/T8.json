@@ -8,8 +8,8 @@
     {
       "type": "skill_contains_all",
       "phrases": [
-        "style edit",
-        "decompose"
+        "reads as generated belongs to a style edit",
+        "decomposes into areas that fail independently"
       ]
     }
   ]

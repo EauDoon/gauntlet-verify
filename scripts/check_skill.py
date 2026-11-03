@@ -5,7 +5,8 @@ accepts and that meets the Agent Skills field rules, and every Markdown and
 HTML file for em or en dashes and for relative links that do not resolve
 inside the repo, including reference-style links whose labels are never
 defined. Descriptions must stay under 450 characters, the listing budget the
-skill states. Exits 1 on any failure. Needs PyYAML.
+skill states, and the instructions before "## Eval" under 20,000 bytes, so
+they survive compaction. Exits 1 on any failure. Needs PyYAML.
 """
 
 import re
@@ -21,6 +22,11 @@ MAX_NAME = 64
 MAX_DESCRIPTION = 1024
 # SKILL.md: keep the description under 450 characters so listings do not drop it.
 LISTING_DESCRIPTION = 450
+# After compaction Claude Code re-attaches only the first 5,000 tokens of an
+# invoked skill. At an estimated 4 bytes per token, the instructions before the
+# "## Eval" section must stay under 20,000 bytes or the tail is lost mid-loop.
+INSTRUCTION_BYTES = 20000
+EVAL_HEADING_RE = re.compile(r"^##[ \t]+eval[ \t]*$", re.I | re.M)
 EM, EN = chr(0x2014), chr(0x2013)
 # The literal characters, the named entities, and the numeric entities in
 # decimal or hex, with any leading zeros and either case of x and hex digits.
@@ -99,7 +105,13 @@ def check_skills(errors):
             errors.append(f"{rel}: description is {len(description)} characters, limit {MAX_DESCRIPTION}")
         if re.search(r"<[^>]+>", description):
             errors.append(f"{rel}: description contains an XML tag")
-        print(f"{rel}: name={name}, description={len(description)} characters")
+        eval_heading = EVAL_HEADING_RE.search(text)
+        instructions = len(text[: eval_heading.start()].encode("utf-8") if eval_heading else text.encode("utf-8"))
+        if instructions >= INSTRUCTION_BYTES:
+            errors.append(
+                f"{rel}: instructions before ## Eval are {instructions} bytes; keep them under {INSTRUCTION_BYTES} so they survive compaction"
+            )
+        print(f"{rel}: name={name}, description={len(description)} characters, instructions={instructions} bytes")
 
 
 def check_text(errors):

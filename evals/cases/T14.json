@@ -1,0 +1,18 @@
+{
+  "kind": "trigger",
+  "id": "T14",
+  "prompt": "full gauntlet on this pitch deck, it should land like Stripe's Sessions keynote deck",
+  "context": "deck in draft",
+  "should_fire": true,
+  "mode": "reference",
+  "formation": "full",
+  "why": "The user's word sets full formation, and a named shipped deck is the bar",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "Or the user says full gauntlet"
+      ]
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-﻿{
+{
   "id": "T4",
   "kind": "trigger",
   "prompt": "what's the current ETH price",
@@ -8,10 +8,8 @@
     {
       "type": "skill_contains_all",
       "phrases": [
-        "quick lookup"
+        "A quick lookup or a single figure does not raise a formation"
       ]
     }
   ]
 }
-
-

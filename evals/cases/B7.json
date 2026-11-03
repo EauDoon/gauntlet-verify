@@ -1,0 +1,24 @@
+{
+  "id": "B7",
+  "kind": "behavior",
+  "context": "Round 3 of a reference loop: the motion builder's fix closes the top tell but breaks the header layout that passed in round 2. Rounds 4 and 5 bring no net drop in open craft tells and critic findings",
+  "mode": "reference",
+  "passes_if": "The critic's recheck of areas that passed earlier flags the header regression as a finding for the motion builder. Every round is snapshotted. After two rounds with no net drop it stops, reports the trajectory, and offers the snapshot with the fewest open craft tells and critic findings, not the last round",
+  "fails_if": "It misses the regression because the header passed earlier, keeps looping on a stalled delta, or presents the last round as the candidate when an earlier snapshot was better",
+  "checks": [
+    {
+      "type": "skill_has_section",
+      "heading": "5. Loop, and report the delta"
+    },
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "Snapshot the artifact at the end of every round",
+        "rechecks every area that passed in an earlier round",
+        "two rounds in a row with no drop in the combined count",
+        "not the last round",
+        "The builder owns the diagnosis"
+      ]
+    }
+  ]
+}

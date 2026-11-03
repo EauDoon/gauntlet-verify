@@ -1,0 +1,17 @@
+{
+  "kind": "behavior",
+  "id": "B19",
+  "context": "Light reference run; after round 2 the critic's open findings stopped dropping, no judge has run, and the user has not called the build ready",
+  "mode": "reference",
+  "formation": "light",
+  "passes_if": "It seats the light judge now, in both orders, and a craft tell from the judge opens another round. It does not stop on a stall before any judge has run",
+  "fails_if": "It keeps looping critic-only until the stall rule stops it with no judge verdict",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "one judge once the critic's findings stop dropping or the user calls the build ready"
+      ]
+    }
+  ]
+}

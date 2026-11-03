@@ -2,7 +2,7 @@
   "id": "B5",
   "kind": "behavior",
   "context": "Stop a reference run and a verification run in a shared project, first without a log and then with an existing log; repeat verification without an isolated verifier",
-  "passes_if": "Each run creates the log if absent, appends exactly one complete dated line in one write, reads it back, and preserves earlier lines. Verification records claim clusters and the verifier trajectory, or not run when no isolated verifier ran.",
+  "passes_if": "Each run creates the log if absent, appends exactly one complete dated line to logs/verification-runs.md in one write, reads it back, and preserves all earlier lines. The record includes the skill name; verification records claim clusters and the verifier trajectory, or not run when no isolated verifier ran.",
   "fails_if": "It skips verification logging, rewrites history, uses scratch or built-in memory, omits readback, or claims a failed append succeeded",
   "checks": [
     {
