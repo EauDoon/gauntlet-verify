@@ -1,0 +1,15 @@
+{
+  "kind": "trigger",
+  "id": "T17",
+  "prompt": "pull USDC's daily supply on Base for the last 90 days",
+  "should_fire": false,
+  "why": "A single numeric series belongs to a data pull",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "a single numeric series belongs to a data pull"
+      ]
+    }
+  ]
+}

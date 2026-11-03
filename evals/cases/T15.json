@@ -1,0 +1,15 @@
+{
+  "kind": "trigger",
+  "id": "T15",
+  "prompt": "write me a pricing page for our app",
+  "should_fire": false,
+  "why": "A one-shot draft with no named bar and no build in flight",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "one-shot drafts"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "kind": "trigger",
+  "id": "T12",
+  "prompt": "still pulling the numbers for a thread comparing Aave and Spark revenue, it posts Thursday, make sure every figure holds up",
+  "should_fire": true,
+  "mode": "verification",
+  "formation": "full",
+  "why": "Several load-bearing figures still being drafted, feeding a public statement",
+  "checks": [
+    {
+      "type": "skill_description_contains",
+      "phrases": [
+        "Use UNPROMPTED on heavy research"
+      ]
+    },
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "the output feeds a public statement"
+      ]
+    }
+  ]
+}

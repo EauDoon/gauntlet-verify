@@ -1,0 +1,18 @@
+{
+  "kind": "trigger",
+  "id": "T11",
+  "prompt": "my March issue was the best newsletter I have written, get this one to that level",
+  "context": "draft in progress",
+  "should_fire": true,
+  "mode": "reference",
+  "why": "The user's own past best is a named shipped bar, and a newsletter decomposes into areas",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "The user's own past best",
+        "this loop takes text only when it decomposes into areas that fail independently"
+      ]
+    }
+  ]
+}

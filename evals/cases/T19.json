@@ -1,0 +1,15 @@
+{
+  "kind": "trigger",
+  "id": "T19",
+  "prompt": "dig into how restaking yields have moved this year, just curious",
+  "should_fire": false,
+  "why": "Several claims but no stakes and no request to verify, so the research method handles it",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "Being wrong costs money or reputation, or the output feeds a public statement or a decision the user will act on"
+      ]
+    }
+  ]
+}

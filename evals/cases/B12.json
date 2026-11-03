@@ -1,0 +1,18 @@
+{
+  "kind": "behavior",
+  "id": "B12",
+  "context": "Verification mode at full; to save time, the drafting context offers to hand its research notes and reasoning to the verifiers",
+  "mode": "verification",
+  "formation": "full",
+  "passes_if": "Verifiers get only the claims, where each came from, and the brief; the notes and the reasoning stay out",
+  "fails_if": "Any verifier receives the drafting context's notes or reasoning",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "They never see the drafting context's reasoning",
+        "They get the claims, where each came from, and this brief, nothing else"
+      ]
+    }
+  ]
+}

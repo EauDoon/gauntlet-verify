@@ -202,7 +202,7 @@ The 22-prompt routing set of 24-09-2026 remains unrerun on the installed copy's 
 └── workflows/check.yml   # structural check, unit tests, and evals on main and pull requests
 evals/
 ├── README.md             # trigger and behavior cases, run by hand in a fresh session
-├── cases/                # B1 to B5 behavior and T1 to T9 trigger cases as JSON
+├── cases/                # B1 to B19 behavior and T1 to T19 trigger cases as JSON
 ├── runner.mjs            # npm run evals: checks each case's phrases against SKILL.md
 └── *.test.mjs            # runner, case file, README sync, and mutation tests
 scripts/
