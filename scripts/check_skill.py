@@ -22,11 +22,12 @@ MAX_DESCRIPTION = 1024
 # SKILL.md: keep the description under 450 characters so listings do not drop it.
 LISTING_DESCRIPTION = 450
 EM, EN = chr(0x2014), chr(0x2013)
-DASHES = {
-    EM: "em dash", EN: "en dash",
-    "&mdash;": "em dash", "&ndash;": "en dash",
-    "&#8212;": "em dash", "&#8211;": "en dash",
-}
+# The literal characters, the named entities, and the numeric entities in
+# decimal or hex, with any leading zeros and either case of x and hex digits.
+DASH_RES = (
+    (re.compile(f"{EM}|&mdash;|&#0*8212;|&#[xX]0*2014;"), "em dash"),
+    (re.compile(f"{EN}|&ndash;|&#0*8211;|&#[xX]0*2013;"), "en dash"),
+)
 FENCE_RE = re.compile(r"^(`{3,}|~{3,}).*?^\1[^\n]*$", re.M | re.S)
 INLINE_CODE_RE = re.compile(r"`[^`\n]+`")
 LINK_RES = [
@@ -109,8 +110,8 @@ def check_text(errors):
         rel = path.relative_to(ROOT).as_posix()
         text = path.read_text(encoding="utf-8")
         for lineno, line in enumerate(text.splitlines(), 1):
-            for dash, label in DASHES.items():
-                if dash in line:
+            for pattern, label in DASH_RES:
+                if pattern.search(line):
                     errors.append(f"{rel}:{lineno}: {label}")
         prose = INLINE_CODE_RE.sub("", FENCE_RE.sub("", text))
         for pattern in LINK_RES:
