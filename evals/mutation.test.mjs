@@ -74,6 +74,7 @@ const MUTATIONS = [
   { id: "B22", from: "Flag any figure older than its source's own publishing interval (a day for daily data, a quarter for a quarterly filing)", to: "Flag anything older than 90 days" },
   { id: "B23", from: ": it would when spend so far plus the last round's measured cost, or the cost anchor before round one, passes the ceiling", to: "" },
   { id: "B23", from: " Where token spend cannot be read, write the ceiling in rounds.", to: "" },
+  { id: "B24", from: " At full formation, calibrate each judge before round one on the build as it stands, in both orders: gate 1 says it misses, so a judge that names no craft tell there cannot see the gap; replace it.", to: "" },
 ];
 
 function passes(caseObj, text) {

@@ -94,7 +94,7 @@ Show the judge both artifacts, unlabeled, and say what the pair is: one shipped 
 
 A craft tell matters when a judge names it as what gave the attempt away or it touches the property from step 1; the rest do not.
 
-At full formation run 2 to 3 judges across at least two model families where the stack allows; a same-family judge shares the priors that produced the gap. Where only one family is available, use two model tiers and say the verdict is weaker. Where the reference cannot be shown, one judge holds the written spec and the verdict is weak; say so.
+At full formation run 2 to 3 judges across at least two model families where the stack allows; a same-family judge shares the priors that produced the gap. Where only one family is available, use two model tiers and say the verdict is weaker. Where the reference cannot be shown, one judge holds the written spec and the verdict is weak; say so. At full formation, calibrate each judge before round one on the build as it stands, in both orders: gate 1 says it misses, so a judge that names no craft tell there cannot see the gap; replace it. At light, call an uncalibrated Done weaker.
 
 ### 5. Loop, and report the delta
 
