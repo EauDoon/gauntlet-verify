@@ -147,9 +147,21 @@ function normalize(s) {
   return s.toLowerCase();
 }
 
+function escapeRegExp(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 function headingPattern(heading) {
-  const escaped = heading.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  return new RegExp(`^#{2,}\\s+${escaped}\\s*$`, "im");
+  return new RegExp(`^#{2,}\\s+${escapeRegExp(heading)}\\s*$`, "im");
+}
+
+// A phrase must start at a word boundary, so "verified" is not found inside
+// "unverified" and "ask" is not found inside "task". The end stays open, so
+// "kill test" still matches "kill tests".
+function containsPhrase(text, phrase) {
+  const p = normalize(phrase);
+  const lead = /^[a-z0-9_]/.test(p) ? "(?<![a-z0-9_])" : "";
+  return new RegExp(lead + escapeRegExp(p)).test(text);
 }
 
 // GitHub's setup-python provides `python`. A typical Ubuntu image provides
@@ -164,13 +176,13 @@ function resolvePython() {
 
 const checks = {
   skill_description_contains({ phrases }, skill) {
-    const missing = phrases.filter((p) => !skill.description.includes(normalize(p)));
+    const missing = phrases.filter((p) => !containsPhrase(skill.description, p));
     return missing.length
       ? { ok: false, detail: `description missing: ${missing.join(" | ")}` }
       : { ok: true };
   },
   skill_contains_all({ phrases }, skill) {
-    const missing = phrases.filter((p) => !skill.body.includes(normalize(p)));
+    const missing = phrases.filter((p) => !containsPhrase(skill.body, p));
     return missing.length
       ? { ok: false, detail: `SKILL.md missing: ${missing.join(" | ")}` }
       : { ok: true };
@@ -261,6 +273,7 @@ export {
   checks,
   descriptionFromFrontmatter,
   headingPattern,
+  containsPhrase,
   validateCase,
   loadCases,
   skillFromText,
