@@ -15,7 +15,7 @@
       "phrases": [
         "Snapshot the artifact at the end of every round",
         "rechecks every area that passed in an earlier round",
-        "two rounds in a row with no net drop",
+        "two rounds in a row with no drop in the combined count",
         "not the last round",
         "The builder owns the diagnosis"
       ]

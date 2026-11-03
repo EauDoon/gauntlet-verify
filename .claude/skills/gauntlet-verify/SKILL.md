@@ -64,7 +64,7 @@ The last row is the strongest and the most underused. The user's own best work i
 
 ### 2. Decompose, then fan out
 
-Split the build into areas that fail independently: structure, visual system, motion, copy, data correctness, edge cases. One builder per area at full formation, in parallel; the drafting session plus one critic at light. Areas, not slices of the same area, or the builders converge and the fan-out buys nothing. Concerns that share one system, where an edit to one changes how the other reads (lighting and materials, type scale and spacing), are one area with one owner; if two builders would edit the same system, merge their areas or run them in sequence. Parallel builders on one coupled system break each other's assumptions and add defects.
+Split the build into areas that fail independently: structure, visual system, motion, copy, data correctness, edge cases. One builder per area at full formation, in parallel; the drafting session plus one critic at light. Areas, not slices of the same area, or the builders converge and the fan-out buys nothing. Concerns that share one system, where an edit to one changes how the other reads (lighting and materials, type scale and spacing), are one area with one owner; if two builders would edit the same system, merge their areas or run them in sequence.
 
 Name the assembler before the fan-out. The orchestrating session splices the areas into one artifact against a slot contract agreed up front: the list of sections each builder fills. Assembly is mechanical; an unfilled slot, an orphaned block, or an edit the assembler is tempted to make is a finding for that area's builder, never something the assembler quietly patches. A finding that spans two areas is split by the assembler into one edit per owning builder.
 
@@ -72,7 +72,7 @@ Builders run on a workhorse seat, a cheaper and faster model. Only the critic an
 
 ### 3. Critic that never saw the build
 
-A separate context, given the artifact and the reference and nothing about how the artifact was made. A critic in the builder's context inherits the builder's satisfaction. Where the artifact runs, the critic runs it; a verified finding outranks a read one. Freeze the artifact while the critic and the judges read it: a verdict on an artifact that changed under the reader cannot be attributed to a version.
+A separate context, given the artifact, the reference, the slot contract's area names, and from round two the earlier snapshots, and nothing about how the artifact was made. A critic in the builder's context inherits the builder's satisfaction. Where the artifact runs, the critic runs it; a verified finding outranks a read one. Freeze the artifact while the critic and the judges read it: a verdict on an artifact that changed under the reader cannot be attributed to a version.
 
 The critic's instructions, verbatim:
 
@@ -84,11 +84,11 @@ The critic's instructions, verbatim:
 
 ### 4. Blind judge, the actual stop condition
 
-Show the judge both artifacts, unlabeled, and say what the pair is: one shipped by the reference author, one an attempt to match it. Capture both the same way, at the same viewport, crop, resolution, length, and format, so presentation is not the tell. Run each judge twice, once in each order, each run a fresh context that never sees the other run, earlier verdicts, or the critic's findings; judges favor one position, most when the gap is small. Ask which is the attempt and what gave it away, every tell tagged either craft, fixable by editing the artifact, or identity (age, adoption, ecosystem, brand), which no edit reaches. Do not ask which is better, which invites diplomacy. Do not ask which one the reference author made and leave it there: a famous reference is recognized on sight, so the bare pick measures recognition, not the gap. The pick saturates; the tells carry the verdict. A wrong pick, no pick, or a split panel is not a pass on its own: judges often fail to separate real from generated work while a gap remains.
+Show the judge both artifacts, unlabeled, and say what the pair is: one shipped by the reference author, one an attempt to match it. Capture both the same way, at the same viewport, crop, resolution, length, and format, or have the judge drive both live in the same browser, so presentation is not the tell. Run each judge twice, once in each order, each run a fresh context that never sees the other run, earlier verdicts, or the critic's findings; judges favor one position, most when the gap is small. Ask which is the attempt and what gave it away, every tell tagged either craft, fixable by editing the artifact, or identity (age, adoption, ecosystem, brand), which no edit reaches. Do not ask which is better, which invites diplomacy. Do not ask which one the reference author made and leave it there: a famous reference is recognized on sight, so the bare pick measures recognition, not the gap. The pick saturates; the tells carry the verdict. A wrong pick, no pick, or a split panel is not a pass on its own: judges often fail to separate real from generated work while a gap remains.
 
 | Judge says | Read |
 |---|---|
-| Any judge, in either order, names a craft tell an edit can close | Not there. The top craft tell is the next round's brief |
+| Any judge, in either order, names a craft tell that matters and an edit can close | Not there. The top craft tell is the next round's brief |
 | The only craft tells named do not matter | Close. Press the single property from step 1 |
 | Every judge, in both orders, names only identity tells or none | Done. Stop, ship it |
 
@@ -96,11 +96,11 @@ At full formation run 2 to 3 judges across at least two model families where the
 
 ### 5. Loop, and report the delta
 
-Each round: critic findings, builders fix their own area only, judges re-run (every round at full; at light, one judge when the build is ready to ship, and a craft tell from it opens another round). The builder owns the diagnosis: a builder whose measurement contradicts a finding's edit reports the measurement and closes the gap another way; the finding stands. Snapshot the artifact at the end of every round. The critic rechecks every area that passed in an earlier round; a regression is a finding for the builder whose edit caused it. Report one line per round with the delta, the change in open craft tells and critic findings since the previous round, so the trend is visible. A loop whose delta stops moving, two rounds in a row with no net drop, is finished whatever the judge says: stop and report the trajectory. At any stop or park, the candidate is the snapshot with the fewest open craft tells and critic findings, not the last round.
+Each round: critic findings, builders fix their own area only, judges re-run (every round at full; at light, one judge when the build is ready to ship, and a craft tell from it opens another round). The builder owns the diagnosis: a builder whose measurement contradicts a finding's edit reports the measurement and closes the gap another way; the finding stands. Snapshot the artifact at the end of every round. The critic rechecks every area that passed in an earlier round against that round's snapshot; a regression is a finding for the builder whose edit caused it. Report one line per round with the delta, the change in open craft tells and critic findings since the previous round, so the trend is visible. A loop whose delta stops moving, two rounds in a row with no drop in the combined count, is finished whatever the judge says: stop and report the trajectory. On a Done verdict the judged snapshot is the candidate; at any other stop or park, it is the snapshot with the fewest open craft tells and critic findings, not the last round.
 
 ### 6. The user is the brake
 
-There is no round cap. The loop stops on the user's call, on judges that stop spotting the attempt by craft, on a delta that stops moving, or on the ceiling written at step 1. A round that would breach the ceiling mid-flight does not start. Unattended, the ceiling is the brake: the loop runs to it, parks with the round-by-round trajectory as the report, and ships nothing on its own. Resuming past the ceiling is the user's call, made on the trajectory.
+There is no round cap. The loop stops on the user's call, on judges that stop spotting the attempt by craft, on a delta that stops moving, or on the ceiling written at step 1. A round that would breach the ceiling mid-flight does not start. Unattended, the ceiling is the brake: the loop runs to it or to a stop condition, parks with the round-by-round trajectory as the report, and ships nothing on its own. Resuming past the ceiling is the user's call, made on the trajectory.
 
 ### 7. Log the run
 
@@ -116,13 +116,9 @@ DD-MM-YYYY | gauntlet-verify | mode | formation | artifact | reference or claim 
 
 Once three runs each of light formation and of verification mode are logged, use those numbers in place of the estimates in the Formations table. A loop that does not log pays for the same lesson every time.
 
-```
-08-08-2026 | gauntlet-verify | reference | full | project README | ref: sharkdp/bat README | 3 areas | 1 round | ~325k subagent tokens | judges: NOT THERE, NOT THERE; parked at 400k ceiling
-```
-
 ## Protocol, verification mode
 
-The research method runs scoping, fan-out search, and source grading in the drafting context, as always. This skill decides who runs the adversarial stage and seats them. It works from an observation, not a measurement, made across the author's long multi-agent research builds: every layer caught errors in the layer below it and introduced errors only the next layer caught, and no layer's confidence predicted its accuracy. So the defense is the chain, not any single pass.
+The research method runs scoping, fan-out search, and source grading in the drafting context, as always. This skill decides who runs the adversarial stage and seats them. In the author's research builds each layer caught errors the layer below missed and added errors only the next caught, and no layer's confidence predicted its accuracy (observed, not measured), so the defense is the chain, not any single pass.
 
 1. Self-checks first. The drafting context runs its own checks before the gauntlet. The gauntlet runs after them, never instead of them, and without asking permission when the stakes test passes.
 2. List the load-bearing claims, set the formation, write the ceiling. Split each claim into atomic facts that stand alone, one entity, figure, period, or definition each; a claim is verified only if every one of its facts is. Formation per the Formations table: one isolated verifier for all claims at light, one per claim cluster at full. Write the ceiling in rounds or tokens before any verifier is seated.
@@ -131,7 +127,7 @@ The research method runs scoping, fan-out search, and source grading in the draf
    - which self-checks ran and what each found, so they re-run each one independently rather than trust it;
    - which primary-data tools are available and how to load them. A verifier that does not know a tool exists reverts to web search and the kill tests weaken.
 4. Run the kill tests, verbatim, on every claim.
-   1. Answer the open question behind the claim (what was X in period Y) from your own search before comparing it with the draft, then search for the direct contradiction.
+   1. Answer the open question behind the claim (what was X in period Y) from your own search, then compare with the draft and search for the direct contradiction. Where a seat can be messaged twice, send the open questions first and the draft's values after.
    2. Trace to the primary source and quote the passage that states the claim with the same metric, period, and unit. If the chain ends at an aggregator, or the source covers the topic without stating the claim, the claim is unverified.
    3. Recompute any number that can be recomputed. For on-chain figures, a direct contract or storage read at a stated block is the recompute path.
    4. Re-fetch every figure quoted from a live source and compare the figure, the source, and the as-of date against what the draft says.
