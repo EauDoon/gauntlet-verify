@@ -126,8 +126,21 @@ def check_text(errors):
         check_undefined_references(prose, rel, errors)
 
 
+LABEL_RULES = (
+    ("verified", "verified (one tier A source, or two independent tier B)"),
+    ("reported", "reported (a single tier B)"),
+    ("unverified", "unverified (everything else"),
+)
+
+
+def has_rule(text, rule):
+    # The rule must start a word, so the verified rule is not found inside
+    # an "unverified (..." rule.
+    return re.search(r"(?<![A-Za-z])" + re.escape(rule), text) is not None
+
+
 def check_claim_labels(errors):
-    """README's verified/reported rule must match the skill's tier rule.
+    """README's verified, reported, and unverified rules must match the skill's tier rule.
 
     "one such source" also fits a single primary source, which the skill
     labels verified. Reported is only a single tier B source.
@@ -138,11 +151,11 @@ def check_claim_labels(errors):
         return
     readme = readme_path.read_text(encoding="utf-8").replace("**", "")
     skill = skill_path.read_text(encoding="utf-8")
-    rule = "reported (a single tier B)"
-    if rule not in skill:
-        errors.append(f"{skill_path.relative_to(ROOT).as_posix()}: missing verification label rule '{rule}'")
-    if rule not in readme:
-        errors.append(f"README.md: reported label does not match the skill rule '{rule}'")
+    for label, rule in LABEL_RULES:
+        if not has_rule(skill, rule):
+            errors.append(f"{skill_path.relative_to(ROOT).as_posix()}: missing verification label rule '{rule}'")
+        if not has_rule(readme, rule):
+            errors.append(f"README.md: {label} label does not match the skill rule '{rule}'")
     if "one such source" in readme:
         errors.append(
             "README.md: 'one such source' also describes a single primary source, which the skill labels verified"
