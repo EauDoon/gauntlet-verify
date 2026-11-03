@@ -15,8 +15,8 @@
       "type": "skill_contains_all",
       "phrases": [
         "Name the reference",
-        "single matched property",
-        "how the judge will see it",
+        "the single property being matched",
+        "how a judge will see it",
         "ceiling",
         "light",
         "independent",

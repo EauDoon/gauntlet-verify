@@ -33,13 +33,29 @@ function descriptionFromFrontmatter(front) {
   return r.stdout;
 }
 
-function loadSkill() {
-  const text = readFileSync(SKILL_PATH, "utf8");
+// The skill's own "## Eval" section restates each pass condition. A phrase
+// check that read it would still pass after the instruction it stands for was
+// deleted, so phrase checks read the instructions without that section.
+function withoutEvalSection(body) {
+  return body.replace(/^##[ \t]+eval[ \t]*$[\s\S]*?(?=^#{1,2}[ \t]|(?![\s\S]))/im, "");
+}
+
+// body: the instructions that phrase checks read. text: the whole body, for
+// section checks.
+function skillFromText(text) {
   const m = /^---\r?\n(.*?)\r?\n---\r?\n/s.exec(text);
   if (!m) throw new Error("SKILL.md frontmatter not found");
   const description = descriptionFromFrontmatter(m[1]);
   const body = text.slice(m[0].length);
-  return { description: description.toLowerCase(), body: body.toLowerCase() };
+  return {
+    description: description.toLowerCase(),
+    body: withoutEvalSection(body).toLowerCase(),
+    text: body.toLowerCase(),
+  };
+}
+
+function loadSkill() {
+  return skillFromText(readFileSync(SKILL_PATH, "utf8"));
 }
 
 function caseFiles(dir) {
@@ -162,7 +178,7 @@ const checks = {
   skill_has_section({ heading }, skill) {
     // Match a markdown heading (## or deeper) with the given text.
     const re = headingPattern(heading);
-    return re.test(skill.body)
+    return re.test(skill.text)
       ? { ok: true }
       : { ok: false, detail: `section not found: ${heading}` };
   },
@@ -240,7 +256,16 @@ function isDirectRun() {
   return resolve(entry) === fileURLToPath(import.meta.url);
 }
 
-export { resolvePython, checks, descriptionFromFrontmatter, headingPattern, validateCase, loadCases };
+export {
+  resolvePython,
+  checks,
+  descriptionFromFrontmatter,
+  headingPattern,
+  validateCase,
+  loadCases,
+  skillFromText,
+  runCase,
+};
 
 // Optional argument: a directory of case files to run in place of evals/cases.
 if (isDirectRun()) main(process.argv[2] ? resolve(process.argv[2]) : CASES_DIR);
