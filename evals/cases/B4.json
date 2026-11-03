@@ -10,9 +10,9 @@
     {
       "type": "skill_contains_all",
       "phrases": [
-        "ceiling",
-        "400k",
-        "ships nothing"
+        "A round that would breach the ceiling mid-flight does not start",
+        "parks with the round-by-round trajectory",
+        "ships nothing on its own"
       ]
     }
   ]
