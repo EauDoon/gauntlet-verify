@@ -5,7 +5,7 @@ description: "Build-to-a-bar loop and isolated verifier formation. Use WHENEVER 
 
 # Gauntlet Verify
 
-The Gauntlet Loop for work that cannot afford to be mediocre or wrong, in two modes. Reference mode drives an unfinished build toward a specific shipped artifact whose bar cannot be written down. Verification mode fields isolated verifiers over heavy research whose facts must be correct without fail. This skill owns the formations and the loop, not the domain: a research method says what must be true, a design or deck skill supplies the domain reference, a routing layer picks the models, and a rubric review closes the finished artifact at ship. Where one of those neighbors is not installed, do its job inline and say so.
+The Gauntlet Loop for work that cannot afford to be mediocre or wrong, in two modes. Reference mode drives an unfinished build toward a specific shipped artifact whose bar cannot be written down. Verification mode fields isolated verifiers over heavy research whose facts must be correct without fail. This skill owns the formations and the loop, not the domain (see Boundaries). Where a neighbor skill is not installed, do its job inline and say so.
 
 A **seat** is one isolated agent role: builder, critic, judge, or verifier. A **formation** is how many seats a job gets. A **ceiling** is the budget in rounds or tokens, written down before any isolated seat is spawned. A **tell** is what gave the attempt away to a judge.
 
@@ -29,6 +29,8 @@ Verification mode fires unprompted when both hold.
 1. **The answer rests on facts outside the model across several load-bearing claims.** Heavy research, due diligence, multi-source synthesis. A quick lookup or a single figure does not raise a formation; a single numeric series belongs to a data pull.
 2. **The stakes test passes.** Being wrong costs money or reputation, or the output feeds a public statement or a decision the user will act on.
 
+When the user asks for verification, gate 1 still applies and gate 2 does not; it runs at light unless they say full.
+
 Anti-triggers, both modes: chat answers, quick lookups, one-shot drafts, work where good enough is genuinely good enough, and Gauntlet (the DeFi risk manager), which shares nothing with this but a word. A complaint that one post reads as generated belongs to a style edit; this loop takes text only when it decomposes into areas that fail independently.
 
 ## Formations
@@ -37,18 +39,18 @@ Two levels. Light is the default; spend follows consequence, not effort.
 
 | Formation | Seats | When | Cost anchor |
 |---|---|---|---|
-| Light | Reference: the drafting session, one isolated critic, and one judge when the build is ready to ship. Verification: one isolated verifier for all claims | Default. Stakes contained, whatever the area count | 100k to 150k tokens, estimated; not a spending cap |
+| Light | Reference: the drafting session, one isolated critic, and one judge once the critic's findings stop dropping. Verification: one isolated verifier for all claims | Default. Stakes contained, whatever the area count | 100k to 150k tokens, estimated; not a spending cap |
 | Full | Reference: one builder per area, one isolated critic, and a panel of 2 to 3 judges. Verification: one isolated verifier per claim cluster | Stakes test passes: money, reputation, public statement, acted-on decision. Or the user says full gauntlet | About 325k subagent tokens per round, measured once in reference mode (08-08-2026) before judges ran in both orders; verification mode unmeasured |
 
 Verification mode does not seat a critic or judges.
 
-The stakes test decides, whatever the area count: a high-stakes job with two claim clusters still runs full, one verifier per cluster. Escalation is automatic on the stakes test and overridden in either direction by the user's word. A loop may drop to light for a cleanup round; it never climbs silently, it names the escalation and the reason in one line. Unattended, escalation follows the same rule and the written ceiling stays the brake.
+Escalation is automatic on the stakes test and overridden in either direction by the user's word. A loop may drop to light for a cleanup round; it never climbs silently, it names the escalation and the reason in one line. Unattended, escalation follows the same rule and the written ceiling stays the brake.
 
 ## Protocol, reference mode
 
 ### 1. Name the reference before building
 
-Out loud, in writing, before a line is generated. The reference has to be one the build is not currently clearing, because a reference you already match sets the bar at your own default and the loop returns nothing.
+Out loud, in writing, before a line is generated.
 
 Capture five things: the reference, the single property being matched (not all of them), how a judge will see it, the formation and why, and the ceiling that step 6 will hold. A reference nobody can show the critic is a reference the critic will invent.
 
@@ -96,11 +98,11 @@ At full formation run 2 to 3 judges across at least two model families where the
 
 ### 5. Loop, and report the delta
 
-Each round: critic findings, builders fix their own area only, judges re-run (every round at full; at light, one judge when the build is ready to ship, and a craft tell from it opens another round). The builder owns the diagnosis: a builder whose measurement contradicts a finding's edit reports the measurement and closes the gap another way; the finding stands. Snapshot the artifact at the end of every round. The critic rechecks every area that passed in an earlier round against that round's snapshot; a regression is a finding for the builder whose edit caused it. Report one line per round with the delta, the change in open craft tells and critic findings since the previous round, so the trend is visible. A loop whose delta stops moving, two rounds in a row with no drop in the combined count, is finished whatever the judge says: stop and report the trajectory. On a Done verdict the judged snapshot is the candidate; at any other stop or park, it is the snapshot with the fewest open craft tells and critic findings (critic findings alone where no judge ran), not the last round.
+Each round: critic findings, builders fix their own area only, judges re-run (every round at full; at light, one judge once the critic's findings stop dropping or the user calls the build ready, and a craft tell from it opens another round). The builder owns the diagnosis: a builder whose measurement contradicts a finding's edit reports the measurement and closes the gap another way; the finding stands. Snapshot the artifact at the end of every round. The critic rechecks every area that passed in an earlier round against that round's snapshot; a regression is a finding for the builder whose edit caused it. Report one line per round with the delta, the change in open craft tells and critic findings since the previous round, so the trend is visible. A loop whose delta stops moving, two rounds in a row with no drop in the combined count, is finished whatever the judge says: stop and report the trajectory. On a Done verdict the judged snapshot is the candidate; at any other stop or park, it is the snapshot with the fewest open craft tells and critic findings (critic findings alone where no judge ran), not the last round.
 
 ### 6. The user is the brake
 
-There is no round cap. The loop stops on the user's call, on judges that stop spotting the attempt by craft, on a delta that stops moving, or on the ceiling written at step 1. A round that would breach the ceiling mid-flight does not start. Unattended, the ceiling is the brake: the loop runs to it or to a stop condition, parks with the round-by-round trajectory as the report, and ships nothing on its own. Resuming past the ceiling is the user's call, made on the trajectory.
+There is no round cap. The loop stops on the user's call, on judges that stop spotting the attempt by craft, on a delta that stops moving, or on the ceiling written at step 1. A round that would breach the ceiling mid-flight does not start. Unattended, meaning the user said not to check in or the run is scheduled, the ceiling is the brake: the loop runs to it or to a stop condition, parks with the round-by-round trajectory as the report, and ships nothing on its own. Resuming past the ceiling is the user's call, made on the trajectory, and a new ceiling is written before the next round.
 
 ### 7. Log the run
 
@@ -146,7 +148,7 @@ Source tiers the verifiers grade against:
 | B | Named-author reporting at established outlets, counterparty documentation | A load-bearing claim needs two independent |
 | C | Aggregators, SEO content, unnamed sources, AI-generated summaries | Leads only, never citations |
 
-Two outlets citing the same press release are one source. A figure a data tool proxies from a vendor grades as that vendor, never as the tool, and counts as that vendor for independence. Never average conflicting numbers: resolve the conflict, or present both with the reason they differ.
+Two outlets citing the same press release are one source. A figure a data tool proxies from a vendor grades as that vendor, never as the tool, and counts as that vendor for independence. Never average conflicting numbers: resolve the conflict, or present both with the reason they differ. An unresolved conflict leaves the claim unverified.
 
 ## Portability
 

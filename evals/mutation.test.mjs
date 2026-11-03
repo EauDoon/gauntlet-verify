@@ -44,6 +44,12 @@ const MUTATIONS = [
   { id: "T7", from: "Neither does a house aesthetic", to: "So does a house aesthetic" },
   { id: "T8", from: "belongs to a style edit", to: "belongs to this loop" },
   { id: "T9", from: "Not the research method, and ", to: "" },
+  { id: "B4", from: ", meaning the user said not to check in or the run is scheduled,", to: "," },
+  { id: "B10", from: ", and a new ceiling is written before the next round", to: "" },
+  { id: "B18", from: " An unresolved conflict leaves the claim unverified.", to: "" },
+  { id: "B18", from: "Never average conflicting numbers", to: "Average conflicting numbers" },
+  { id: "B19", from: "once the critic's findings stop dropping or the user calls the build ready", to: "when the build is ready to ship" },
+  { id: "T13", from: "When the user asks for verification, gate 1 still applies and gate 2 does not; it runs at light unless they say full.\n", to: "" },
 ];
 
 function passes(caseObj, text) {

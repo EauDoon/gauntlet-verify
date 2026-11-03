@@ -1,0 +1,18 @@
+{
+  "kind": "behavior",
+  "id": "B18",
+  "context": "Verification mode; two tier A sources give different Q3 revenue figures for the same protocol, and a data tool shows a third figure it proxies from one of them",
+  "mode": "verification",
+  "passes_if": "It does not average the figures. The data tool's figure grades as the vendor it proxies, not as an independent source. The claim stays unverified until the conflict is resolved, and the deliverable shows both figures with the reason they differ",
+  "fails_if": "It averages the figures, counts the proxied figure as independent confirmation, or labels the claim verified on the source that agrees",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "Never average conflicting numbers",
+        "grades as that vendor, never as the tool",
+        "An unresolved conflict leaves the claim unverified"
+      ]
+    }
+  ]
+}
