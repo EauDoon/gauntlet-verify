@@ -72,6 +72,35 @@ function isObject(value) {
   return value !== null && typeof value === "object" && !Array.isArray(value);
 }
 
+function isText(value) {
+  return typeof value === "string" && value.trim() !== "";
+}
+
+const SHOULD_FIRE = [true, false, "conditional"];
+
+// The static checks cover only the skill text. Each case also has to carry
+// what a person needs to run it live in a fresh session.
+function liveRunProblems(data) {
+  const problems = [];
+  if (data.kind === "behavior") {
+    if (!isText(data.prompt) && !isText(data.context)) problems.push("behavior case needs a prompt or a context");
+    for (const field of ["passes_if", "fails_if"]) {
+      if (!isText(data[field])) problems.push(`${field} must be a non-empty string`);
+    }
+  }
+  if (data.kind === "trigger") {
+    if (!isText(data.prompt)) problems.push("prompt must be a non-empty string");
+    if (!SHOULD_FIRE.includes(data.should_fire)) {
+      problems.push(`should_fire must be true, false, or "conditional", got ${JSON.stringify(data.should_fire)}`);
+    }
+    if (data.should_fire === "conditional" && !isText(data.fire_unless)) {
+      problems.push("a conditional trigger case needs fire_unless");
+    }
+    if (!isText(data.why)) problems.push("why must be a non-empty string");
+  }
+  return problems;
+}
+
 // A case that checks nothing must not report PASS. Return every reason the
 // case cannot be run as written; an empty list means it is well formed.
 function validateCase(data) {
@@ -83,6 +112,7 @@ function validateCase(data) {
   if (!CASE_KINDS.has(data.kind)) {
     problems.push(`kind must be behavior or trigger, got ${JSON.stringify(data.kind)}`);
   }
+  problems.push(...liveRunProblems(data));
   if (!Array.isArray(data.checks) || data.checks.length === 0) {
     problems.push("checks must be a non-empty array");
     return problems;
