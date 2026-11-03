@@ -69,10 +69,10 @@ A **seat** is one isolated agent role. A **formation** is how many seats a job g
 A rubric is a lossy compression of a reference. It works when the criteria are mechanical and fails when the quality is experiential: a page that feels expensive, a deck that lands, prose that does not read as generated. So the skill does not write criteria. It names an artifact that already clears the bar.
 
 1. Name the reference before building: a specific shipped thing the build does not match today, the one property being matched, how the judge will see it, the formation, and the ceiling. "Linear's settings page" passes. "Good design" does not. Your own best past work is the strongest reference of all.
-2. Decompose and fan out: one builder per area that fails independently (structure, visual system, motion, copy, data, edge cases). The orchestrating session assembles mechanically; anything it is tempted to patch goes back to that area's builder.
+2. Decompose and fan out: one builder per area that fails independently (structure, visual system, motion, copy, data, edge cases). Concerns that share one system, such as lighting and materials, are one area with one owner. The orchestrating session assembles mechanically; anything it is tempted to patch goes back to that area's builder.
 3. Critic that never saw the build: fresh context, the artifact and the reference, nothing else. It names specific gaps, maps each to one area and one edit, and ranks by impact. No praise.
 4. Blind judge: both artifacts, captured the same way and unlabeled. Each judge runs twice in fresh contexts, once in each order, because judges favor one position. The judge is told one is the original and one is an attempt, then asked which is the attempt and what gave it away.
-5. Loop and report the delta, one line per round: the change in open craft tells and critic findings. A loop whose delta stops moving is finished; it stops and reports.
+5. Loop and report the delta, one line per round: the change in open craft tells and critic findings. Each round is snapshotted, and the critic rechecks areas that passed earlier, so a regression goes back to the builder who caused it. A builder whose measurement contradicts a finding's edit reports it and closes the gap another way. Two rounds in a row with no net drop is a stalled loop; it stops and reports. The candidate at any stop is the best snapshot, not the last.
 6. The user is the brake: no round cap. The ceiling from step 1 parks an unattended loop, and it ships nothing on its own.
 7. Append the run to `logs/verification-runs.md` in the shared project folder and read the line back, so cost estimates turn into measurements. Create the directory and file if absent; never edit earlier lines.
 
@@ -132,6 +132,8 @@ Verification mode seats verifiers only. It does not seat a critic or judges. The
 - Asking "which is better", or only "which is the original". The first invites diplomacy; against a famous reference the second measures recognition.
 - Stills for a motion property. The static frame converges while the real gap stays open.
 - A pair captured differently, or judged in one order only. The judge spots the format or the position, not the craft.
+- Parallel builders on one coupled system. In [Claude of Duty](https://github.com/mshumer/Claude-of-Duty#process-note), six parallel agents on lighting moved the score +0.46 while frame-ruining defects went from 60 to 66; one owner per coupled concern moved it +1.00 and cut them to 26.
+- Shipping the last round by default. A fix can break an area that passed earlier; the best snapshot ships, not the latest.
 - An assembler that quietly patches. The fix belongs to the area's builder, or the critic's findings stop meaning anything.
 - Changing the artifact while the critic or judges are reading it. The verdict cannot be attributed to a version.
 - Unpinned seats. Some orchestrators do not pass the session's model choice to subagents, so check the model each agent actually ran on.

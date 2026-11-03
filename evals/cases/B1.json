@@ -4,7 +4,7 @@
   "prompt": "build me a pricing page as good as Linear's",
   "mode": "reference",
   "formation": "light",
-  "passes_if": "Reference mode. Before generating, it names the reference, the single matched property, how the judge will see it, the formation, and the ceiling. It picks light formation (no stakes named), decomposes by independent area, and states the craft-tell stop condition.",
+  "passes_if": "Reference mode. Before generating, it names the reference, the single matched property, how the judge will see it, the formation, and the ceiling. It picks light formation (no stakes named), decomposes by independent area with one owner per coupled system, and states the craft-tell stop condition.",
   "fails_if": "It writes a rubric in place of a reference, or starts building before the ceiling is written",
   "checks": [
     {
@@ -21,7 +21,8 @@
         "light",
         "independent",
         "craft",
-        "tell"
+        "tell",
+        "are one area with one owner"
       ]
     }
   ]

@@ -15,6 +15,7 @@ const CASES = new Map(loadCases().map(({ data }) => [data.id, data]));
 const MUTATIONS = [
   { id: "B1", from: "the single property being matched (not all of them), ", to: "" },
   { id: "B1", from: "how a judge will see it, ", to: "" },
+  { id: "B1", from: "are one area with one owner", to: "can go to separate builders" },
   { id: "B2", from: "Verification mode does not seat a critic or judges.", to: "" },
   { id: "B2", from: "which primary-data tools are available and how to load them", to: "which tools exist" },
   { id: "B3", from: "no reference is named, ask for one", to: "no reference is named, pick a category" },
@@ -24,6 +25,10 @@ const MUTATIONS = [
   { id: "B6", from: "Any judge, in either order, names a craft tell an edit can close", to: "Every judge names a craft tell an edit can close" },
   { id: "B6", from: "Run each judge twice, once in each order, each run", to: "Run each judge once, each run" },
   { id: "B6", from: "Every judge, in both orders, names only identity tells or none", to: "Names only identity tells, or the panel splits" },
+  { id: "B7", from: "The critic rechecks every area that passed in an earlier round; a regression is a finding for the builder whose edit caused it. ", to: "" },
+  { id: "B7", from: ", two rounds in a row with no net drop,", to: "" },
+  { id: "B7", from: "the candidate is the snapshot with the fewest open craft tells and critic findings, not the last round", to: "the candidate is the last round" },
+  { id: "B7", from: "The builder owns the diagnosis: a builder whose measurement contradicts a finding's edit reports the measurement and closes the gap another way; the finding stands. ", to: "" },
   { id: "T6", from: "not Gauntlet the DeFi risk manager", to: "not a risk manager" },
 ];
 

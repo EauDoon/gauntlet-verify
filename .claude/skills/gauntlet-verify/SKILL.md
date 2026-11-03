@@ -68,7 +68,7 @@ The last row is the strongest and the most underused. The user's own best work i
 
 ### 2. Decompose, then fan out
 
-Split the build into areas that fail independently: structure, visual system, motion, copy, data correctness, edge cases. One builder per area at full formation, in parallel; the drafting session plus one critic at light. Areas, not slices of the same area, or the builders converge and the fan-out buys nothing.
+Split the build into areas that fail independently: structure, visual system, motion, copy, data correctness, edge cases. One builder per area at full formation, in parallel; the drafting session plus one critic at light. Areas, not slices of the same area, or the builders converge and the fan-out buys nothing. Concerns that share one system, where an edit to one changes how the other reads (lighting and materials, type scale and spacing), are one area with one owner; if two builders would edit the same system, merge their areas or run them in sequence. Parallel builders on one coupled system break each other's assumptions and add defects.
 
 Name the assembler before the fan-out. The orchestrating session splices the areas into one artifact against a slot contract agreed up front: the list of sections each builder fills. Assembly is mechanical; an unfilled slot, an orphaned block, or an edit the assembler is tempted to make is a finding for that area's builder, never something the assembler quietly patches. A finding that spans two areas is split by the assembler into one edit per owning builder.
 
@@ -100,7 +100,7 @@ At full formation run 2 to 3 judges across at least two model families where the
 
 ### 5. Loop, and report the delta
 
-Each round: critic findings, builders fix their own area only, judges re-run (every round at full; at light, one judge when the build is ready to ship, and a craft tell from it opens another round). Report one line per round with the delta, the change in open craft tells and critic findings since the previous round, so the trend is visible. A loop whose delta stops moving is finished whatever the judge says: stop and report the trajectory.
+Each round: critic findings, builders fix their own area only, judges re-run (every round at full; at light, one judge when the build is ready to ship, and a craft tell from it opens another round). The builder owns the diagnosis: a builder whose measurement contradicts a finding's edit reports the measurement and closes the gap another way; the finding stands. Snapshot the artifact at the end of every round. The critic rechecks every area that passed in an earlier round; a regression is a finding for the builder whose edit caused it. Report one line per round with the delta, the change in open craft tells and critic findings since the previous round, so the trend is visible. A loop whose delta stops moving, two rounds in a row with no net drop, is finished whatever the judge says: stop and report the trajectory. At any stop or park, the candidate is the snapshot with the fewest open craft tells and critic findings, not the last round.
 
 ### 6. The user is the brake
 
