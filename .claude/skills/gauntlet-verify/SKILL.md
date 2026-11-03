@@ -11,15 +11,13 @@ A **seat** is one isolated agent role: builder, critic, judge, or verifier. A **
 
 ## Why a reference beats a rubric
 
-A rubric is a lossy compression of a reference. It survives compression when the criteria are mechanical, which is why rubric reviews work on contracts, memos and backtests. It fails when the quality is experiential: a frontend that feels expensive, a deck that lands in the room, prose that does not read as generated. Written as criteria, those become "make it polished", which is a defect in any instruction, because nothing can fail it with a quote.
-
-So do not write the criteria. Name a specific artifact that already clears the bar, and make the pass condition comparative rather than absolute: a judge who never saw the build can name nothing but identity tells to separate it from the reference (step 4).
+A rubric is a lossy compression of a reference. It works when the criteria are mechanical (contracts, memos, backtests) and fails when the quality is experiential (a frontend that feels expensive, prose that does not read as generated), where criteria collapse into "make it polished", which nothing can fail with a quote. So do not write the criteria: name a shipped artifact that clears the bar, and make the pass condition comparative, a judge who never saw the build naming nothing but identity tells (step 4).
 
 ## The gates, one per mode
 
 Reference mode runs only when all four hold.
 
-1. **A named reference exists and is out of reach.** A specific shipped artifact, inspectable, not a category and not a style name, and the build does not match it today. "Linear's settings page" passes. "Good design" does not. Neither does a house aesthetic, a visual style a design skill already encodes. It becomes a reference only when a particular shipped page is named and the current build is failing to match it; then the loop drives and the domain skill supplies. If a build triggers this skill and no reference is named, ask for one.
+1. **A named reference exists and is out of reach.** A specific shipped artifact, inspectable, not a category and not a style name, and the build does not match it today. "Linear's settings page" passes. "Good design" does not. Neither does a house aesthetic, a visual style a design skill already encodes. It becomes one only when a particular shipped page is named and the build misses it; then the loop drives and the domain skill supplies. If a build triggers this skill and no reference is named, ask for one.
 2. **The bar is not statable in advance.** If you can write three quotable criteria for the finished artifact, build against those criteria and check them with a rubric review; this loop does not apply.
 3. **The build is unfinished.** This drives generation. Once the artifact is done, the check that applies is the rubric review at ship.
 4. **You will actually keep pressing.** Starting the loop and accepting round one is worse than not starting, because you paid fan-out prices for a single draft.
@@ -39,7 +37,7 @@ Two levels. Light is the default; spend follows consequence, not effort.
 
 | Formation | Seats | When | Cost anchor |
 |---|---|---|---|
-| Light | Reference: the drafting session, one isolated critic, and one judge once the critic's findings stop dropping. Verification: one isolated verifier for all claims | Default. Stakes contained, whatever the area count | 100k to 150k tokens, estimated; not a spending cap |
+| Light | Reference: the drafting session, one isolated critic, and one judge once the critic's findings stop dropping. Verification: one isolated verifier for all claims | Default, whenever the stakes test fails, whatever the area count | 100k to 150k tokens, estimated; not a spending cap |
 | Full | Reference: one builder per area, one isolated critic, and a panel of 2 to 3 judges. Verification: one isolated verifier per claim cluster | Stakes test passes: money, reputation, public statement, acted-on decision. Or the user says full gauntlet | About 325k subagent tokens per round, measured once in reference mode (08-08-2026) before judges ran in both orders; verification mode unmeasured |
 
 Verification mode does not seat a critic or judges.
@@ -62,7 +60,7 @@ Capture five things: the reference, the single property being matched (not all o
 | A product the critic cannot run | A written spec of the one property, plus any capture that exists |
 | The user's own past best | The artifact itself, by path |
 
-The last row is the strongest and the most underused. The user's own best work is inspectable, on-voice, and provably achievable, since the user already shipped it.
+The last row is the strongest: the user's own best work is inspectable, on-voice, and provably achievable.
 
 ### 2. Decompose, then fan out
 
@@ -86,7 +84,7 @@ The critic's instructions, verbatim:
 
 ### 4. Blind judge, the actual stop condition
 
-Show the judge both artifacts, unlabeled, and say what the pair is: one shipped by the reference author, one an attempt to match it. Capture both the same way, at the same viewport, crop, resolution, length, and format, or have the judge drive both live in the same browser, so presentation is not the tell. Run each judge twice, once in each order, each run a fresh context that never sees the other run, earlier verdicts, or the critic's findings; judges favor one position, most when the gap is small. Ask which is the attempt and what gave it away, every tell tagged either craft, fixable by editing the artifact, or identity (age, adoption, ecosystem, brand), which no edit reaches. Do not ask which is better, which invites diplomacy. Do not ask which one the reference author made and leave it there: a famous reference is recognized on sight, so the bare pick measures recognition, not the gap. The pick saturates; the tells carry the verdict. A wrong pick, no pick, or a split panel is not a pass on its own: judges often fail to separate real from generated work while a gap remains.
+Show the judge both artifacts, unlabeled, and say what the pair is: one shipped by the reference author, one an attempt to match it. Capture both the same way, at the same viewport, crop, resolution, length, and format, or have the judge drive both live in the same browser, so presentation is not the tell. Run each judge twice, once in each order, each run a fresh context that never sees the other run, earlier verdicts, or the critic's findings; judges favor one position, most when the gap is small. Ask which is the attempt and what gave it away, every tell tagged either craft, fixable by editing the artifact, or identity (age, adoption, ecosystem, brand), which no edit reaches. Do not ask which is better, which invites diplomacy, or only which one the reference author made, which a famous reference answers by recognition. The pick saturates; the tells carry the verdict. A wrong pick, no pick, or a split panel is not a pass on its own.
 
 | Judge says | Read |
 |---|---|
@@ -94,7 +92,9 @@ Show the judge both artifacts, unlabeled, and say what the pair is: one shipped 
 | The only craft tells named do not matter | Close. Press the single property from step 1 |
 | Every judge, in both orders, names only identity tells or none | Done. Stop and ship it; unattended, park it as ready |
 
-At full formation run 2 to 3 judges across at least two model families where the stack allows; a same-family judge shares the priors that produced the gap. One judge guessing right is coin-flip evidence. Where only one family is available, use two model tiers and say the verdict is weaker. Where the reference cannot be shown, one judge holds the written spec and the verdict is weak; say so.
+A craft tell matters when a judge names it as what gave the attempt away or it touches the property from step 1; the rest do not.
+
+At full formation run 2 to 3 judges across at least two model families where the stack allows; a same-family judge shares the priors that produced the gap. Where only one family is available, use two model tiers and say the verdict is weaker. Where the reference cannot be shown, one judge holds the written spec and the verdict is weak; say so.
 
 ### 5. Loop, and report the delta
 
@@ -102,11 +102,11 @@ Each round: critic findings, builders fix their own area only, judges re-run (ev
 
 ### 6. The user is the brake
 
-There is no round cap. The loop stops on the user's call, on judges that stop spotting the attempt by craft, on a delta that stops moving, or on the ceiling written at step 1. A round that would breach the ceiling mid-flight does not start. Unattended, meaning the user said not to check in or the run is scheduled, the ceiling is the brake: the loop runs to it or to a stop condition, parks with the round-by-round trajectory as the report, and ships nothing on its own. Resuming past the ceiling is the user's call, made on the trajectory, and a new ceiling is written before the next round.
+There is no round cap. The loop stops on the user's call, on judges that stop spotting the attempt by craft, on a delta that stops moving, or on the ceiling written at step 1. A round that would breach the ceiling mid-flight does not start: it would when spend so far plus the last round's measured cost, or the cost anchor before round one, passes the ceiling. Where token spend cannot be read, write the ceiling in rounds. Unattended, meaning the user said not to check in or the run is scheduled, the ceiling is the brake: the loop runs to it or to a stop condition, parks with the round-by-round trajectory as the report, and ships nothing on its own. Resuming past the ceiling is the user's call, made on the trajectory, and a new ceiling is written before the next round.
 
 ### 7. Log the run
 
-When the loop stops, append one line to `logs/verification-runs.md` in the shared project folder: `/mnt/project-files/` in a project thread, the connected folder in Cowork, or the durable project folder on other agents. Other review skills can use the same log; the skill-name field identifies this run. Never use the session's scratch directory or the agent's built-in memory as the run log.
+When the loop stops, append one line to `logs/verification-runs.md` in the shared project folder: `/mnt/project-files/` in a project thread, the connected folder in Cowork, or the durable project folder on other agents. Never use the session's scratch directory or the agent's built-in memory as the run log.
 
 Create the `logs` directory and file if absent. Append the complete line in one write, then read the line back to confirm it was saved. Never edit an earlier line. If the project folder is unavailable or the append or readback fails, report the logging failure; do not claim the run was saved. Write `unknown` for an unmeasured value.
 
@@ -116,24 +116,24 @@ Use this shape, with dates in DD-MM-YYYY:
 DD-MM-YYYY | gauntlet-verify | mode | formation | artifact | reference or claim set | areas or clusters | rounds | tokens | judge or verifier trajectory
 ```
 
-Once three runs each of light formation and of verification mode are logged, use those numbers in place of the estimates in the Formations table. A loop that does not log pays for the same lesson every time.
+Once three runs each of light formation and of verification mode are logged, use those numbers in place of the estimates in the Formations table.
 
 ## Protocol, verification mode
 
-The research method runs scoping, fan-out search, and source grading in the drafting context, as always. This skill decides who runs the adversarial stage and seats them. In the author's research builds each layer caught errors the layer below missed and added errors only the next caught, and no layer's confidence predicted its accuracy (observed, not measured), so the defense is the chain, not any single pass.
+The research method scopes, searches, and grades sources in the drafting context; this skill seats the adversarial stage. In the author's research builds each layer caught errors the layer below missed and added errors only the next caught, and no layer's confidence predicted its accuracy (observed, not measured), so the defense is the chain, not any single pass.
 
 1. Self-checks first. The drafting context runs its own checks before the gauntlet. The gauntlet runs after them, never instead of them, and without asking permission when the stakes test passes.
-2. List the load-bearing claims, set the formation, write the ceiling. Split each claim into atomic facts that stand alone, one entity, figure, period, or definition each; a claim is verified only if every one of its facts is. Formation per the Formations table: one isolated verifier for all claims at light, one per claim cluster at full. Write the ceiling in rounds or tokens before any verifier is seated.
+2. List the load-bearing claims, set the formation, write the ceiling. Split each claim into atomic facts that stand alone, one entity, figure, period, or definition each; a claim is verified only if every one of its facts is. Formation per the Formations table: one isolated verifier for all claims at light, one per claim cluster at full. A claim cluster is the claims that rest on the same source set. Write the ceiling in rounds or tokens before any verifier is seated.
 3. Seat the verifiers. They never see the drafting context's reasoning. They get the claims, where each came from, and this brief, nothing else. The brief tells them, before they look:
    - which claims the draft already labels unsourced or unverified, so a declared gap is not reported as a defect;
    - which self-checks ran and what each found, so they re-run each one independently rather than trust it;
    - which primary-data tools are available and how to load them. A verifier that does not know a tool exists reverts to web search and the kill tests weaken.
-4. Run the kill tests, verbatim, on every claim.
+4. Each verifier runs the kill tests, verbatim, on every claim it holds.
    1. Answer the open question behind the claim (what was X in period Y) from your own search, then compare with the claim and search for the direct contradiction. Where a seat can be messaged twice, send the open questions first and the draft's values after.
    2. Trace to the primary source and quote the passage that states the claim with the same metric, period, and unit. If the chain ends at an aggregator, or the source covers the topic without stating the claim, the claim is unverified.
    3. Recompute any number that can be recomputed. For on-chain figures, a direct contract or storage read at a stated block is the recompute path.
    4. Re-fetch every figure quoted from a live source and compare the figure, the source, and the as-of date against what the draft says.
-   5. Check the date on every figure. Flag anything older than its natural refresh cycle.
+   5. Check the date on every figure. Flag any figure older than its source's own publishing interval (a day for daily data, a quarter for a quarterly filing); where the source states none, flag the figure's age and say so.
    6. Label the survivors: verified (one tier A source, or two independent tier B), reported (a single tier B), unverified (everything else).
 5. Kills and survivals are asymmetric. A kill stands when its quote or primary-source trace matches the claim's entity, metric, period, and unit. The drafting context may contest a kill once with a counter-quote; a fresh verifier, given only the claim and both quotes, settles it. Survival requires the verifier to have run every test, not to have found nothing while skimming.
 6. Fix or relabel, re-verify the claims that changed and every claim that rests on one of them, stop. Unverified claims ship only labeled, with what would settle them. The step 2 ceiling and the unattended brake from reference mode step 6 apply unchanged.

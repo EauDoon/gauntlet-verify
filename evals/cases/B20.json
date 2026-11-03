@@ -1,0 +1,16 @@
+{
+  "kind": "behavior",
+  "id": "B20",
+  "context": "Reference mode where the matched property is the hero's motion. A judge mentions heavier footer type and names the hero's easing as what gave the attempt away",
+  "mode": "reference",
+  "passes_if": "It briefs the hero easing as the next round's craft tell, because the judge named it as what gave the attempt away and it touches the matched property. The footer type alone would read Close",
+  "fails_if": "It weighs every craft tell the same, briefs the footer first, or reads the verdict as Close",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "A craft tell matters when a judge names it as what gave the attempt away or it touches the property from step 1"
+      ]
+    }
+  ]
+}

@@ -22,7 +22,8 @@
         "independent",
         "craft",
         "tell",
-        "are one area with one owner"
+        "are one area with one owner",
+        "Default, whenever the stakes test fails"
       ]
     }
   ]

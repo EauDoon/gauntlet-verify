@@ -1,0 +1,18 @@
+{
+  "kind": "behavior",
+  "id": "B21",
+  "context": "Full verification of a memo with nine load-bearing claims: five rest on one protocol's filings, three on one analytics vendor's data, and one on a court record",
+  "mode": "verification",
+  "formation": "full",
+  "passes_if": "It forms three claim clusters by shared source set, seats one verifier per cluster, and each verifier runs every kill test on every claim it holds",
+  "fails_if": "It seats one verifier per claim or one for all nine, or a verifier skips kill tests on part of its cluster",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "A claim cluster is the claims that rest on the same source set",
+        "on every claim it holds"
+      ]
+    }
+  ]
+}

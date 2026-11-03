@@ -1,0 +1,17 @@
+{
+  "kind": "behavior",
+  "id": "B22",
+  "context": "Verification mode; one figure comes from a daily dashboard read 40 days ago, one from last quarter's filing, and one from a report that states no update interval",
+  "mode": "verification",
+  "passes_if": "It flags the dashboard figure as older than its daily interval, accepts the filing within its quarter, and for the report flags the figure's age and says that no interval is stated",
+  "fails_if": "It judges all three against one fixed age, or passes the stale dashboard figure",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "older than its source's own publishing interval",
+        "where the source states none, flag the figure's age and say so"
+      ]
+    }
+  ]
+}

@@ -19,7 +19,7 @@ const MUTATIONS = [
   { id: "B2", from: "Verification mode does not seat a critic or judges.", to: "" },
   { id: "B2", from: "which primary-data tools are available and how to load them", to: "which tools exist" },
   { id: "B3", from: "no reference is named, ask for one", to: "no reference is named, pick a category" },
-  { id: "B4", from: "A round that would breach the ceiling mid-flight does not start. ", to: "" },
+  { id: "B4", from: "A round that would breach the ceiling mid-flight does not start", to: "A round may run past the ceiling" },
   { id: "B4", from: "and ships nothing on its own", to: "and ships the latest round" },
   { id: "B5", from: "Never edit an earlier line. ", to: "" },
   { id: "B6", from: "Any judge, in either order, names a craft tell that matters and an edit can close", to: "Every judge names a craft tell that matters and an edit can close" },
@@ -66,6 +66,14 @@ const MUTATIONS = [
   { id: "T17", from: "a single numeric series belongs to a data pull", to: "a single numeric series raises a light formation" },
   { id: "T18", from: "If you can write three quotable criteria for the finished artifact, build against those criteria and check them with a rubric review; this loop does not apply.", to: "" },
   { id: "T19", from: "Being wrong costs money or reputation, or the output feeds a public statement or a decision the user will act on.", to: "Any research counts." },
+  { id: "B1", from: "Default, whenever the stakes test fails, whatever", to: "Default, whatever" },
+  { id: "B20", from: "A craft tell matters when a judge names it as what gave the attempt away or it touches the property from step 1; the rest do not.\n", to: "" },
+  { id: "B21", from: " A claim cluster is the claims that rest on the same source set.", to: "" },
+  { id: "B21", from: "on every claim it holds", to: "on the claims it chooses" },
+  { id: "B22", from: "; where the source states none, flag the figure's age and say so", to: "" },
+  { id: "B22", from: "Flag any figure older than its source's own publishing interval (a day for daily data, a quarter for a quarterly filing)", to: "Flag anything older than 90 days" },
+  { id: "B23", from: ": it would when spend so far plus the last round's measured cost, or the cost anchor before round one, passes the ceiling", to: "" },
+  { id: "B23", from: " Where token spend cannot be read, write the ceiling in rounds.", to: "" },
 ];
 
 function passes(caseObj, text) {

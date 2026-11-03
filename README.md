@@ -73,7 +73,7 @@ A rubric is a lossy compression of a reference. It works when the criteria are m
 3. Critic that never saw the build: fresh context, the artifact and the reference, nothing else. It names specific gaps, maps each to one area and one edit, and ranks by impact. No praise.
 4. Blind judge: both artifacts, captured the same way and unlabeled. Each judge runs twice in fresh contexts, once in each order, because judges favor one position. The judge is told one is the original and one is an attempt, then asked which is the attempt and what gave it away.
 5. Loop and report the delta, one line per round: the change in open craft tells and critic findings. Each round is snapshotted, and the critic rechecks areas that passed earlier against their snapshots, so a regression goes back to the builder who caused it. A builder whose measurement contradicts a finding's edit reports it and closes the gap another way. Two rounds in a row with no drop in the combined count is a stalled loop; it stops and reports. On a Done verdict the judged snapshot ships; at any other stop the candidate is the best snapshot, not the last.
-6. The user is the brake: no round cap. The ceiling from step 1 parks an unattended loop (you said not to check in, or it runs on a schedule), and it ships nothing on its own. Resuming past the ceiling is your call, and a new ceiling is written before the next round.
+6. The user is the brake: no round cap. The ceiling from step 1 parks an unattended loop (you said not to check in, or it runs on a schedule), and it ships nothing on its own. Resuming past the ceiling is your call, and a new ceiling is written before the next round. A round that would pass the ceiling, judged by spend so far plus the last round's cost, does not start.
 7. Append the run to `logs/verification-runs.md` in the shared project folder and read the line back, so cost estimates turn into measurements. Create the directory and file if absent; never edit earlier lines.
 
 ### The judge question
@@ -91,7 +91,7 @@ Upstream asks which one is better. That invites diplomacy. Asking only which one
 | The only craft tells named do not matter | Close, press the one property |
 | Every judge, in both orders, names only identity tells or none | Done, ship it; unattended, park it as ready |
 
-A wrong pick, no pick, or a split panel is not a pass on its own: judges often fail to tell real work from generated work while a gap remains, so only the tells count.
+A wrong pick, no pick, or a split panel is not a pass on its own: judges often fail to tell real work from generated work while a gap remains, so only the tells count. A craft tell matters when a judge names it as what gave the attempt away, or it touches the one matched property.
 
 ## Verification mode
 
@@ -103,7 +103,7 @@ The brief tells each verifier which claims are already labeled unsourced (declar
 2. Trace to the primary source and quote the passage that states the claim with the same metric, period, and unit. A chain that ends at an aggregator, or a source on the topic that does not state the claim, leaves it unverified.
 3. Recompute any number that can be recomputed.
 4. Re-fetch every figure quoted from a live source and compare figure, source, and as-of date.
-5. Check the date on every figure.
+5. Check the date on every figure against its source's own publishing interval; where none is stated, flag the age.
 6. Label it: **verified** (one tier A source, or two independent tier B), **reported** (a single tier B), or **unverified** (everything else, including anything resting on aggregators). Tier A is a primary source. Tier B is named-author reporting at an established outlet, or a counterparty document.
 
 Claims are split into atomic facts first, one entity, figure, period, or definition each, and a claim is verified only if every fact is. Conflicting figures are never averaged, and an unresolved conflict leaves the claim unverified with both figures shown. Kills and survivals are asymmetric. A kill stands when its quote matches the claim's entity, metric, period, and unit; the drafting session may contest it once, and a fresh verifier given only the claim and both quotes settles it. A claim survives only if every test was run. A fix is re-verified along with every claim that rests on it. Unverified claims can still ship, labeled, with what would settle them. If no isolated verifier could run, the deliverable says so.
@@ -123,7 +123,7 @@ Spend follows consequence, not effort.
 | Light | Reference: the drafting session, one isolated critic, and one judge once the critic's findings stop dropping. Verification: one isolated verifier for all claims | Default, whenever the stakes test fails | 100k to 150k tokens, estimated. One logged light skill test (29-09-2026), including two additional test drives, used about 750k subagent tokens over five leaves |
 | Full | Reference: one builder per area, one isolated critic, and 2 to 3 judges. Verification: one isolated verifier per claim cluster | Money, reputation, a public statement, a decision someone acts on, or "full gauntlet" | About 325k subagent tokens per round, measured once in reference mode before judges ran in both orders, which adds judge runs; verification unmeasured |
 
-Verification mode seats verifiers only. It does not seat a critic or judges. The stakes test decides, whatever the area count. In reference mode, builders run on a cheaper workhorse model; only the critic and judges pay frontier prices. Judges come from at least two model families where the stack allows, because a same-family judge shares the priors that produced the gap. Escalation is automatic on stakes and always announced in one line.
+Verification mode seats verifiers only, one per claim cluster at full (the claims that rest on the same source set). It does not seat a critic or judges. The stakes test decides, whatever the area count. In reference mode, builders run on a cheaper workhorse model; only the critic and judges pay frontier prices. Judges come from at least two model families where the stack allows, because a same-family judge shares the priors that produced the gap. Escalation is automatic on stakes and always announced in one line.
 
 ## What breaks it
 
