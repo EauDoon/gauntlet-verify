@@ -10,8 +10,7 @@
     {
       "type": "skill_contains_all",
       "phrases": [
-        "no reference is named",
-        "ask"
+        "no reference is named, ask for one"
       ]
     }
   ]

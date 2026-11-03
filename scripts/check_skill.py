@@ -22,11 +22,12 @@ MAX_DESCRIPTION = 1024
 # SKILL.md: keep the description under 450 characters so listings do not drop it.
 LISTING_DESCRIPTION = 450
 EM, EN = chr(0x2014), chr(0x2013)
-DASHES = {
-    EM: "em dash", EN: "en dash",
-    "&mdash;": "em dash", "&ndash;": "en dash",
-    "&#8212;": "em dash", "&#8211;": "en dash",
-}
+# The literal characters, the named entities, and the numeric entities in
+# decimal or hex, with any leading zeros and either case of x and hex digits.
+DASH_RES = (
+    (re.compile(f"{EM}|&mdash;|&#0*8212;|&#[xX]0*2014;"), "em dash"),
+    (re.compile(f"{EN}|&ndash;|&#0*8211;|&#[xX]0*2013;"), "en dash"),
+)
 FENCE_RE = re.compile(r"^(`{3,}|~{3,}).*?^\1[^\n]*$", re.M | re.S)
 INLINE_CODE_RE = re.compile(r"`[^`\n]+`")
 LINK_RES = [
@@ -109,8 +110,8 @@ def check_text(errors):
         rel = path.relative_to(ROOT).as_posix()
         text = path.read_text(encoding="utf-8")
         for lineno, line in enumerate(text.splitlines(), 1):
-            for dash, label in DASHES.items():
-                if dash in line:
+            for pattern, label in DASH_RES:
+                if pattern.search(line):
                     errors.append(f"{rel}:{lineno}: {label}")
         prose = INLINE_CODE_RE.sub("", FENCE_RE.sub("", text))
         for pattern in LINK_RES:
@@ -126,8 +127,21 @@ def check_text(errors):
         check_undefined_references(prose, rel, errors)
 
 
+LABEL_RULES = (
+    ("verified", "verified (one tier A source, or two independent tier B)"),
+    ("reported", "reported (a single tier B)"),
+    ("unverified", "unverified (everything else"),
+)
+
+
+def has_rule(text, rule):
+    # The rule must start a word, so the verified rule is not found inside
+    # an "unverified (..." rule.
+    return re.search(r"(?<![A-Za-z])" + re.escape(rule), text) is not None
+
+
 def check_claim_labels(errors):
-    """README's verified/reported rule must match the skill's tier rule.
+    """README's verified, reported, and unverified rules must match the skill's tier rule.
 
     "one such source" also fits a single primary source, which the skill
     labels verified. Reported is only a single tier B source.
@@ -138,11 +152,11 @@ def check_claim_labels(errors):
         return
     readme = readme_path.read_text(encoding="utf-8").replace("**", "")
     skill = skill_path.read_text(encoding="utf-8")
-    rule = "reported (a single tier B)"
-    if rule not in skill:
-        errors.append(f"{skill_path.relative_to(ROOT).as_posix()}: missing verification label rule '{rule}'")
-    if rule not in readme:
-        errors.append(f"README.md: reported label does not match the skill rule '{rule}'")
+    for label, rule in LABEL_RULES:
+        if not has_rule(skill, rule):
+            errors.append(f"{skill_path.relative_to(ROOT).as_posix()}: missing verification label rule '{rule}'")
+        if not has_rule(readme, rule):
+            errors.append(f"README.md: {label} label does not match the skill rule '{rule}'")
     if "one such source" in readme:
         errors.append(
             "README.md: 'one such source' also describes a single primary source, which the skill labels verified"

@@ -166,18 +166,27 @@ The 22-prompt routing set of 24-09-2026 remains unrerun on the installed copy's 
 ```
 .claude/skills/gauntlet-verify/
 └── SKILL.md              # the whole skill, one file
-.github/workflows/
-└── check.yml             # structural check, unit tests, and evals on main and pull requests
+.github/
+├── ISSUE_TEMPLATE/       # bug report and feature request forms
+├── PULL_REQUEST_TEMPLATE.md
+└── workflows/check.yml   # structural check, unit tests, and evals on main and pull requests
 evals/
-└── README.md             # trigger and behavior cases
+├── README.md             # trigger and behavior cases, run by hand in a fresh session
+├── cases/                # B1 to B5 behavior and T1 to T9 trigger cases as JSON
+├── runner.mjs            # npm run evals: checks each case's phrases against SKILL.md
+└── *.test.mjs            # unit tests for the runner and case files, plus the mutation test
 scripts/
-└── check_skill.py        # frontmatter, dash, and link checks
+├── check_skill.py        # frontmatter, dash, link, and claim label checks
+└── test_*.py             # unit tests for check_skill.py and the CI workflow
+audits/                   # dated audit reports (coverage, lint, Quick Start, regression)
 assets/
 ├── banner.jpg
 └── src/banner.html       # banner source
 CHANGELOG.md
 LICENSE                   # CC BY 4.0
 README.md
+SECURITY.md               # how to report a flaw
+package.json              # npm test and npm run evals
 .gitattributes            # LF line endings
 .gitignore
 ```
