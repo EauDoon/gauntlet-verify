@@ -1,0 +1,18 @@
+{
+  "id": "B9",
+  "kind": "behavior",
+  "context": "In verification mode, a verifier kills the draft's Q2 fee figure with a quote; the drafting context corrects it. The growth rate and the conclusion \"fees passed the rival's\" were computed from that figure",
+  "mode": "verification",
+  "passes_if": "It re-verifies the corrected figure and every claim that rests on it, the growth rate and the conclusion, before stopping. A kill stands only when its quote matches the claim's entity, metric, period, and unit; the drafting context may contest it once, and a fresh verifier settles it",
+  "fails_if": "It re-verifies only the changed figure, or lets a kill stand whose quote covers a different metric or period",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "every claim that rests on one of them",
+        "matches the claim's entity, metric, period, and unit",
+        "a fresh verifier settles it"
+      ]
+    }
+  ]
+}

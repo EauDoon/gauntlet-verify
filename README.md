@@ -99,14 +99,14 @@ The drafting session does its research and its own self-checks first. Then the s
 
 The brief tells each verifier which claims are already labeled unsourced (declared, not defects), which self-checks ran (to re-run, not trust), and which primary-data tools it can load. Then each verifier runs the kill tests on every claim:
 
-1. Search for the direct contradiction.
-2. Trace to the primary source. A chain that ends at an aggregator is unverified.
+1. Answer the open question behind the claim from its own search, then search for the direct contradiction.
+2. Trace to the primary source and quote the passage that states the claim with the same metric, period, and unit. A chain that ends at an aggregator, or a source on the topic that does not state the claim, leaves it unverified.
 3. Recompute any number that can be recomputed.
 4. Re-fetch every figure quoted from a live source and compare figure, source, and as-of date.
 5. Check the date on every figure.
 6. Label it: **verified** (one tier A source, or two independent tier B), **reported** (a single tier B), or **unverified** (everything else, including anything resting on aggregators). Tier A is a primary source. Tier B is named-author reporting at an established outlet, or a counterparty document.
 
-Kills and survivals are asymmetric. One kill backed by a quote or a primary trace stands. A claim survives only if every test was run. Unverified claims can still ship, labeled, with what would settle them. If no isolated verifier could run, the deliverable says so.
+Claims are split into atomic facts first, one entity, figure, period, or definition each, and a claim is verified only if every fact is. Kills and survivals are asymmetric. A kill stands when its quote matches the claim's entity, metric, period, and unit; the drafting session may contest it once, and a fresh verifier settles it. A claim survives only if every test was run. A fix is re-verified along with every claim that rests on it. Unverified claims can still ship, labeled, with what would settle them. If no isolated verifier could run, the deliverable says so.
 
 Log verification runs to the same `logs/verification-runs.md` file, with claim clusters and the verifier trajectory. If no isolated verifier ran, record `not run`. Both modes use the shared project folder (`/mnt/project-files/` in a project thread, the connected folder in Cowork, or a durable project folder on other agents), append the whole line in one write, and read it back. Report a failed append or readback; scratch files and built-in memory do not count as the run log. The record shape is:
 

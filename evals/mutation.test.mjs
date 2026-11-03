@@ -29,6 +29,10 @@ const MUTATIONS = [
   { id: "B7", from: ", two rounds in a row with no net drop,", to: "" },
   { id: "B7", from: "the candidate is the snapshot with the fewest open craft tells and critic findings, not the last round", to: "the candidate is the last round" },
   { id: "B7", from: "The builder owns the diagnosis: a builder whose measurement contradicts a finding's edit reports the measurement and closes the gap another way; the finding stands. ", to: "" },
+  { id: "B8", from: "Split each claim into atomic facts that stand alone, one entity, figure, period, or definition each; a claim is verified only if every one of its facts is. ", to: "" },
+  { id: "B8", from: ", or the source covers the topic without stating the claim,", to: "" },
+  { id: "B9", from: "re-verify the claims that changed and every claim that rests on one of them", to: "re-verify only the claims that changed" },
+  { id: "B9", from: "A kill stands when its quote or primary-source trace matches the claim's entity, metric, period, and unit.", to: "Any kill with a quote or a primary-source trace stands." },
   { id: "T6", from: "not Gauntlet the DeFi risk manager", to: "not a risk manager" },
 ];
 

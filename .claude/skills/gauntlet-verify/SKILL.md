@@ -129,20 +129,20 @@ Once three runs each of light formation and of verification mode are logged, use
 The research method runs scoping, fan-out search, and source grading in the drafting context, as always. This skill decides who runs the adversarial stage and seats them. It works from an observation, not a measurement, made across the author's long multi-agent research builds: every layer caught errors in the layer below it and introduced errors only the next layer caught, and no layer's confidence predicted its accuracy. So the defense is the chain, not any single pass.
 
 1. Self-checks first. The drafting context runs its own checks before the gauntlet. The gauntlet runs after them, never instead of them, and without asking permission when the stakes test passes.
-2. List the load-bearing claims, set the formation, write the ceiling. Formation per the Formations table: one isolated verifier for all claims at light, one per claim cluster at full. Write the ceiling in rounds or tokens before any verifier is seated.
+2. List the load-bearing claims, set the formation, write the ceiling. Split each claim into atomic facts that stand alone, one entity, figure, period, or definition each; a claim is verified only if every one of its facts is. Formation per the Formations table: one isolated verifier for all claims at light, one per claim cluster at full. Write the ceiling in rounds or tokens before any verifier is seated.
 3. Seat the verifiers. They never see the drafting context's reasoning. They get the claims, where each came from, and this brief, nothing else. The brief tells them, before they look:
    - which claims the draft already labels unsourced or unverified, so a declared gap is not reported as a defect;
    - which self-checks ran and what each found, so they re-run each one independently rather than trust it;
    - which primary-data tools are available and how to load them. A verifier that does not know a tool exists reverts to web search and the kill tests weaken.
 4. Run the kill tests, verbatim, on every claim.
-   1. Search for the direct contradiction.
-   2. Trace to the primary source. If the chain ends at an aggregator, the claim is unverified.
+   1. Answer the open question behind the claim (what was X in period Y) from your own search before comparing it with the draft, then search for the direct contradiction.
+   2. Trace to the primary source and quote the passage that states the claim with the same metric, period, and unit. If the chain ends at an aggregator, or the source covers the topic without stating the claim, the claim is unverified.
    3. Recompute any number that can be recomputed. For on-chain figures, a direct contract or storage read at a stated block is the recompute path.
    4. Re-fetch every figure quoted from a live source and compare the figure, the source, and the as-of date against what the draft says.
    5. Check the date on every figure. Flag anything older than its natural refresh cycle.
    6. Label the survivors: verified (one tier A source, or two independent tier B), reported (a single tier B), unverified (everything else).
-5. Kills and survivals are asymmetric. Any kill with a quote or a primary-source trace stands. Survival requires the verifier to have run every test, not to have found nothing while skimming.
-6. Fix or relabel, re-verify only the claims that changed, stop. Unverified claims ship only labeled, with what would settle them. The step 2 ceiling and the unattended brake from reference mode step 6 apply unchanged.
+5. Kills and survivals are asymmetric. A kill stands when its quote or primary-source trace matches the claim's entity, metric, period, and unit. The drafting context may contest a kill once with a counter-quote; a fresh verifier settles it. Survival requires the verifier to have run every test, not to have found nothing while skimming.
+6. Fix or relabel, re-verify the claims that changed and every claim that rests on one of them, stop. Unverified claims ship only labeled, with what would settle them. The step 2 ceiling and the unattended brake from reference mode step 6 apply unchanged.
 7. Say when it did not run. Where no isolated verifier can be seated, run the self-checks and state in the deliverable that no independent verification pass ran.
 8. Log the run as reference step 7 says, with the claim clusters in the areas field and the verifier trajectory last. If no isolated verifier was seated, record `not run` in the trajectory instead of implying independent verification passed.
 
