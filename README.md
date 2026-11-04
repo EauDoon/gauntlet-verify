@@ -8,16 +8,17 @@
 [![license](https://img.shields.io/github/license/EauDoon/gauntlet-verify)](https://github.com/EauDoon/gauntlet-verify/blob/main/LICENSE)
 [![last commit](https://img.shields.io/github/last-commit/EauDoon/gauntlet-verify)](https://github.com/EauDoon/gauntlet-verify)
 
-A Claude skill for work that cannot afford to be mediocre or wrong.
+A Claude skill for work that cannot afford to be mediocre or wrong. It has two modes and three spend levels.
 
-- Point it at a shipped thing you want to match. It runs builders, an isolated critic, and blind judges until the judges can only tell your build from the original by brand, age, or adoption, never by craft.
-- Point it at research that has to be right. It seats separate agents that never saw your reasoning, has them try to kill every load-bearing claim, and ships each claim labeled verified, reported, or unverified.
+- **Reference mode.** Point it at a shipped thing you want to match. It runs an isolated critic and blind judges until the judges can tell your build from the original only by brand, age, or adoption, never by craft.
+- **Verification mode.** Point it at research that has to be right. It seats agents that never saw your reasoning, has them try to kill every load-bearing claim, and ships each claim labeled verified, reported, or unverified.
+- **Light, medium, or full.** The spend level follows consequence. Light is the default. Medium runs when being wrong costs you, and only you act on the result. Full runs when the result goes public or to another party.
 
-The Gauntlet Loop is [Matt Shumer's](https://github.com/mshumer) technique. This repo forks [robonuggets/gauntlet-loop](https://github.com/robonuggets/gauntlet-loop) and rebuilds it around how the loop gets used day to day.
+The Gauntlet Loop is [Matt Shumer's](https://github.com/mshumer) technique. This repo forks [robonuggets/gauntlet-loop](https://github.com/robonuggets/gauntlet-loop) and rebuilds it for day-to-day use.
 
 ## Quick start
 
-It needs an agent that can run subagents or fresh contexts (sequential works), a browser or screenshot tool when the reference is a live page, and web access for verification mode. One full-formation round, measured once, used about 325k subagent tokens, so the skill writes a ceiling before it spends.
+It needs an agent that can run subagents or fresh contexts (sequential works), a browser or screenshot tool when the reference is a live page, and web access for verification mode. Every run writes a ceiling, in rounds or tokens, before it spends.
 
 The skill is named `gauntlet-verify`, so it installs beside upstream's `gauntlet-loop` without replacing it. Keep only one of the two enabled, or both may answer the same request.
 
@@ -45,8 +46,6 @@ cd gauntlet-verify/.claude/skills && zip -r gauntlet-verify.zip gauntlet-verify
 
 In Claude Code, call it by name or just work. It fires on its own when a build in progress falls short of a named reference, and on heavy research where being wrong costs money or reputation, or the result feeds a public statement or a decision someone will act on.
 
-For a full-formation loop, the keyword `ultracode` in a typed prompt runs that one task as an orchestrated workflow; `/effort ultracode` does the same for the whole session. The keyword does not fire in `-p` runs or scheduled tasks, so a scheduled loop fans out with subagents instead.
-
 ```
 /gauntlet-verify build me a pricing page as good as Linear's
 ```
@@ -55,32 +54,58 @@ For a full-formation loop, the keyword `ultracode` in a typed prompt runs that o
 dig into whether this protocol's fee revenue really passed its rival's, it goes in a public thread this week
 ```
 
+```
+medium gauntlet on the figures in this draft, full is overkill for this one
+```
+
+For a full-formation loop, the keyword `ultracode` in a typed prompt runs that one task as an orchestrated workflow; `/effort ultracode` does the same for the whole session. The keyword does not fire in `-p` runs or scheduled tasks, so a scheduled loop fans out with subagents instead.
+
 ## Two modes
 
 | | Reference mode | Verification mode |
 |---|---|---|
 | Fires when | A build in progress is not clearing a named, shipped reference | Several load-bearing facts, and being wrong costs money or reputation, or the result feeds a public statement or a decision someone will act on, or you ask for verification (light unless you name another formation) |
 | The bar | A specific shipped artifact the build does not match today | The kill tests, run by agents that never saw the draft's reasoning |
-| Seats | A builder per area, an isolated critic, blind judges | The drafting session, then isolated verifiers |
-| Stops when | Judges name only identity tells, the delta stops moving, the user calls it, or the ceiling hits | Every claim is killed, fixed, or labeled, or the ceiling hits |
+| Seats | An isolated critic and blind judges; at full, a builder per area | The drafting session, then isolated verifiers |
+| Stops when | Judges name only identity tells, the delta stops moving, you call it, or the ceiling hits | Every claim is killed, fixed, or labeled, or the ceiling hits |
 
-A **seat** is one isolated agent role. A **formation** is how many seats a job gets. A **ceiling** is the budget in rounds or tokens, written down before any isolated seat is spawned. Both modes set the formation and the ceiling before any isolated seat runs.
+A **seat** is one isolated agent role. A **formation** is how many seats a job gets. A **ceiling** is the budget in rounds or tokens, written down before any isolated seat is spawned.
+
+## Three formations
+
+Spend follows consequence, not effort. The stakes test decides between light and the rest: being wrong costs money or reputation, or the result feeds a public statement or a decision someone will act on. Who sees the result decides between medium and full.
+
+| Formation | Reference seats | Verification seats | When |
+|---|---|---|---|
+| Light | The drafting session builds; one isolated critic; one judge once the critic's findings stop dropping | One isolated verifier for all claims | Default, whenever the stakes test fails |
+| Medium | The drafting session builds; one isolated critic; one judge every round, calibrated before round one | One isolated verifier per claim cluster, at most three; the smallest clusters merge | The stakes test passes and the result reaches no one else: a decision only you act on. Or "medium gauntlet" |
+| Full | One builder per area on a cheaper workhorse model; one isolated critic; a panel of 2 to 3 judges every round, calibrated before round one | One isolated verifier per claim cluster | The stakes test passes and the result reaches other people: a public statement, or anything sent to a board, investor, client, or counterparty. Or "full gauntlet" |
+
+A claim cluster is the claims that rest on the same source set. Verification mode never seats a critic or judges. Full-formation judges come from at least two model families where the stack allows, because a same-family judge shares the priors that produced the gap. Builder fan-out and the judge panel are full-formation costs; medium buys a calibrated judge every round without them.
+
+Escalation is automatic on stakes and audience, and always announced in one line. Your word overrides it in either direction: a public thread can run at medium if you say medium. A loop can drop to light for a cleanup round. It never climbs silently.
+
+| Formation | Cost anchor |
+|---|---|
+| Light | 100k to 150k tokens, estimated, not a spending cap. The live tests below suggest this is low wherever each seat carries a large fixed context |
+| Medium | Unmeasured, so its ceiling is written in rounds until three medium runs are logged. Two smoke runs on 04-11-2026 used about 655k (reference, 2 rounds) and 362k (verification, 2 rounds) subagent tokens |
+| Full | About 325k subagent tokens per round, measured once in reference mode before judges ran in both orders, which adds judge runs. Verification at full is unmeasured |
 
 ## Reference mode
 
 A rubric is a lossy compression of a reference. It works when the criteria are mechanical and fails when the quality is experiential: a page that feels expensive, a deck that lands, prose that does not read as generated. So the skill does not write criteria. It names an artifact that already clears the bar.
 
-1. Name the reference before building: a specific shipped thing the build does not match today, the one property being matched, how the judge will see it, the formation, and the ceiling. "Linear's settings page" passes. "Good design" does not. Your own best past work is the strongest reference of all.
-2. Decompose and fan out: one builder per area that fails independently (structure, visual system, motion, copy, data, edge cases). Concerns that share one system, such as lighting and materials, are one area with one owner. The orchestrating session assembles mechanically; anything it is tempted to patch goes back to that area's builder.
-3. Critic that never saw the build: fresh context, the artifact and the reference, nothing else. It names specific gaps, maps each to one area and one edit, and ranks by impact. No praise.
-4. Blind judge: both artifacts, captured the same way and unlabeled. Each judge runs twice in fresh contexts, once in each order, because judges favor one position. At medium and full formation each judge is first calibrated on the build as it stands, which misses the reference by definition; a judge that names no craft tell there cannot see the gap and is replaced. The judge is told one is the original and one is an attempt, then asked which is the attempt and what gave it away.
-5. Loop and report the delta, one line per round: the change in open craft tells and critic findings. Each round is snapshotted, and the critic rechecks areas that passed earlier against their snapshots, so a regression goes back to the builder who caused it. A builder whose measurement contradicts a finding's edit reports it and closes the gap another way. Two rounds in a row with no drop in the combined count is a stalled loop; it stops and reports. On a Done verdict the judged snapshot ships; at any other stop the candidate is the best snapshot, not the last.
-6. The user is the brake: no round cap. The ceiling from step 1 parks an unattended loop (you said not to check in, or it runs on a schedule), and it ships nothing on its own. Resuming past the ceiling is your call, and a new ceiling is written before the next round. A round that would pass the ceiling, judged by spend so far plus the last round's cost, does not start.
-7. Append the run to `logs/verification-runs.md` in the shared project folder and read the line back, so cost estimates turn into measurements. Create the directory and file if absent; never edit earlier lines.
+1. **Name the reference before building:** a specific shipped thing the build does not match today, the one property being matched, how the judge will see it, the formation, and the ceiling. "Linear's settings page" passes. "Good design" does not. Your own best past work is the strongest reference of all.
+2. **Decompose:** split the build into areas that fail independently (structure, visual system, motion, copy, data, edge cases). Concerns that share one system, such as lighting and materials, are one area with one owner. At full, each area gets its own builder, and the orchestrating session assembles mechanically; anything it is tempted to patch goes back to that area's builder. At light and medium, the drafting session owns every area.
+3. **Critic that never saw the build:** a fresh context with the artifact, the reference, the area names, and from round two the earlier snapshots. It names specific gaps, maps each to one area and one edit, and ranks by impact. No praise.
+4. **Blind judge:** both artifacts, captured the same way and unlabeled. Each judge runs twice in fresh contexts, once in each order, because judges favor one position. At medium and full, each judge is first calibrated on the build as it stands, which misses the reference by definition; a judge that names no craft tell there cannot see the gap and is replaced. The judge is told one is the original and one is an attempt, then asked which is the attempt and what gave it away.
+5. **Loop and report the delta,** one line per round: the change in open craft tells and critic findings. Each round is snapshotted, and the critic rechecks areas that passed earlier against their snapshots, so a regression goes back to whoever caused it. A builder whose measurement contradicts a finding's edit reports it and closes the gap another way. Two rounds in a row with no drop in the combined count is a stalled loop; it stops and reports. On a Done verdict the judged snapshot ships; at any other stop the candidate is the best snapshot, not the last.
+6. **You are the brake:** no round cap. A round that would pass the ceiling, judged by spend so far plus the last round's cost, does not start. The ceiling parks an unattended loop (you said not to check in, or it runs on a schedule), and it ships nothing on its own. Resuming past the ceiling is your call, and a new ceiling is written before the next round.
+7. **Log the run:** one line in `logs/verification-runs.md` in the shared project folder, read back after the write, so cost estimates turn into measurements.
 
 ### The judge question
 
-Upstream asks which one is better. That invites diplomacy. Asking only which one the original author made fails differently: a famous original is recognized on sight, so the pick measures recognition, not the gap. The first measured run here hit that second failure, and the judge question then in use was answered by brand recognition. Now every tell the judge names is tagged.
+Upstream asks which one is better. That invites diplomacy. Asking only which one the original author made fails differently: a famous original is recognized on sight, so the pick measures recognition, not the gap. The first measured run here hit that second failure. Now every tell the judge names is tagged.
 
 | Tell | Meaning | Fixable |
 |---|---|---|
@@ -89,17 +114,17 @@ Upstream asks which one is better. That invites diplomacy. Asking only which one
 
 | Judge says | Read |
 |---|---|
-| Any judge, in either order, names a craft tell | Not there |
+| Any judge, in either order, names a craft tell that matters | Not there |
 | The only craft tells named do not matter | Close, press the one property |
 | Every judge, in both orders, names only identity tells or none | Done, ship it; unattended, park it as ready |
 
-A wrong pick, no pick, or a split panel is not a pass on its own: judges often fail to tell real work from generated work while a gap remains, so only the tells count. A craft tell matters when a judge names it as what gave the attempt away, or it touches the one matched property.
+A craft tell matters when a judge names it as what gave the attempt away, or it touches the one matched property. A wrong pick, no pick, or a split panel is not a pass on its own: judges often fail to tell real work from generated work while a gap remains, so only the tells count.
 
 ## Verification mode
 
-The drafting session does its research and its own self-checks first. Then the skill writes a ceiling and seats verifiers who get the claims, where each came from, and a short brief, never the reasoning that produced them. The design follows an observation, not a measurement, from the author's long multi-agent research builds: each layer caught errors in the one below it and added errors only the next one caught, and no layer's confidence predicted its accuracy.
+The drafting session does its research and its own self-checks first. Then the skill writes a ceiling and seats verifiers. Each gets the claims, where each came from, and a short brief, never the reasoning that produced them. The design follows an observation, not a measurement, from the author's long multi-agent research builds: each layer caught errors in the one below it and added errors only the next one caught, and no layer's confidence predicted its accuracy.
 
-The brief tells each verifier which claims are already labeled unsourced (declared, not defects), which self-checks ran (to re-run, not trust), and which primary-data tools it can load. Then each verifier runs the kill tests on every claim:
+The brief tells each verifier which claims are already labeled unsourced (declared, not defects), which self-checks ran (to re-run, not trust), and which primary-data tools it can load. Where a seat can be messaged twice, it answers the open questions before it sees the draft's values. Then each verifier runs the kill tests on every claim:
 
 1. Answer the open question behind the claim from its own search, then search for the direct contradiction.
 2. Trace to the primary source and quote the passage that states the claim with the same metric, period, and unit. A chain that ends at an aggregator, or a source on the topic that does not state the claim, leaves it unverified.
@@ -108,25 +133,28 @@ The brief tells each verifier which claims are already labeled unsourced (declar
 5. Check the date on every figure against its source's own publishing interval; where none is stated, flag the age.
 6. Label it: **verified** (one tier A source, or two independent tier B), **reported** (a single tier B), or **unverified** (everything else, including anything resting on aggregators). Tier A is a primary source. Tier B is named-author reporting at an established outlet, or a counterparty document.
 
-Claims are split into atomic facts first, one entity, figure, period, or definition each, and a claim is verified only if every fact is. Conflicting figures are never averaged, and an unresolved conflict leaves the claim unverified with both figures shown. Kills and survivals are asymmetric. A kill stands when its quote matches the claim's entity, metric, period, and unit; the drafting session may contest it once, and a fresh verifier given only the claim and both quotes settles it. A claim survives only if every test was run. A fix is re-verified along with every claim that rests on it. Unverified claims can still ship, labeled, with what would settle them. If no isolated verifier could run, the deliverable says so.
+Claims are split into atomic facts first, one entity, figure, period, or definition each, and a claim is verified only if every fact is. Conflicting figures are never averaged, and an unresolved conflict leaves the claim unverified with both figures shown. A kill stands when its quote matches the claim's entity, metric, period, and unit; the drafting session may contest it once, and a fresh verifier given only the claim and both quotes settles it. A claim survives only if every test was run. A fix is re-verified along with every claim that rests on it. Unverified claims can still ship, labeled, with what would settle them. If no isolated verifier could run, the deliverable says so and the log records `not run`.
 
-Log verification runs to the same `logs/verification-runs.md` file, with claim clusters and the verifier trajectory. If no isolated verifier ran, record `not run`. Both modes use the shared project folder (`/mnt/project-files/` in a project thread, the connected folder in Cowork, or a durable project folder on other agents), append the whole line in one write, and read it back. Report a failed append or readback; scratch files and built-in memory do not count as the run log. The record shape is:
+## The run log
+
+Both modes append one line to `logs/verification-runs.md` in the shared project folder: `/mnt/project-files/` in a project thread, the connected folder in Cowork, or a durable project folder on other agents. The whole line goes in one write and is read back. A failed append or readback is reported; scratch files and built-in memory do not count. This repository keeps its own test runs in [logs/verification-runs.md](logs/verification-runs.md).
 
 ```text
 DD-MM-YYYY | gauntlet-verify | mode | formation | artifact | reference or claim set | areas or clusters | rounds | tokens | judge or verifier trajectory
 ```
 
-## Formations
+## Tested on 04-11-2026
 
-Spend follows consequence, not effort.
+The medium formation was tested before it merged, against a pass bar written before any run. The full record is in [audits/2026-11-04-live-evals.md](audits/2026-11-04-live-evals.md).
 
-| Formation | Seats | When | Cost anchor |
-|---|---|---|---|
-| Light | Reference: the drafting session, one isolated critic, and one judge once the critic's findings stop dropping. Verification: one isolated verifier for all claims | Default, whenever the stakes test fails | 100k to 150k tokens, estimated. One logged light skill test (29-09-2026), including two additional test drives, used about 750k subagent tokens over five leaves |
-| Medium | Reference: the drafting session, one isolated critic, and one calibrated judge every round. Verification: one isolated verifier per claim cluster, at most three, merging the smallest clusters | The stakes test passes and the result reaches no one else: a decision only you act on. Or "medium gauntlet" | Unmeasured; the ceiling is written in rounds until three runs are logged |
-| Full | Reference: one builder per area, one isolated critic, and 2 to 3 judges. Verification: one isolated verifier per claim cluster | The stakes test passes and the result reaches other people: a public statement, or anything sent to a board, investor, client, or counterparty. Or "full gauntlet" | About 325k subagent tokens per round, measured once in reference mode before judges ran in both orders, which adds judge runs; verification unmeasured |
+| Test | Result |
+|---|---|
+| Smoke test, reference mode, medium | A tldr-style page for `xz` driven at the tldr-pages `tar` page. The judge passed calibration and ran in both orders each round. In round 2 the critic's recheck found 5 regressions caused by round 1 edits. Craft tells fell from about 10 to 8 per order, and the 2-round ceiling parked the loop |
+| Smoke test, verification mode, medium | 7 claims plus 1 derived claim on 4 source sets, merged onto 3 verifiers. Answering the open questions first caught a stale claim before the draft's values were shown. 2 kills, fixed and re-verified. Every claim ended unverified because the container blocked the primary hosts, and each label said so |
+| Live behavior evals | 29 of 29 run passed: B1 to B26 plus four medium boundary cases. B12 did not run because the model's safeguards stopped that agent |
+| Blind routing, two routers | 19 of 20 trigger cases on each. Both missed T13, an explicit request to verify with no stakes, because the description routes only research with stakes. The Opus router also loaded the skill for "medium gauntlet" on one tweet, which the skill then hands to a style edit |
 
-Verification mode seats verifiers only, one per claim cluster at full (the claims that rest on the same source set) and at most three at medium. It does not seat a critic or judges. The stakes test, and who the result reaches, decide the formation, whatever the area count. Builder fan-out and the judge panel are full-formation costs; medium buys a calibrated judge every round without them. In reference mode, builders run on a cheaper workhorse model; only the critic and judges pay frontier prices. Judges come from at least two model families where the stack allows, because a same-family judge shares the priors that produced the gap. Escalation is automatic on stakes and audience, and always announced in one line.
+The cost lesson: in the test runtime, a judge with one tool call reported about 75k tokens, so seat count, not artifact size, drives the cost of a small job.
 
 ## What breaks it
 
@@ -136,12 +164,27 @@ Verification mode seats verifiers only, one per claim cluster at full (the claim
 - Stills for a motion property. The static frame converges while the real gap stays open.
 - A pair captured differently, or judged in one order only. The judge spots the format or the position, not the craft.
 - Parallel builders on one coupled system. In [Claude of Duty](https://github.com/mshumer/Claude-of-Duty#process-note), six parallel agents on lighting moved the score +0.46 while frame-ruining defects went from 60 to 66; one owner per coupled concern moved it +1.00 and cut them to 26.
-- Shipping the last round by default. A fix can break an area that passed earlier; the best snapshot ships, not the latest.
+- Shipping the last round by default. A fix can break an area that passed earlier; the best snapshot ships, not the latest. The 04-11-2026 smoke test saw 5 such regressions in one round.
 - An assembler that quietly patches. The fix belongs to the area's builder, or the critic's findings stop meaning anything.
 - Changing the artifact while the critic or judges are reading it. The verdict cannot be attributed to a version.
 - Unpinned seats. Some orchestrators do not pass the session's model choice to subagents, so check the model each agent actually ran on.
+- A verifier brief that lists tools without checking that the primary hosts are reachable. The verifiers fall back to search extracts, and every label ends unverified.
 - Starting the loop and accepting round one. Fan-out prices for a single draft.
 - Not logging. The next run pays for the same lesson.
+
+## Measured so far
+
+| Date | Run | Result |
+|---|---|---|
+| 08-08-2026 | Reference mode smoke test: a project README driven at [sharkdp/bat](https://github.com/sharkdp/bat)'s README, full formation | 1 round, 3 builders, 1 critic, 2 judges, about 325k subagent tokens, 8 minutes. Both judges NOT THERE, matching the critic. The critic caught an output block the assembler had doctored. The 400k ceiling parked the loop before round 2 |
+| 08-08-2026 | Routing checks on earlier, longer descriptions, two blind seats | 23 of 24 correct, then 5 of 5 after a fix to the clause separating it from the research method. Measured on the earlier wording, not on this text |
+| 29-09-2026 | One logged light skill test, including two additional test drives | About 750k subagent tokens over five leaves. This expanded run is not a baseline for a plain light run |
+| 08-10-2026 | Trigger eval v2 on the author's separate installed copy, blind router | Loaded on both prompts: first on the build prompt, second behind the research method on the research prompt. Not measured on this repository's description |
+| 04-11-2026 | Reference mode smoke test, medium: a tldr-style `xz` page driven at the tldr-pages `tar` page | 2 rounds, 1 critic per round, 1 calibrated judge in both orders per round, about 655k subagent tokens over 8 seat runs. Not there in both rounds; parked at the 2-round ceiling |
+| 04-11-2026 | Verification mode smoke test, medium: a private emergency-fund placement note | 2 rounds, 3 verifiers over 4 clusters, about 362k subagent tokens. 2 kills; every claim unverified, with the primary hosts blocked |
+| 04-11-2026 | Live behavior evals and blind routing on this repository's description | 29 of 29 run behavior cases passed; routing 19 of 20 on both an Opus and a Sonnet router |
+
+Light and medium costs stay estimates until three runs of each are logged; 150k is not a spending cap. Full verification mode remains unmeasured. Use the log to replace each placeholder after three runs of that formation and mode.
 
 ## Evidence behind the rules
 
@@ -157,30 +200,17 @@ The 03-11-2026 rules rest on these sources. They were checked through abstracts,
 | Claims split into atomic facts | Min et al., "FActScore", EMNLP 2023; Wei et al., "Long-form factuality in large language models" (SAFE), NeurIPS 2024 |
 | The source must state the claim with the same metric, period, and unit | Liu, Zhang, and Liang, "Evaluating Verifiability in Generative Search Engines", Findings of EMNLP 2023 |
 | A kill must match the claim and can be contested once | Wang et al., "Factcheck-Bench", Findings of EMNLP 2024 |
-| Each judge is calibrated before round one at full formation | Russell, Karpinska, and Iyyer, "People who frequently use ChatGPT for writing tasks are accurate and robust detectors of AI-generated text", ACL 2025 (detection skill varies widely between judges) |
+| Each judge is calibrated before round one at medium and full | Russell, Karpinska, and Iyyer, "People who frequently use ChatGPT for writing tasks are accurate and robust detectors of AI-generated text", ACL 2025 (detection skill varies widely between judges) |
 | The verifier answers the open question before comparing | Dhuliawala et al., "Chain-of-Verification Reduces Hallucination in Large Language Models", Findings of ACL 2024 |
 | Instructions stay under 20,000 bytes | Claude Code docs, [skill content lifecycle](https://code.claude.com/docs/en/skills) |
-
-## Measured so far
-
-| Date | Run | Result |
-|---|---|---|
-| 08-08-2026 | Reference mode smoke test: a project README driven at [sharkdp/bat](https://github.com/sharkdp/bat)'s README, full formation | 1 round, 3 builders, 1 critic, 2 judges, about 325k subagent tokens, 8 minutes. Both judges NOT THERE, matching the critic. The critic caught an output block the assembler had doctored. The 400k ceiling parked the loop before round 2. |
-| 08-08-2026 | Routing checks on earlier, longer descriptions, two blind seats | 23 of 24 correct, then 5 of 5 after a fix to the clause separating it from the research method. The description names that separation again. Those counts were measured on the earlier wording, not on this text. |
-| 29-09-2026 | One logged light skill test, including two additional test drives | About 750k subagent tokens over five leaves. This expanded run is not a baseline for a plain light run. |
-| 08-10-2026 | Trigger eval v2 on the author's separate installed copy, blind router | Loaded on both prompts: first on the build prompt, second behind the research method on the research prompt. This result was not measured on this repository's description. |
-
-Light-formation costs stay estimates until three light runs are logged; 150k is not a spending cap. Medium has no estimate yet, so its ceilings are written in rounds until three medium runs are logged. Full verification mode remains unmeasured. Use the log to replace its cost placeholder after three verification runs.
-
-The 22-prompt routing set of 24-09-2026 remains unrerun on the installed copy's current description. This repository has no recorded result from that set for its description. Local static evals check the skill text; they do not establish live routing behavior.
 
 ## Maintaining the skill
 
 - Keep the description under 450 characters and lead with the trigger phrases. Skill listings have a character budget; in Claude Code it scales with the context window, and on overflow the least-used skills lose their descriptions first and keep only their names.
-- Verification mode knowingly risks collisions with the research method and the rubric review. If a request misroutes, add or sharpen a clause in the description that separates this skill from the one that took it.
-- Keep the instructions, everything in SKILL.md before its `## Eval` section, under 20,000 bytes. After a conversation compacts, Claude Code re-attaches only the first 5,000 tokens of each invoked skill ([skill content lifecycle](https://code.claude.com/docs/en/skills)), and 20,000 bytes is about 5,000 tokens at an estimated 4 bytes per token. Past that point an instruction is lost mid-loop. Dated measurements belong in Measured so far above, not in the skill.
+- Verification mode knowingly risks collisions with the research method and the rubric review. If a request misroutes, add or sharpen a clause in the description that separates this skill from the one that took it. The open case is T13: an explicit request to verify, with no stakes, does not route today.
+- Keep the instructions, everything in SKILL.md before its `## Eval` section, under 20,000 bytes. After a conversation compacts, Claude Code re-attaches only the first 5,000 tokens of each invoked skill ([skill content lifecycle](https://code.claude.com/docs/en/skills)), and 20,000 bytes is about 5,000 tokens at an estimated 4 bytes per token. Past that point an instruction is lost mid-loop. The instructions are 19,874 bytes as of 04-11-2026, so the next addition needs a matching cut. Rationale and dated measurements belong in this README, not in the skill.
 
-`scripts/check_skill.py` enforces the description and size limits.
+`scripts/check_skill.py` enforces the description and size limits. `npm run evals` checks that every eval case's required sentence is in the skill, and `evals/mutation.test.mjs` checks that each case fails when its sentence is removed.
 
 ## What changed from upstream
 
@@ -212,7 +242,9 @@ evals/
 scripts/
 ├── check_skill.py        # frontmatter, size, dash, link, and claim label checks
 └── test_*.py             # unit tests for check_skill.py and the CI workflow
-audits/                   # dated audit reports (coverage, lint, Quick Start, regression)
+logs/
+└── verification-runs.md  # one line per logged run of this repository's own tests
+audits/                   # dated audit reports, including the 04-11-2026 live evals
 assets/
 ├── banner.jpg
 └── src/banner.html       # banner source
