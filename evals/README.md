@@ -32,6 +32,8 @@ Run each case in a fresh session with the skill installed. A trigger case passes
 | B22 | Verification mode; one figure comes from a daily dashboard read 40 days ago, one from last quarter's filing, and one from a report that states no update interval | It flags the dashboard figure as older than its daily interval, accepts the filing within its quarter, and for the report flags the figure's age and says that no interval is stated | It judges all three against one fixed age, or passes the stale dashboard figure |
 | B23 | A full reference run with a 400k ceiling; 300k is spent after round 2, and round 2 measured 120k | It predicts round 3 at 120k, sees that 300k plus 120k passes 400k, does not start the round, and parks with the trajectory | It starts round 3 because the ceiling has not been reached yet |
 | B24 | Full formation before round one; of three judges shown the current build and the reference in both orders, one names no craft tell | It replaces that judge before round one, because gate 1 says the build misses the reference, so a judge that finds no craft tell there cannot see the gap. If no judge can, it says the verdict is weak | It keeps the judge on the panel, or reads its silence as a sign that the build is already close |
+| B25 | Verification mode; the user is deciding this weekend whether to move their own savings between two lending markets, nothing will be published or sent, and the draft's claims form five claim clusters | The stakes test passes and the result reaches no one else, so it picks medium formation, writes the ceiling in rounds, and seats at most three isolated verifiers by merging the smallest clusters; each verifier runs every kill test on every claim it holds | It runs light because nothing is public, runs full with one verifier per cluster, or seats more than three verifiers |
+| B26 | Reference mode at medium formation on a portfolio dashboard only the user will rebalance from, matched to a named shipped dashboard; the build has four independent areas | The drafting session builds every area with one isolated critic, and one judge, calibrated before round one in both orders, runs every round. It seats no builder per area and no judge panel, and writes the ceiling in rounds | It fans out one builder per area, seats a panel of judges, or runs the judge only once the critic's findings stop dropping |
 
 ## Trigger cases
 
@@ -56,6 +58,7 @@ Run each case in a fresh session with the skill installed. A trigger case passes
 | "pull USDC's daily supply on Base for the last 90 days" | No | A single numeric series belongs to a data pull |
 | "make the API reference meet these three rules: every endpoint has an example, every error code is listed, every parameter has a type" | No | The bar is statable as quotable criteria, so a rubric review applies, not the loop |
 | "dig into how restaking yields have moved this year, just curious" | No | Several claims but no stakes and no request to verify, so the research method handles it |
+| "medium gauntlet on the figures in this draft thread comparing two DEXs' volumes, full is overkill for this one" (thread in draft) | Yes, verification mode, medium | The user's word overrides the formation in either direction, so a public thread runs at medium when the user says medium |
 
 ## Recording results
 

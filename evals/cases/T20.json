@@ -1,0 +1,19 @@
+{
+  "kind": "trigger",
+  "id": "T20",
+  "prompt": "medium gauntlet on the figures in this draft thread comparing two DEXs' volumes, full is overkill for this one",
+  "context": "thread in draft",
+  "should_fire": true,
+  "mode": "verification",
+  "formation": "medium",
+  "why": "The user's word overrides the formation in either direction, so a public thread runs at medium when the user says medium",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "Or the user says medium",
+        "overridden in either direction by the user's word"
+      ]
+    }
+  ]
+}
