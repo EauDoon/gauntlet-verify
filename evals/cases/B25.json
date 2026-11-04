@@ -1,0 +1,20 @@
+{
+  "id": "B25",
+  "kind": "behavior",
+  "context": "Verification mode; the user is deciding this weekend whether to move their own savings between two lending markets, nothing will be published or sent, and the draft's claims form five claim clusters",
+  "mode": "verification",
+  "formation": "medium",
+  "passes_if": "The stakes test passes and the result reaches no one else, so it picks medium formation, writes the ceiling in rounds, and seats at most three isolated verifiers by merging the smallest clusters; each verifier runs every kill test on every claim it holds",
+  "fails_if": "It runs light because nothing is public, runs full with one verifier per cluster, or seats more than three verifiers",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "Stakes test passes and the result reaches no one else",
+        "at most three, merging the smallest clusters",
+        "write the ceiling in rounds until logged",
+        "on every claim it holds"
+      ]
+    }
+  ]
+}

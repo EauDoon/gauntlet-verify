@@ -59,7 +59,7 @@ const MUTATIONS = [
   { id: "T10", from: "a build misses a named bar", to: "a build is requested" },
   { id: "T11", from: "| The user's own past best | The artifact itself, by path |\n", to: "" },
   { id: "T12", from: "Use UNPROMPTED on heavy research", to: "Use on request for research" },
-  { id: "T13", from: "When the user asks for verification, gate 1 still applies and gate 2 does not; it runs at light unless they say full.\n", to: "" },
+  { id: "T13", from: "When the user asks for verification, gate 1 still applies and gate 2 does not; it runs at light unless they name another formation.\n", to: "" },
   { id: "T14", from: " Or the user says full gauntlet", to: "" },
   { id: "T15", from: "one-shot drafts, ", to: "" },
   { id: "T16", from: " Runs mid-build, not on finished work.", to: "" },
@@ -74,7 +74,15 @@ const MUTATIONS = [
   { id: "B22", from: "Flag any figure older than its source's own publishing interval (a day for daily data, a quarter for a quarterly filing)", to: "Flag anything older than 90 days" },
   { id: "B23", from: ": it would when spend so far plus the last round's measured cost, or the cost anchor before round one, passes the ceiling", to: "" },
   { id: "B23", from: " Where token spend cannot be read, write the ceiling in rounds.", to: "" },
-  { id: "B24", from: " At full formation, calibrate each judge before round one on the build as it stands, in both orders: gate 1 says it misses, so a judge that names no craft tell there cannot see the gap; replace it.", to: "" },
+  { id: "B24", from: " At medium and full, calibrate each judge before round one on the build as it stands, in both orders: gate 1 says it misses, so a judge that names no craft tell there cannot see the gap; replace it.", to: "" },
+  { id: "B25", from: " and the result reaches no one else: a decision only the user acts on", to: "" },
+  { id: "B25", from: ", at most three, merging the smallest clusters", to: "" },
+  { id: "B25", from: "Unmeasured; write the ceiling in rounds until logged", to: "Unmeasured" },
+  { id: "B26", from: "one calibrated judge every round", to: "a panel of 2 to 3 judges" },
+  { id: "B26", from: "one critic at light and medium", to: "one critic at light" },
+  { id: "B26", from: "every round at medium and full", to: "every round at full" },
+  { id: "B26", from: " At medium and full, calibrate", to: " At full formation, calibrate" },
+  { id: "T20", from: " Or the user says medium", to: "" },
 ];
 
 function passes(caseObj, text) {

@@ -11,7 +11,7 @@ A **seat** is one isolated agent role: builder, critic, judge, or verifier. A **
 
 ## Why a reference beats a rubric
 
-A rubric is a lossy compression of a reference. It works when the criteria are mechanical (contracts, memos, backtests) and fails when the quality is experiential (a frontend that feels expensive, prose that does not read as generated), where criteria collapse into "make it polished", which nothing can fail with a quote. So do not write the criteria: name a shipped artifact that clears the bar, and make the pass condition comparative, a judge who never saw the build naming nothing but identity tells (step 4).
+A rubric is a lossy compression of a reference: it holds where criteria are mechanical (contracts, memos, backtests) and collapses into "make it polished" where the quality is experiential. So do not write the criteria: name a shipped artifact that clears the bar, and make the pass condition comparative, a judge who never saw the build naming nothing but identity tells (step 4).
 
 ## The gates, one per mode
 
@@ -27,22 +27,23 @@ Verification mode fires unprompted when both hold.
 1. **The answer rests on facts outside the model across several load-bearing claims.** Heavy research, due diligence, multi-source synthesis. A quick lookup or a single figure does not raise a formation; a single numeric series belongs to a data pull.
 2. **The stakes test passes.** Being wrong costs money or reputation, or the output feeds a public statement or a decision the user will act on.
 
-When the user asks for verification, gate 1 still applies and gate 2 does not; it runs at light unless they say full.
+When the user asks for verification, gate 1 still applies and gate 2 does not; it runs at light unless they name another formation.
 
 Anti-triggers, both modes: chat answers, quick lookups, one-shot drafts, work where good enough is genuinely good enough, and Gauntlet (the DeFi risk manager), which shares nothing with this but a word. A complaint that one post reads as generated belongs to a style edit; this loop takes text only when it decomposes into areas that fail independently.
 
 ## Formations
 
-Two levels. Light is the default; spend follows consequence, not effort.
+Three levels. Light is the default; spend follows consequence, not effort.
 
 | Formation | Seats | When | Cost anchor |
 |---|---|---|---|
 | Light | Reference: the drafting session, one isolated critic, and one judge once the critic's findings stop dropping. Verification: one isolated verifier for all claims | Default, whenever the stakes test fails, whatever the area count | 100k to 150k tokens, estimated; not a spending cap |
-| Full | Reference: one builder per area, one isolated critic, and a panel of 2 to 3 judges. Verification: one isolated verifier per claim cluster | Stakes test passes: money, reputation, public statement, acted-on decision. Or the user says full gauntlet | About 325k subagent tokens per round, measured once in reference mode (08-08-2026) before judges ran in both orders; verification mode unmeasured |
+| Medium | Reference: the drafting session, one isolated critic, and one calibrated judge every round. Verification: one isolated verifier per claim cluster, at most three, merging the smallest clusters | Stakes test passes and the result reaches no one else: a decision only the user acts on. Or the user says medium | Unmeasured; write the ceiling in rounds until logged |
+| Full | Reference: one builder per area, one isolated critic, and a panel of 2 to 3 judges. Verification: one isolated verifier per claim cluster | Stakes test passes and the result reaches other people: a public statement, or anything sent to a board, investor, client, or counterparty. Or the user says full gauntlet | About 325k subagent tokens per round, measured once in reference mode before judges ran in both orders; verification mode unmeasured |
 
 Verification mode does not seat a critic or judges.
 
-Escalation is automatic on the stakes test and overridden in either direction by the user's word. A loop may drop to light for a cleanup round; it never climbs silently, it names the escalation and the reason in one line. Unattended, escalation follows the same rule and the written ceiling stays the brake.
+Escalation is automatic on the stakes test and on who the result reaches, and overridden in either direction by the user's word. A loop may drop to light for a cleanup round; it never climbs silently, it names the escalation and the reason in one line. Unattended, escalation follows the same rule and the written ceiling stays the brake.
 
 ## Protocol, reference mode
 
@@ -64,7 +65,7 @@ The last row is the strongest: the user's own best work is inspectable, on-voice
 
 ### 2. Decompose, then fan out
 
-Split the build into areas that fail independently: structure, visual system, motion, copy, data correctness, edge cases. One builder per area at full formation, in parallel; the drafting session plus one critic at light. Areas, not slices of the same area, or the builders converge and the fan-out buys nothing. Concerns that share one system, where an edit to one changes how the other reads (lighting and materials, type scale and spacing), are one area with one owner; if two builders would edit the same system, merge their areas or run them in sequence.
+Split the build into areas that fail independently: structure, visual system, motion, copy, data correctness, edge cases. One builder per area at full formation, in parallel; the drafting session plus one critic at light and medium. Areas, not slices of the same area, or the builders converge and the fan-out buys nothing. Concerns that share one system, where an edit to one changes how the other reads (lighting and materials, type scale and spacing), are one area with one owner; if two builders would edit the same system, merge their areas or run them in sequence.
 
 Name the assembler before the fan-out. The orchestrating session splices the areas into one artifact against a slot contract agreed up front: the list of sections each builder fills. Assembly is mechanical; an unfilled slot, an orphaned block, or an edit the assembler is tempted to make is a finding for that area's builder, never something the assembler quietly patches. A finding that spans two areas is split by the assembler into one edit per owning builder.
 
@@ -94,11 +95,11 @@ Show the judge both artifacts, unlabeled, and say what the pair is: one shipped 
 
 A craft tell matters when a judge names it as what gave the attempt away or it touches the property from step 1; the rest do not.
 
-At full formation run 2 to 3 judges across at least two model families where the stack allows; a same-family judge shares the priors that produced the gap. Where only one family is available, use two model tiers and say the verdict is weaker. Where the reference cannot be shown, one judge holds the written spec and the verdict is weak; say so. At full formation, calibrate each judge before round one on the build as it stands, in both orders: gate 1 says it misses, so a judge that names no craft tell there cannot see the gap; replace it. At light, call an uncalibrated Done weaker.
+At full formation run 2 to 3 judges across at least two model families where the stack allows; a same-family judge shares the priors that produced the gap. Where only one family is available, use two model tiers and say the verdict is weaker. Where the reference cannot be shown, one judge holds the written spec and the verdict is weak; say so. At medium and full, calibrate each judge before round one on the build as it stands, in both orders: gate 1 says it misses, so a judge that names no craft tell there cannot see the gap; replace it. At light, call an uncalibrated Done weaker.
 
 ### 5. Loop, and report the delta
 
-Each round: critic findings, builders fix their own area only, judges re-run (every round at full; at light, one judge once the critic's findings stop dropping or the user calls the build ready, and a craft tell from it opens another round). The builder owns the diagnosis: a builder whose measurement contradicts a finding's edit reports the measurement and closes the gap another way; the finding stands. Snapshot the artifact at the end of every round. The critic rechecks every area that passed in an earlier round against that round's snapshot; a regression is a finding for the builder whose edit caused it. Report one line per round with the delta, the change in open craft tells and critic findings since the previous round, so the trend is visible. A loop whose delta stops moving, two rounds in a row with no drop in the combined count, is finished whatever the judge says: stop and report the trajectory. On a Done verdict the judged snapshot is the candidate; at any other stop or park, it is the snapshot with the fewest open craft tells and critic findings (critic findings alone where no judge ran), not the last round.
+Each round: critic findings, builders fix their own area only, judges re-run (every round at medium and full; at light, one judge once the critic's findings stop dropping or the user calls the build ready, and a craft tell from it opens another round). The builder owns the diagnosis: a builder whose measurement contradicts a finding's edit reports the measurement and closes the gap another way; the finding stands. Snapshot the artifact at the end of every round. The critic rechecks every area that passed in an earlier round against that round's snapshot; a regression is a finding for the builder whose edit caused it. Report one line per round with the delta, the change in open craft tells and critic findings since the previous round, so the trend is visible. A loop whose delta stops moving, two rounds in a row with no drop in the combined count, is finished whatever the judge says: stop and report the trajectory. On a Done verdict the judged snapshot is the candidate; at any other stop or park, it is the snapshot with the fewest open craft tells and critic findings (critic findings alone where no judge ran), not the last round.
 
 ### 6. The user is the brake
 
@@ -116,14 +117,14 @@ Use this shape, with dates in DD-MM-YYYY:
 DD-MM-YYYY | gauntlet-verify | mode | formation | artifact | reference or claim set | areas or clusters | rounds | tokens | judge or verifier trajectory
 ```
 
-Once three runs each of light formation and of verification mode are logged, use those numbers in place of the estimates in the Formations table.
+Once three runs of one formation and mode are logged, use their numbers in place of that row's estimate in the Formations table.
 
 ## Protocol, verification mode
 
 The research method scopes, searches, and grades sources in the drafting context; this skill seats the adversarial stage. In the author's research builds each layer caught errors the layer below missed and added errors only the next caught, and no layer's confidence predicted its accuracy (observed, not measured), so the defense is the chain, not any single pass.
 
 1. Self-checks first. The drafting context runs its own checks before the gauntlet. The gauntlet runs after them, never instead of them, and without asking permission when the stakes test passes.
-2. List the load-bearing claims, set the formation, write the ceiling. Split each claim into atomic facts that stand alone, one entity, figure, period, or definition each; a claim is verified only if every one of its facts is. Formation per the Formations table: one isolated verifier for all claims at light, one per claim cluster at full. A claim cluster is the claims that rest on the same source set. Write the ceiling in rounds or tokens before any verifier is seated.
+2. List the load-bearing claims, set the formation, write the ceiling. Split each claim into atomic facts that stand alone, one entity, figure, period, or definition each; a claim is verified only if every one of its facts is. Formation per the Formations table. A claim cluster is the claims that rest on the same source set. Write the ceiling in rounds or tokens before any verifier is seated.
 3. Seat the verifiers. They never see the drafting context's reasoning. They get the claims, where each came from, and this brief, nothing else. The brief tells them, before they look:
    - which claims the draft already labels unsourced or unverified, so a declared gap is not reported as a defect;
    - which self-checks ran and what each found, so they re-run each one independently rather than trust it;
@@ -152,7 +153,7 @@ Two outlets citing the same press release are one source. A figure a data tool p
 
 ## Portability
 
-In Claude Code, fan out with subagents or a workflow script, and use `/loop` to pace rounds. The keyword `ultracode` in a typed prompt runs that one task as an orchestrated workflow, which suits a full-formation loop; `/effort ultracode` does the same for the whole session. The keyword does not fire in `-p` runs or scheduled tasks, so a scheduled loop fans out with subagents instead. On any other agent, run each seat as a fresh context with only its brief; sequential works, shared context does not. Some chat surfaces can spawn only one model family, so the two-family judge rule degrades to two tiers there. Say so in the log line.
+In Claude Code, fan out with subagents or a workflow script, and use `/loop` to pace rounds. On any other agent, run each seat as a fresh context with only its brief; sequential works, shared context does not. Some chat surfaces can spawn only one model family, so the two-family judge rule degrades to two tiers there. Say so in the log line.
 
 ## Boundaries
 

@@ -2,6 +2,19 @@
 
 Dates are DD-MM-YYYY. Upstream dates are the upstream author's local time (UTC+10).
 
+## 04-11-2026, medium formation
+
+Added
+
+- A medium formation between light and full. Reference mode: the drafting session, one isolated critic, and one judge every round, calibrated before round one. Verification mode: one isolated verifier per claim cluster, at most three, merging the smallest clusters. It is unmeasured, so its ceiling is written in rounds until three runs are logged.
+- Eval cases B25, B26, and T20, each pinned by mutations.
+
+Changed
+
+- The stakes test still decides between light and the rest. Who the result reaches decides between medium and full: medium when only the user acts on it, full when it is published or sent to another party. Private decisions that passed the stakes test, which ran full before, now run medium unless the user says full.
+- A verification request with no formation named still runs light; the user can now name medium as well as full.
+- To keep the instructions under 20,000 bytes, the rubric rationale is shorter (the README keeps the full version), the `ultracode` note moved to the README Quick start, and the verification protocol points to the Formations table instead of restating it. No rule was removed. Instructions went from 19,900 to 19,874 bytes.
+
 ## v1.0.0, 18-09-2026
 
 First release. It packages every 18-09-2026 change below, with the skill attached as `gauntlet-verify.zip` for the Claude apps.

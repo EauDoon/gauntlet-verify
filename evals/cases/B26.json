@@ -1,0 +1,20 @@
+{
+  "id": "B26",
+  "kind": "behavior",
+  "context": "Reference mode at medium formation on a portfolio dashboard only the user will rebalance from, matched to a named shipped dashboard; the build has four independent areas",
+  "mode": "reference",
+  "formation": "medium",
+  "passes_if": "The drafting session builds every area with one isolated critic, and one judge, calibrated before round one in both orders, runs every round. It seats no builder per area and no judge panel, and writes the ceiling in rounds",
+  "fails_if": "It fans out one builder per area, seats a panel of judges, or runs the judge only once the critic's findings stop dropping",
+  "checks": [
+    {
+      "type": "skill_contains_all",
+      "phrases": [
+        "one calibrated judge every round",
+        "the drafting session plus one critic at light and medium",
+        "every round at medium and full",
+        "At medium and full, calibrate each judge before round one"
+      ]
+    }
+  ]
+}
