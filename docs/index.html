@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>gauntlet-verify</title>
+<meta name="description" content="gauntlet-verify is a Claude skill for work that cannot afford to be mediocre or wrong: blind judges hold a build to a shipped reference, and isolated verifiers try to kill every claim before it ships.">
+<meta name="color-scheme" content="dark">
+<style>
+:root {
+  --canvas: #0b0d10;
+  --surface: rgba(16, 20, 26, 0.78);
+  --line: #24303b;
+  --ink: #e8eef4;
+  --ink-soft: #a3b1bf;
+  --ice: #3ecf8e;
+  --amber: #e3b341;
+  --cyan: #6cd4ff;
+  --fail: #f47067;
+  --pass: #5fe0a5;
+  --sans: Inter, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html { background: var(--canvas); overflow-x: clip; }
+body { margin: 0; background: var(--canvas); color: var(--ink); font: 400 17px/1.6 var(--sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+a { color: var(--ice); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--ice); outline-offset: 3px; border-radius: 6px; }
+
+#stage { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; z-index: 0; }
+.nojs-art { position: fixed; inset: 0; z-index: 0; background: radial-gradient(60% 50% at 50% 55%, #12301f 0%, var(--canvas) 70%); }
+.has-gl .nojs-art { display: none; }
+
+header.top { position: fixed; top: 0; left: 0; right: 0; z-index: 5; display: flex; justify-content: space-between; align-items: center; padding: 18px clamp(16px, 4vw, 48px); font: 500 13px/1 var(--mono); letter-spacing: 0.02em; }
+header.top .mark { color: var(--ink); text-decoration: none; }
+header.top nav { display: flex; gap: 22px; }
+header.top nav a { color: var(--ink-soft); text-decoration: none; }
+header.top nav a:hover { color: var(--ink); }
+
+main { position: relative; z-index: 2; }
+.act { min-height: 100vh; display: flex; align-items: center; padding: 96px clamp(16px, 5vw, 72px); }
+.act.tall { min-height: 260vh; align-items: flex-start; }
+.act.tall .copy { position: sticky; top: 14vh; }
+.lead { justify-content: flex-start; }
+.trail { justify-content: flex-end; }
+.centre { justify-content: center; text-align: center; }
+.copy { min-width: 0; max-width: 470px; padding: 28px 30px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.copy.bare { background: none; border: 0; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 0; }
+.centre .copy { max-width: 600px; }
+
+h1 { font: 700 clamp(44px, 7.4vw, 104px)/0.95 var(--sans); letter-spacing: -0.045em; margin: 0 0 22px; }
+h2 { font: 650 clamp(30px, 4.2vw, 46px)/1.08 var(--sans); letter-spacing: -0.025em; margin: 0 0 16px; }
+p { margin: 0 0 14px; color: var(--ink-soft); }
+p strong { color: var(--ink); font-weight: 600; }
+.kicker { font: 500 12px/1 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ice); margin-bottom: 18px; }
+.hero .copy { max-width: 620px; }
+.hero .copy.bare { background: radial-gradient(closest-side, rgba(11, 13, 16, 0.82), rgba(11, 13, 16, 0.55) 70%, rgba(11, 13, 16, 0)); padding: 36px 40px 36px 0; }
+.hero p.big { font-size: clamp(19px, 2.2vw, 23px); line-height: 1.5; color: #c8d3dd; max-width: 34ch; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 20px; border-radius: 999px; font: 600 15px/1 var(--sans); text-decoration: none; border: 1px solid var(--line); color: var(--ink); background: rgba(16, 20, 26, 0.6); cursor: pointer; transition: background-color .2s, border-color .2s, transform .2s; }
+.btn:hover { border-color: #3a4a58; transform: translateY(-1px); }
+.btn.primary { background: var(--ice); color: #081118; border-color: var(--ice); }
+.meta { margin-top: 22px; font: 400 13px/1.4 var(--mono); color: #8796a5; }
+
+ol.gate { list-style: none; padding: 0; margin: 18px 0 18px; counter-reset: g; text-align: left; }
+ol.gate li { counter-increment: g; display: grid; grid-template-columns: 34px 1fr; align-items: baseline; padding: 12px 0; border-top: 1px solid var(--line); color: var(--ink); }
+ol.gate li::before { content: counter(g); font: 500 13px var(--mono); color: var(--ice); }
+.tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; text-align: left; }
+.tier { border: 1px solid var(--line); border-radius: 12px; padding: 14px; background: rgba(11, 13, 16, 0.6); }
+.tier b { display: block; font: 600 13px var(--mono); color: var(--ink); margin-bottom: 6px; letter-spacing: 0.04em; }
+.tier span { font-size: 14px; line-height: 1.45; color: var(--ink-soft); }
+
+.rubric { margin: 18px 0 6px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; font: 400 14px/1.45 var(--mono); }
+.rubric div { display: grid; grid-template-columns: 1fr auto; gap: 14px; padding: 11px 14px; border-top: 1px solid var(--line); color: #c8d3dd; }
+.rubric div:first-child { border-top: 0; }
+.rubric em { font-style: normal; color: var(--fail); }
+.rubric .ok { color: var(--pass); }
+
+.lenses { list-style: none; padding: 0; margin: 18px 0 0; }
+.lenses li { display: grid; grid-template-columns: 150px 1fr; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 15px; color: var(--ink-soft); opacity: 0.35; transition: opacity .4s; }
+.lenses li.on { opacity: 1; }
+.lenses li b { color: var(--ink); font: 600 14px var(--mono); }
+
+.quorum { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0 16px; }
+.quorum button { font: 600 14px var(--mono); padding: 11px 16px; border-radius: 999px; border: 1px solid var(--ice); background: rgba(143, 216, 255, 0.12); color: var(--ink); cursor: pointer; transition: background-color .2s, border-color .2s, color .2s, opacity .2s; }
+.quorum button[aria-pressed="false"] { border-color: var(--line); background: transparent; color: #7d8a97; text-decoration: line-through; }
+.verdict { font: 500 15px/1.5 var(--mono); padding: 14px 16px; border-radius: 12px; border: 1px solid var(--line); background: rgba(11, 13, 16, 0.7); min-height: 76px; }
+.verdict .v { font-weight: 700; }
+.verdict.blocked .v { color: var(--fail); }
+.verdict.ships .v { color: #ffd28a; }
+.hint { font-size: 14px; color: #8796a5; margin-top: 12px; }
+
+.report { text-align: left; font: 400 13.5px/1.7 var(--mono); background: rgba(8, 10, 13, 0.92); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin: 22px 0; color: #c8d3dd; overflow-x: auto; white-space: pre; }
+.report .k { color: var(--ice); }
+.report .g { color: var(--pass); }
+pre.install { text-align: left; font: 400 13.5px/1.6 var(--mono); background: rgba(8, 10, 13, 0.92); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin: 0 0 18px; overflow-x: auto; color: #d6e0ea; }
+.close .actions { justify-content: center; }
+.sibling { margin-top: 22px; font-size: 15px; }
+
+.labels { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+.labels span { position: absolute; left: 0; top: 0; font: 600 11px/1 var(--mono); letter-spacing: 0.06em; color: var(--ink); padding: 5px 8px; border-radius: 6px; background: rgba(11, 13, 16, 0.75); border: 1px solid var(--line); opacity: 0; transition: opacity .3s; white-space: nowrap; will-change: transform; }
+
+footer { position: relative; z-index: 2; padding: 40px clamp(16px, 5vw, 72px) 56px; font: 400 13px/1.6 var(--mono); color: #8796a5; display: flex; flex-wrap: wrap; gap: 8px 28px; justify-content: space-between; border-top: 1px solid var(--line); background: var(--canvas); }
+footer a { color: #a3b1bf; }
+
+@media (max-width: 760px) {
+  body { font-size: 16px; }
+  header.top nav a.hide-sm { display: none; }
+  .act { padding: 88px 16px 72px; align-items: flex-end; }
+  .act.tall .copy { top: auto; bottom: 16px; }
+  .act.tall { align-items: flex-end; }
+  .act.tall .copy { position: sticky; }
+  .trail, .lead { justify-content: center; }
+  .copy { width: 100%; max-width: 100%; padding: 22px 20px; }
+  .hero { align-items: flex-end; }
+  .hero .copy { background: var(--surface); border: 1px solid var(--line); padding: 22px 20px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .tiers { grid-template-columns: 1fr; }
+  .lenses li { grid-template-columns: 1fr; gap: 0; padding: 7px 0; font-size: 14px; }
+  .lenses li span { display: none; }
+  .lenses li.on span { display: block; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; scroll-behavior: auto !important; }
+}
+
+.modes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; text-align: left; }
+.mode { border: 1px solid var(--line); border-radius: 12px; padding: 16px; background: rgba(11, 13, 16, 0.6); }
+.mode b { display: block; font: 600 13px var(--mono); color: var(--ink); margin-bottom: 8px; letter-spacing: 0.04em; }
+.mode span { font-size: 14.5px; line-height: 1.5; color: var(--ink-soft); }
+.formation { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0 16px; }
+.formation button { font: 600 14px var(--mono); padding: 11px 16px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: #a3b1bf; cursor: pointer; transition: background-color .2s, border-color .2s, color .2s; }
+.formation button[aria-pressed="true"] { border-color: var(--ice); background: rgba(62, 207, 142, 0.14); color: var(--ink); }
+.seatcard { font: 400 14px/1.6 var(--mono); padding: 14px 16px; border-radius: 12px; border: 1px solid var(--line); background: rgba(11, 13, 16, 0.7); min-height: 132px; color: #c8d3dd; }
+.seatcard b { color: var(--ink); font-weight: 600; }
+.seatcard .when { color: var(--ice); }
+.labelset { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 14px; }
+.labelset button { font: 600 14px var(--mono); padding: 11px 16px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; }
+.labelset button[data-i="0"] { border-color: var(--ice); }
+.labelset button[data-i="1"] { border-color: var(--amber); }
+.labelset button[data-i="2"] { border-color: var(--fail); }
+.labelset button[aria-pressed="true"][data-i="0"] { background: rgba(62, 207, 142, 0.16); }
+.labelset button[aria-pressed="true"][data-i="1"] { background: rgba(227, 179, 65, 0.16); }
+.labelset button[aria-pressed="true"][data-i="2"] { background: rgba(244, 112, 103, 0.16); }
+.labeldef { font: 400 14.5px/1.55 var(--sans); padding: 14px 16px; border-radius: 12px; border: 1px solid var(--line); background: rgba(11, 13, 16, 0.7); min-height: 96px; color: #c8d3dd; }
+.tells { margin: 18px 0 6px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; font: 400 14px/1.45 var(--mono); }
+.tells div { display: grid; grid-template-columns: 1fr auto; gap: 14px; padding: 11px 14px; border-top: 1px solid var(--line); color: #c8d3dd; }
+.tells div:first-child { border-top: 0; }
+.tells .ok { color: var(--pass); }
+.tells em { font-style: normal; color: var(--amber); }
+@media (max-width: 760px) { .modes { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<canvas id="stage" aria-hidden="true"></canvas>
+<div class="nojs-art" aria-hidden="true"></div>
+<div class="labels" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+
+<header class="top">
+  <a class="mark" href="#top">gauntlet-verify</a>
+  <nav aria-label="Page">
+    <a class="hide-sm" href="#reference">Reference</a>
+    <a class="hide-sm" href="#verify">Verify</a>
+    <a class="hide-sm" href="#formations">Formations</a>
+    <a href="https://github.com/EauDoon/gauntlet-verify">GitHub</a>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="act hero lead" data-state='{"view":"hero","rounds":4,"split":1,"seats":2,"ref":0}'>
+    <div class="copy bare">
+      <div class="kicker">A Claude skill</div>
+      <h1>gauntlet&#8209;verify</h1>
+      <p class="big">For work that cannot afford to be mediocre or wrong. Build to a shipped bar, and check every claim with agents that never saw your reasoning.</p>
+      <div class="actions">
+        <a class="btn primary" href="https://github.com/EauDoon/gauntlet-verify">Get the skill</a>
+        <a class="btn" href="https://github.com/EauDoon/gauntlet-verify/blob/main/.claude/skills/gauntlet-verify/SKILL.md">Read SKILL.md</a>
+      </div>
+      <div class="meta">Two modes. Three formations. A ceiling written before it spends.</div>
+    </div>
+  </section>
+
+  <section class="act trail" data-state='{"view":"close","rounds":0,"split":0,"seats":0,"ref":0}'>
+    <div class="copy">
+      <h2>A rubric is a lossy copy of the bar.</h2>
+      <p>It works when the criteria are mechanical and fails when the quality is experiential: a page that feels expensive, a deck that lands, prose that does not read as generated.</p>
+      <p><strong>So the skill does not write criteria. It names an artifact that already clears the bar,</strong> and it seats agents that never saw the build to say where the gap is.</p>
+    </div>
+  </section>
+
+  <section class="act centre" data-state='{"view":"wide","rounds":4,"split":1,"seats":2,"ref":0.7}'>
+    <div class="copy">
+      <h2>The request picks the mode.</h2>
+      <div class="modes">
+        <div class="mode"><b>REFERENCE</b><span>Point it at a shipped thing you want to match. An isolated critic and blind judges run until the judges can tell your build from the original only by brand, age or adoption, never by craft.</span></div>
+        <div class="mode"><b>VERIFICATION</b><span>Point it at research that has to be right. Agents that never saw your reasoning try to kill every load-bearing claim, and each claim ships labeled.</span></div>
+      </div>
+      <p class="hint">A seat is one isolated agent role. A formation is how many seats a job gets. A ceiling is the budget in rounds or tokens.</p>
+    </div>
+  </section>
+
+  <section class="act tall lead" id="reference" data-state='{"view":"side","rounds":4,"split":0.5,"seats":2,"ref":1}' data-progress="rounds">
+    <div class="copy">
+      <h2>Reference mode runs the gauntlet.</h2>
+      <ol class="gate">
+        <li>Name a specific shipped reference and write the ceiling. "Linear's settings page" passes. "Good design" does not.</li>
+        <li>An isolated critic names the gaps, each mapped to one area and one edit. No praise.</li>
+        <li>Fix, and snapshot every round, so a regression goes back to whoever caused it.</li>
+        <li>Blind judges see both artifacts unlabeled, in both orders, and say which is the attempt and what gave it away.</li>
+      </ol>
+      <div class="tells" role="table" aria-label="How a judge's tell is read">
+        <div role="row"><span role="cell">Craft tell: spacing, copy, motion</span><span role="cell"><em>next round's brief</em></span></div>
+        <div role="row"><span role="cell">Identity tell only: brand, age, adoption</span><span role="cell" class="ok">done, ship it</span></div>
+        <div role="row"><span role="cell">Two rounds with no drop, or the ceiling</span><span role="cell">park the best snapshot</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="act trail" id="verify" data-state='{"view":"close","rounds":4,"split":1,"seats":3,"ref":0}' data-labels>
+    <div class="copy">
+      <h2>Verification mode tries to kill every claim.</h2>
+      <p>Verifiers get the claims and where each came from, never the reasoning that produced them. They answer the open question first, trace to the primary source, recompute, re-fetch, and check the date.</p>
+      <p>Every claim leaves with one label. Pick one.</p>
+      <div class="labelset" role="group" aria-label="Claim labels">
+        <button type="button" aria-pressed="false" data-i="0">verified</button>
+        <button type="button" aria-pressed="false" data-i="1">reported</button>
+        <button type="button" aria-pressed="false" data-i="2">unverified</button>
+      </div>
+      <div class="labeldef" aria-live="polite">A claim is split into atomic facts first, and it is verified only if every fact is. Conflicting figures are never averaged.</div>
+    </div>
+  </section>
+
+  <section class="act lead" id="formations" data-state='{"view":"wide","rounds":4,"split":1,"seats":2,"ref":0.4}' data-formation>
+    <div class="copy">
+      <h2>Spend follows consequence.</h2>
+      <p>The stakes test decides between light and the rest. Who sees the result decides between medium and full. Your word overrides it either way.</p>
+      <div class="formation" role="group" aria-label="Formation">
+        <button type="button" aria-pressed="true" data-f="light">Light</button>
+        <button type="button" aria-pressed="false" data-f="medium">Medium</button>
+        <button type="button" aria-pressed="false" data-f="full">Full</button>
+      </div>
+      <div class="seatcard" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="act trail" data-state='{"view":"side","rounds":2,"split":0.4,"seats":1,"ref":0.5}'>
+    <div class="copy">
+      <h2>You are the brake.</h2>
+      <p>There is no round cap. A round that would pass the ceiling, judged by spend so far plus the last round's cost, does not start.</p>
+      <p><strong>Two rounds in a row with no drop in open tells is a stalled loop.</strong> It stops and reports. At any stop short of Done, the best snapshot ships, not the last.</p>
+    </div>
+  </section>
+
+  <section class="act centre close" data-state='{"view":"wide","rounds":4,"split":1,"seats":2,"ref":0}'>
+    <div class="copy">
+      <h2>Install it.</h2>
+      <pre class="install"><code>git clone https://github.com/EauDoon/gauntlet-verify
+cp -r gauntlet-verify/.claude/skills/gauntlet-verify ~/.claude/skills/</code></pre>
+      <div class="actions">
+        <a class="btn primary" href="https://github.com/EauDoon/gauntlet-verify">Install gauntlet-verify</a>
+      </div>
+      <p class="sibling">Work already finished? Its sibling, <a href="https://github.com/EauDoon/cold-read">cold-read</a>, reads it blind before it leaves your hands.</p>
+      <p class="hint">The Gauntlet Loop is <a href="https://github.com/mshumer">Matt Shumer's</a> technique. This skill forks <a href="https://github.com/robonuggets/gauntlet-loop">robonuggets/gauntlet-loop</a> and rebuilds it for day-to-day use.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>gauntlet-verify by <a href="https://github.com/EauDoon">@EauDoon</a>. Licensed CC BY 4.0.</span>
+  <span>Rendered live with <a href="https://threejs.org">three.js</a> (MIT), bundled in this folder.</span>
+</footer>
+
+<script type="importmap">{"imports":{"three":"./vendor/three.module.min.js","three/addons/":"./vendor/addons/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { gauntlet } from './scene.js';
+
+const canvas = document.getElementById('stage');
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+} catch (e) { renderer = null; }
+
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const acts = [...document.querySelectorAll('[data-state]')];
+const states = acts.map(a => JSON.parse(a.dataset.state));
+const target = { ...states[0], focus: -1 };
+
+// Claim labels, as the skill defines them.
+const LABEL_TEXT = [
+  '<b>verified</b>: one tier A source, which is a primary source, or two independent tier B sources.',
+  '<b>reported</b>: a single tier B source: named-author reporting at an established outlet, or a counterparty document.',
+  '<b>unverified</b>: everything else, including anything resting on aggregators. It can still ship, labeled, with what would settle it.',
+];
+let focus = -1;
+const labeldef = document.querySelector('.labeldef');
+const labelButtons = [...document.querySelectorAll('.labelset button')];
+labelButtons.forEach(b => b.addEventListener('click', () => {
+  const i = +b.dataset.i; focus = focus === i ? -1 : i;
+  labelButtons.forEach(x => x.setAttribute('aria-pressed', +x.dataset.i === focus ? 'true' : 'false'));
+  if (focus >= 0) labeldef.innerHTML = LABEL_TEXT[focus];
+  tick(true);
+}));
+
+// Formations: seats in the scene follow the pick.
+const FORMATIONS = {
+  light: { seats: 2, names: ['Critic', 'Judge'], when: 'Default, whenever the stakes test fails.', ref: 'One isolated critic, and one judge once the critic\'s findings stop dropping.', ver: 'One isolated verifier for all claims.', cost: 'About 100k to 150k tokens, estimated, not a cap.' },
+  medium: { seats: 2, names: ['Critic', 'Calibrated judge'], when: 'The stakes test passes and the result reaches no one else.', ref: 'One isolated critic, and one judge every round, calibrated before round one.', ver: 'One isolated verifier per claim cluster, at most three.', cost: 'Unmeasured. Two smoke runs used about 655k and 362k subagent tokens.' },
+  full: { seats: 5, names: ['Critic', 'Judge', 'Judge', 'Builder', 'Builder'], when: 'The result reaches other people: public, a board, a client, a counterparty.', ref: 'A builder per area, one isolated critic, and a panel of 2 to 3 judges every round.', ver: 'One isolated verifier per claim cluster.', cost: 'About 325k subagent tokens per round, measured once in reference mode.' },
+};
+let formation = 'light';
+const seatcard = document.querySelector('.seatcard');
+function showFormation() {
+  const f = FORMATIONS[formation];
+  seatcard.innerHTML = `<span class="when">When</span> ${f.when}<br><b>Reference</b> ${f.ref}<br><b>Verification</b> ${f.ver}<br><b>Cost</b> ${f.cost}`;
+}
+document.querySelectorAll('.formation button').forEach(b => b.addEventListener('click', () => {
+  formation = b.dataset.f;
+  document.querySelectorAll('.formation button').forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+  showFormation(); tick(true);
+}));
+showFormation();
+
+let names = ['Critic', 'Judge'];
+function scrollState() {
+  const mid = innerHeight * 0.5;
+  let best = 0, bestD = Infinity;
+  acts.forEach((a, i) => {
+    const r = a.getBoundingClientRect();
+    const d = r.top <= mid && r.bottom >= mid ? 0 : Math.min(Math.abs(r.top - mid), Math.abs(r.bottom - mid));
+    if (d < bestD) { bestD = d; best = i; }
+  });
+  const a = acts[best];
+  Object.assign(target, states[best]);
+  target.focus = -1;
+  names = ['Critic', 'Judge'];
+  const r = a.getBoundingClientRect();
+  const prog = Math.min(1, Math.max(0, (mid - r.top) / Math.max(1, r.height - innerHeight * 0.4)));
+  if (a.dataset.progress === 'rounds') {
+    target.rounds = Math.min(4, 0.3 + prog * 4.4);
+    document.querySelectorAll('#reference ol.gate li').forEach((li, i) => li.style.opacity = target.rounds > i + 0.3 ? 1 : 0.35);
+  }
+  if ('labels' in a.dataset) { target.focus = focus; names = ['Verifier', 'Verifier', 'Verifier']; }
+  if ('formation' in a.dataset) { target.seats = FORMATIONS[formation].seats; names = FORMATIONS[formation].names; }
+  return best;
+}
+
+let scene, composer;
+const labels = [...document.querySelectorAll('.labels span')];
+
+if (renderer) {
+  document.documentElement.classList.add('has-gl');
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const env = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  const w = innerWidth, h = innerHeight;
+  scene = gauntlet(THREE, { env, w, h, view: 'hero' });
+  composer = new EffectComposer(renderer);
+  composer.addPass(new RenderPass(scene.scene, scene.camera));
+  const bloom = new UnrealBloomPass(new THREE.Vector2(w, h), scene.bloom.strength, scene.bloom.radius, scene.bloom.threshold);
+  composer.addPass(bloom); composer.addPass(new OutputPass());
+  const resize = () => {
+    const dpr = Math.min(devicePixelRatio || 1, innerWidth < 760 ? 1.5 : 2);
+    renderer.setPixelRatio(dpr); renderer.setSize(innerWidth, innerHeight, false);
+    composer.setPixelRatio(dpr); composer.setSize(innerWidth, innerHeight);
+    scene.camera.aspect = innerWidth / innerHeight;
+    // narrow screens: pull the camera back so the beam, prism and rays fit
+    scene.camera.zoom = innerWidth / innerHeight < 0.8 ? 0.5 : innerWidth / innerHeight < 1.2 ? 0.72 : 1;
+    scene.camera.updateProjectionMatrix();
+  };
+  addEventListener('resize', () => { resize(); tick(true); });
+  resize();
+}
+
+let t = 0.08, last = performance.now(), shift = 1;
+const v = new THREE.Vector3();
+function tick(force) {
+  if (!scene) return;
+  const now = performance.now();
+  if (!reduced) t += Math.min(0.05, (now - last) / 1000) * 0.06;
+  last = now;
+  const active = scrollState();
+  const cls = acts[active].classList;
+  const shiftTarget = innerWidth < 760 ? 0 : cls.contains('lead') ? 1 : cls.contains('trail') ? -1 : 0;
+  shift += (shiftTarget - shift) * (reduced ? 1 : 0.06);
+  scene.camera.setViewOffset(innerWidth, innerHeight, -shift * innerWidth * 0.2, innerWidth < 760 ? innerHeight * 0.18 : 0, innerWidth, innerHeight);
+  // Reduced motion: no drift, the scene settles on the state of the act in view.
+  if (reduced) for (let i = 0; i < 40; i++) scene.update(t, target); else scene.update(t, target);
+  composer.render();
+  const a = acts[active].dataset;
+  const showLabels = 'formation' in a || 'labels' in a || a.progress === 'rounds';
+  scene.seats.forEach((S, i) => {
+    const el = labels[i];
+    if (!showLabels || S.vis < 0.5 || innerWidth < 760 || !names[i]) { el.style.opacity = 0; return; }
+    el.textContent = names[i];
+    S.g.getWorldPosition(v); v.y += 0.32; v.project(scene.camera);
+    const x = (v.x * 0.5 + 0.5) * innerWidth, y = (-v.y * 0.5 + 0.5) * innerHeight;
+    el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -100%)`;
+    el.style.opacity = S.vis;
+  });
+}
+if (scene) {
+  if (reduced) { tick(true); addEventListener('scroll', () => tick(true), { passive: true }); }
+  else { const loop = () => { tick(); requestAnimationFrame(loop); }; loop(); }
+}
+</script>
+</body>
+</html>
