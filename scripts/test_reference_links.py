@@ -18,11 +18,11 @@ def load_mod():
     return mod
 
 
-def text_errors(markdown):
+def text_errors(markdown, filename="README.md"):
     mod = load_mod()
     root = Path(tempfile.mkdtemp())
     try:
-        (root / "README.md").write_text(markdown, encoding="utf-8")
+        (root / filename).write_text(markdown, encoding="utf-8")
         old = mod.ROOT
         mod.ROOT = root
         errors = []
@@ -59,6 +59,10 @@ class ReferenceLinkTest(unittest.TestCase):
     def test_label_match_is_case_insensitive(self):
         errors = text_errors("See [x][There].\n\n[there]: README.md\n")
         self.assertFalse(any("undefined reference" in e for e in errors), errors)
+
+    def test_html_array_access_is_not_a_reference_link(self):
+        html = '<script>const seat = modes[mode][formation];</script><a href="missing.html">More</a>'
+        self.assertEqual(text_errors(html, "index.html"), ["index.html: broken relative link 'missing.html'"])
 
     def test_fenced_reference_is_ignored(self):
         errors = text_errors("```\n[x][missing]\n```\n")

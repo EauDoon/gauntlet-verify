@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Gauntlet Verify · Review atlas</title>
+<style>
+:root{color-scheme:dark;--ink:#eff7f4;--muted:#abc0c3;--bg:#0b161b;--line:#36515b;--aqua:#77e6df;--amber:#ffca8a;font:100%/1.55 system-ui,sans-serif}
+*{box-sizing:border-box}body{margin:0;color:var(--ink);background:radial-gradient(ellipse at 80% 0,#182f37,transparent 50%),var(--bg)}main,header,footer{max-width:77rem;margin:auto;padding:1.3rem clamp(1rem,4vw,3.2rem)}
+header,footer,.bar,.controls{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}header,footer{justify-content:space-between;border-bottom:1px solid var(--line)}footer{border-top:1px solid var(--line);border-bottom:0;margin-top:2rem;color:var(--muted)}
+header strong,.kicker,summary,button,label,.stage-key{font-family:ui-monospace,monospace}.mark{display:inline-block;color:var(--aqua);margin-right:.4rem}h1{font:500 clamp(3.3rem,7vw,6.8rem)/1 Georgia,serif;letter-spacing:-.065em;margin:.3rem 0 .75rem}h2{font:500 clamp(1.75rem,3.5vw,2.75rem)/1.16 Georgia,serif;letter-spacing:-.035em;margin:.6rem 0}p{max-width:65ch}.kicker{letter-spacing:.14em;text-transform:uppercase;font-size:.79rem;color:var(--aqua);margin:.8rem 0}.intro{color:var(--muted);max-width:60ch;margin-bottom:1.8rem}a{color:var(--aqua);text-underline-offset:.25em}
+section,.panel{border:1px solid var(--line);border-radius:.7rem;background:#102128}.grid{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(16rem,1fr);gap:1rem}.inset,.panel{padding:clamp(1rem,2vw,1.5rem)}.canvas{width:100%;height:auto;display:block;aspect-ratio:640/395;background:radial-gradient(ellipse at 37% 50%,#24434b 0,transparent 60%),repeating-linear-gradient(0deg,#152930 0 1px,transparent 1px 28px),repeating-linear-gradient(90deg,#152930 0 1px,#0d1d24 1px 28px);touch-action:pan-y;user-select:none}
+.canvas text{font:15px ui-monospace,monospace;fill:#e3eeee;paint-order:stroke;stroke:#0d1d24;stroke-width:4px}.canvas g[role=button]{cursor:pointer}.canvas .active text{fill:white;font-weight:bold}.controls{gap:.5rem;padding:.8rem 1rem;border-top:1px solid var(--line)}
+button,select,input{font:inherit;color:var(--ink);background:#192f37;border:1px solid #59737a;padding:.5rem .7rem;border-radius:.35rem;min-height:2.65rem}button{cursor:pointer}button:hover,select:hover{border-color:var(--aqua)}:focus-visible{outline:3px solid var(--amber);outline-offset:3px}.canvas g:focus-visible circle{stroke:white;stroke-width:4px}.help,.sub{color:var(--muted);font-size:.93rem}.panel .links{display:flex;gap:.5rem;flex-wrap:wrap}.space{margin-top:1rem}details{border-top:1px solid var(--line);padding:.7rem 0}summary{cursor:pointer;font-weight:600}label{font-size:.9rem;display:grid;gap:.25rem}.plan{display:grid;grid-template-columns:1fr 1fr;gap:1rem}output{display:block;font-size:1.1rem;color:var(--ink);padding:1rem 0}.pin{display:inline-block;padding:.15rem .5rem;color:var(--amber);border:1px solid #73604a;border-radius:20px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.83rem}[hidden]{display:none!important}
+@media(max-width:760px){.grid,.plan{grid-template-columns:1fr}header,footer{font-size:.88rem}.canvas text{font-size:21px}.bar label{flex:1;min-width:8rem}.panel{min-height:12rem}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header><strong><span class="mark" aria-hidden="true">◭</span> Gauntlet Verify</strong><a href="https://github.com/EauDoon/gauntlet-verify">EauDoon / gauntlet-verify ↗</a></header>
+<main><p class="kicker">Review protocol</p><h1>Review atlas</h1><p class="intro">Follow a build from its reference to a blind judgment, or trace a claim from its source to its evidence label.</p>
+<div id="interactive" hidden>
+<div class="grid">
+<section aria-label="Protocol map"><div class="inset bar"><label>Show path <select id="mode"><option value="all">Both modes</option><option value="reference">Reference</option><option value="verification">Verification</option></select></label><label>Inspect stage <select id="stage"></select></label></div><svg class="canvas" viewBox="0 0 640 395" aria-label="Rotatable protocol graph. Select a stage to inspect its handoffs." aria-describedby="navhelp" id="map"></svg>
+<div class="controls"><button id="left" aria-label="Rotate left">↶ Left</button><button id="right" aria-label="Rotate right">Right ↷</button><button id="reset">Reset view</button></div>
+<p class="inset help" id="navhelp">Tap or focus a stage and press Enter. Drag horizontally or use the rotation buttons to inspect depth.</p></section>
+<aside class="panel" aria-live="polite"><span class="pin" id="lane"></span><h2 id="title"></h2><p id="description"></p><p><a id="source">Read the protocol ↗</a></p><p class="kicker" id="handoff">Hands off to</p><div class="links" id="neighbors"></div></aside>
+</div>
+<section class="inset space"><p class="kicker">Round preparation</p><h2>Plan the seats</h2><p class="sub">Choose a mode and formation to see who reviews the work. Download a blank brief to fill before a round starts.</p>
+<div class="plan"><label>Mode <select id="planmode"><option value="reference">Reference</option><option value="verification">Verification</option></select></label>
+<label>Formation <select id="formation"><option>Light</option><option>Medium</option><option>Full</option></select></label></div><output id="seats" aria-live="polite"></output><button id="brief">Download run brief (.md)</button> <a href="https://github.com/EauDoon/gauntlet-verify/blob/main/README.md#three-formations">Formation rules</a></section>
+</div>
+<section class="inset space" id="index"><p class="kicker">Stage directory</p><h2>Protocol handoffs</h2><p class="sub">Open a stage for its decision, next steps, and source. The directory works offline.</p>
+<details id="ceiling" data-mode="shared" data-point="-205,0,-70"><summary>Write ceiling</summary><p>Name the formation and the maximum rounds or tokens before seating anyone. The medium formation uses rounds until enough runs are logged.</p><a href="https://github.com/EauDoon/gauntlet-verify/blob/main/README.md#three-formations">Read the protocol</a> · Next <a href="#reference">Set reference</a> / <a href="#clusters">Split claims</a></details>
+<details id="reference" data-mode="reference" data-point="-112,-94,30"><summary>Set reference</summary><p>Name a shipped reference, the property being matched and the way judges will see the pair. Give each independently failing area an owner.</p><a href="https://github.com/EauDoon/gauntlet-verify/blob/main/README.md#reference-mode">Read the protocol</a> · Next <a href="#critic">Isolated critic</a></details>
+<details id="critic" data-mode="reference" data-point="28,-126,-64"><summary>Isolated critic</summary><p>A fresh critic compares the current build with the reference. It ranks gaps and maps each finding to an area and an edit.</p><a href="https://github.com/EauDoon/gauntlet-verify/blob/main/README.md#reference-mode">Read the protocol</a> · Next <a href="#judges">Blind judges</a></details>
+<details id="judges" data-mode="reference" data-point="143,-57,44"><summary>Blind judges</summary><p>Compare unlabeled artifacts in both orders. A material craft tell returns the work for another round. Identity-only tells can end the comparison.</p><a href="https://github.com/EauDoon/gauntlet-verify/blob/main/README.md#the-judge-question">Read the protocol</a> · Next <a href="#reference">Set reference</a> / <a href="#log">Log run</a></details>
+<details id="clusters" data-mode="verification" data-point="-120,86,84"><summary>Split claims</summary><p>Break each claim into atomic facts and cluster facts that rely on the same source set.</p><a href="https://github.com/EauDoon/gauntlet-verify/blob/main/README.md#verification-mode">Read the protocol</a> · Next <a href="#verifiers">Check evidence</a></details>
+<details id="verifiers" data-mode="verification" data-point="16,125,-46"><summary>Check evidence</summary><p>Isolated verifiers answer the open question, look for contradiction, trace evidence, recompute quantities, and check live figures and dates.</p><a href="https://github.com/EauDoon/gauntlet-verify/blob/main/README.md#verification-mode">Read the protocol</a> · Next <a href="#labels">Label claims</a></details>
+<details id="labels" data-mode="verification" data-point="144,72,32"><summary>Label claims</summary><p>Use verified, reported, or unverified for each claim. A correction reopens its dependent claims for verification.</p><a href="https://github.com/EauDoon/gauntlet-verify/blob/main/README.md#verification-mode">Read the protocol</a> · Next <a href="#verifiers">Check evidence</a> / <a href="#log">Log run</a></details>
+<details id="log" data-mode="shared" data-point="227,0,-85"><summary>Log run</summary><p>Append the complete dated line to the project log and read it back. Record the trajectory, rounds and tokens, including when verification could not run.</p><a href="https://github.com/EauDoon/gauntlet-verify/blob/main/README.md#the-run-log">Read the protocol</a></details>
+</section>
+<details id="schema" hidden><summary>Inspect graph data</summary><p>The graph is a local, read-only snapshot of the stage directory.</p><pre id="payload"></pre></details>
+</main><footer><span>Gauntlet Verify · EauDoon fork</span><a href="https://github.com/EauDoon/gauntlet-verify/blob/main/README.md#credit">Credit and upstream</a></footer>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const nodes = Array.from(document.querySelectorAll('#index details'), row => ({
+  id: row.id, title: row.querySelector('summary').textContent, mode: row.dataset.mode,
+  summary: row.querySelector('p').textContent, source: row.querySelector('a').href,
+  point: row.dataset.point.split(',').map(Number),
+  next: Array.from(row.querySelectorAll('a[href^="#"]'), link => link.hash.slice(1))
+}));
+const byId = new Map(nodes.map(node => [node.id,node]));
+const svg = $('map');
+const ns = 'http://www.w3.org/2000/svg';
+const element = (name, attrs) => {
+  const el = document.createElementNS(ns,name);
+  for (const [key,value] of Object.entries(attrs)) el.setAttribute(key,value);
+  return el;
+};
+let angle = 0;
+let active = byId.has(location.hash.slice(1)) ? location.hash.slice(1) : 'ceiling';
+function visible(node) {
+  return $('mode').value === 'all' || node.mode === 'shared' || node.mode === $('mode').value;
+}
+function project([x,y,z]) {
+  const depth = z*Math.cos(angle)-x*Math.sin(angle);
+  const scale = 700/(700-depth);
+  return {x:320+(x*Math.cos(angle)+z*Math.sin(angle))*scale,y:195+y*scale,scale,depth};
+}
+function paint() {
+  svg.replaceChildren();
+  // The fork's profile tile uses a prism to split one beam into evidence paths.
+  const prism = [[-45,32,-30],[35,32,-30],[0,-38,-30],[-45,32,30],[35,32,30],[0,-38,30]].map(project);
+  for (const face of [[0,1,2],[3,4,5],[0,1,4,3],[1,2,5,4],[2,0,3,5]]) {
+    svg.append(element('polygon',{
+      points:face.map(i=>prism[i].x+','+prism[i].y).join(' '),
+      fill:'#77e6df','fill-opacity':.055,stroke:'#68a9a7','stroke-width':1,'stroke-opacity':.55,
+      'aria-hidden':'true'
+    }));
+  }
+  const stages = nodes.filter(visible);
+  const hitRadius = Math.max(22, 22 * 640 / (svg.getBoundingClientRect().width || 640));
+  const positions = new Map(stages.map(n => [n.id, project(n.point)]));
+  const colors = {shared:'#e2e9d6',reference:'#78e6df',verification:'#ffbd85'};
+  for (const node of stages) {
+    const start = positions.get(node.id);
+    for (const id of node.next) {
+      if (!positions.has(id)) continue;
+      const end = positions.get(id);
+      svg.append(element('line',{x1:start.x,y1:start.y,x2:end.x,y2:end.y,stroke:colors[byId.get(id).mode],'stroke-width':active===node.id?3:1.2,opacity:active===node.id?.95:.5}));
+    }
+  }
+  for (const node of stages.slice().sort((a,b)=>positions.get(a.id).depth-positions.get(b.id).depth)) {
+    const p = positions.get(node.id), color = colors[node.mode];
+    const g = element('g',{transform:'translate('+p.x+' '+p.y+')',role:'button',tabindex:'0','aria-label':node.title,'aria-pressed':node.id===active,class:node.id===active?'active':''});
+    g.append(element('circle',{r:hitRadius,fill:'transparent'}));
+    if(node.id===active) g.append(element('circle',{r:15*p.scale,fill:'none',stroke:color}));
+    g.append(element('circle',{r:7*p.scale,fill:color,stroke:'#102128','stroke-width':2}));
+    const label = element('text',{'text-anchor':'middle',y:-19*p.scale});
+    label.textContent=node.title;
+    g.append(label);
+    g.onclick = () => select(node.id,true);
+    g.onkeydown = event => {
+      if (event.key==='Enter'||event.key===' ') { event.preventDefault();select(node.id,true); }
+    };
+    svg.append(g);
+  }
+}
+function select(id,focus=false) {
+  active=id;
+  const node=byId.get(id);
+  const picker=$('stage');
+  picker.replaceChildren(...nodes.filter(visible).map(n=>new Option(n.title,n.id)));
+  picker.value=id;
+  $('lane').textContent=node.mode==='shared'?'Both modes':node.mode.charAt(0).toUpperCase()+node.mode.slice(1);
+  $('title').textContent=node.title;
+  $('description').textContent=node.summary;
+  $('source').href=node.source;
+  $('neighbors').replaceChildren();
+  for(const id of node.next.filter(key=>visible(byId.get(key)))) {
+    const button=document.createElement('button');
+    button.textContent=byId.get(id).title+' →';
+    button.onclick=()=>select(id,true);
+    $('neighbors').append(button);
+  }
+  $('handoff').hidden=!$('neighbors').childElementCount;
+  paint();
+  if(focus) svg.querySelector('[aria-pressed="true"]').focus({preventScroll:true});
+}
+$('stage').onchange=()=>select($('stage').value);
+$('mode').onchange=()=>select(visible(byId.get(active)) ? active : 'ceiling');
+$('left').onclick=()=>{ angle-=Math.PI/12;paint(); };
+$('right').onclick=()=>{ angle+=Math.PI/12;paint(); };
+$('reset').onclick=()=>{angle=0;paint();};
+let drag=null;
+svg.onpointerdown=e=>{drag={x:e.clientX,start:angle};};
+svg.onpointermove=e=>{
+  if(!drag || e.buttons!==1 || Math.abs(e.clientX-drag.x)<5)return;
+  svg.setPointerCapture(e.pointerId);
+  angle=drag.start+(e.clientX-drag.x)/160;
+  paint();
+};
+svg.onpointerup=svg.onpointercancel=()=>{drag=null;};
+const seats = {
+  reference:{
+    Light:'The drafting session builds. One isolated critic reviews. One judge compares once critic findings stop dropping.',
+    Medium:'The drafting session builds. One isolated critic reviews. One calibrated judge compares every round in both orders.',
+    Full:'One builder per independent area, one isolated critic, and two to three calibrated judges. Each judge compares both orders.'
+  },
+  verification:{
+    Light:'One isolated verifier checks every claim.',
+    Medium:'Seat one isolated verifier per source cluster, up to three. Merge the smallest clusters until they fit.',
+    Full:'Seat one isolated verifier per source cluster. Each verifier checks every claim assigned to its cluster.'
+  }
+};
+function showSeats() {$('seats').textContent=seats[$('planmode').value][$('formation').value];}
+$('planmode').onchange=$('formation').onchange=showSeats;
+$('brief').onclick=()=>{
+  const mode=$('planmode').value, formation=$('formation').value;
+  const fields=mode==='reference'?['Shipped reference','Property to match','Comparison format','Independent build areas','Snapshot and verdict']:['Atomic claims','Primary sources and as-of dates','Source clusters','Claim labels and unresolved evidence','Dependent claims to recheck'];
+  const text=['# Gauntlet Verify run brief',mode+' / '+formation,'Seats: '+seats[mode][formation],'## Ceiling before first round'+(formation==='Medium'?' (rounds)':''),'',...fields.flatMap(s=>['## '+s,'']),'## Run log',''].join('\n\n');
+  const url=URL.createObjectURL(new Blob([text],{type:'text/markdown'}));
+  const link=document.createElement('a');link.href=url;link.download='gauntlet-'+mode+'-'+formation.toLowerCase()+'.md';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+$('payload').textContent=JSON.stringify({data:{protocol:{stages:nodes.map(({point,...node})=>node)}}},null,2);
+$('interactive').hidden=false;$('schema').hidden=false;
+showSeats();select(active);
+window.addEventListener('resize',paint);
+</script>
+</body></html>
