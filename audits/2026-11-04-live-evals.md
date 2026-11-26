@@ -35,12 +35,12 @@ Subject: a frozen copy of that head's `SKILL.md`, read by fresh agents pinned to
 
 ## Smoke test, verification mode (medium)
 
-- Question: where to park a private emergency fund this month (6-month T-bills, the latest Singapore Savings Bond, or a bank deposit). Stakes pass and the result reaches no one else, so medium.
-- Claims: 7 plus 1 derived, on 4 source sets: MAS (4), IRAS (1), CPF Board (1), DBS (1). Medium caps seats at three, so IRAS and CPF merged onto one verifier. Ceiling: 2 rounds.
+- Question: where to place a private cash reserve this month (short-dated government bills, a government savings bond, or a bank deposit). Stakes pass and the result reaches no one else, so medium.
+- Claims: 7 plus 1 derived, on 4 source sets: the central bank (4), the tax authority (1), the pension board (1), and one bank (1). Medium caps seats at three, so the tax authority and the pension board merged onto one verifier. Ceiling: 2 rounds.
 - Each verifier answered the open questions first and got the draft's values after.
-- Round 1: V1 found, before seeing the draft's values, that the December 2026 Savings Bond was already announced (2.39% 10-year average, 1.83% first year), which killed the draft's "not yet announced". It also killed the derived comparison on its comparator and its method. V2 found the draft's tax wording looser than the MAS text.
+- Round 1: V1 found, before seeing the draft's values, that the next savings bond issue was already announced, with its rates published, which killed the draft's "not yet announced". It also killed the derived comparison on its comparator and its method. V2 found the draft's tax wording looser than the issuer's own text.
 - Round 2: the four changed claims were re-verified; no new kills.
-- Labels: every claim ended unverified. The container's proxy blocks mas.gov.sg, iras.gov.sg, cpf.gov.sg, and dbs.com.sg, and the Firecrawl allowance was spent until 12:27 UTC, so no verifier loaded a primary page. Each label names that limit. The brief listed the tools without first checking that the primary hosts were reachable; that was a drafting-session error, not a skill rule.
+- Labels: every claim ended unverified. The test container's proxy blocked all four primary hosts and the scraping tool's daily allowance was spent, so no verifier loaded a primary page. Each label names that limit. The brief listed the tools without first checking that the primary hosts were reachable; that was a drafting-session error, not a skill rule.
 - Cost: about 362k subagent tokens across 3 seats, as the harness reported them.
 
 ## Live behavior evals
@@ -60,7 +60,7 @@ Each case ran in a fresh agent that read only the frozen `SKILL.md` and answered
 | B7 | PASS | regression to motion builder via critic recheck; snapshots; stops after 2 flat rounds; best snapshot not last |
 | B10 | PASS | treats "keep going" as resume; writes new ceiling before round 4; reports against it |
 | B11 | PASS | routes footer finding to its builder; assembler does not patch even one line |
-| B12 | NOT RUN | agent stopped by model safeguards (API error, req_011Cghqv2YqVqMYzhjqp1sSf); not retried per harness note |
+| B12 | NOT RUN | agent stopped by model safeguards (API error); not retried per harness note |
 | B13 | PASS | refuses design notes; critic gets artifact, reference, area names, earlier snapshot only |
 | B14 | PASS | escalates light to full in one line (board = reaches other people); old ceiling holds, asks user to raise |
 | B15 | PASS | self-checks only; deliverable states no independent verification pass ran; logs `not run` |
@@ -86,16 +86,16 @@ X cases, added for this run only:
 
 | Case | Setup | Passes if |
 |---|---|---|
-| X1 | Light verification; in round 1 the user says the result decides whether to sell their own flat, and nothing goes to anyone else | Escalates to medium in one line; one verifier per cluster, at most three; ceiling holds |
+| X1 | Light verification; in round 1 the user says the result decides whether to sell their own home, and nothing goes to anyone else | Escalates to medium in one line; one verifier per cluster, at most three; ceiling holds |
 | X2 | Medium verification of a private decision; mid-run the user says the conclusion goes on X tomorrow | Escalates to full in one line; one verifier per cluster, no cap |
 | X3 | Medium verification with two claim clusters | Two verifiers; no merge and no padding to three |
 | X4 | Medium reference; the judge names no craft tell in either order before round one | Replaces the judge; no verdict yet |
 
 ## Auto-trigger
 
-Two router seats, Opus and Sonnet, each read the 11 skill descriptions below and 24 shuffled prompts, and listed the skills they would load. The skill counts as fired if it appears anywhere in the list.
+Two router seats, Opus and Sonnet, each read 11 skill descriptions (this one and the 10 neighbors below) and 24 shuffled prompts, and listed the skills they would load. The skill counts as fired if it appears anywhere in the list.
 
-Neighbor skills: deep-research, cold-read, metric-pull, anti-slop, frontend-taste, defi-desk, crypto-desk, reasoning-core, pitch-architect, house-style.
+Neighbor skills, named here by role: a research method, a rubric review at ship ([cold-read](https://github.com/EauDoon/cold-read)), a data pull, a style edit, a design skill, a protocol research desk, a market desk, an analysis checker, a pitch structure skill, and a prose style guide.
 
 | Case | Should fire | Opus | Sonnet |
 |---|---|---|---|
@@ -103,26 +103,26 @@ Neighbor skills: deep-research, cold-read, metric-pull, anti-slop, frontend-tast
 | T2 | yes | fired | fired |
 | T3 | yes | fired | fired |
 | T4 | no | none | none |
-| T5 | no | cold-read | cold-read |
-| T6 | no | defi-desk | defi-desk |
-| T7 | no unless shipped page named | frontend-taste | none |
-| T8 | no | anti-slop | anti-slop |
-| T9 | no | cold-read | none |
+| T5 | no | rubric review | rubric review |
+| T6 | no | protocol desk | protocol desk |
+| T7 | no unless shipped page named | design skill | none |
+| T8 | no | style edit | style edit |
+| T9 | no | rubric review | none |
 | T10 | yes | fired | fired |
 | T11 | yes | fired | fired |
 | T12 | yes | fired | fired |
-| T13 | yes | MISS (defi-desk) | MISS (none) |
+| T13 | yes | MISS (protocol desk) | MISS (none) |
 | T14 | yes | fired | fired |
-| T15 | no | frontend-taste | frontend-taste |
-| T16 | no | cold-read, frontend-taste | cold-read |
-| T17 | no | metric-pull | metric-pull |
+| T15 | no | design skill | design skill |
+| T16 | no | rubric review, design skill | rubric review |
+| T17 | no | data pull | data pull |
 | T18 | no | none | none |
-| T19 | no | deep-research, defi-desk | deep-research |
+| T19 | no | research method, protocol desk | research method |
 | T20 | yes | fired | fired |
-| R1 private money research | yes | fired (2nd, after defi-desk) | fired |
+| R1 private money research | yes | fired (2nd, after protocol desk) | fired |
 | R2 medium gauntlet landing page | yes | fired | fired |
-| R3 medium gauntlet on one tweet | no | MISS (fired, would ask for a bar) | anti-slop |
-| R4 Gauntlet medium-risk params | no | defi-desk | defi-desk |
+| R3 medium gauntlet on one tweet | no | MISS (fired, would ask for a bar) | style edit |
+| R4 Gauntlet medium-risk params | no | protocol desk | protocol desk |
 Trigger cases: Opus 19/20, Sonnet 19/20. New prompts: Opus 3/4, Sonnet 4/4.
 
 ## Findings

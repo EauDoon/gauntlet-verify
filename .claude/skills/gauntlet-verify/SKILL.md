@@ -160,7 +160,7 @@ In Claude Code, fan out with subagents or a workflow script, and use `/loop` to 
 | Neighbor | Owns | Split |
 |---|---|---|
 | Research method | Scoping, search, and source grading | It says what must be true; this fields the isolated agents that test it, and fires them unprompted on stakes. If it carries its own kill tests and source tiers, use those, and keep the re-fetch test above |
-| Rubric review at ship | The pass on a finished artifact against written criteria | Finished and shipping versus in flight. After a verification run, the at-ship check still belongs to the rubric review |
+| Rubric review at ship, such as [cold-read](https://github.com/EauDoon/cold-read) | The pass on a finished artifact against written criteria | Finished and shipping versus in flight. After a verification run, the at-ship check still belongs to the rubric review |
 | Data pull | Acquiring and reconciling numeric series | A number is pulled there; a claim built on numbers is verified here |
 | Design or deck skill | The design system, the argument spine | It is the reference; this drives the loop toward it |
 | Skill standard | The bar an instruction or skill is held to | It sets bars; this one chases one |
