@@ -338,8 +338,12 @@ logs/
 └── verification-runs.md  # one line per logged run of this repository's own tests
 audits/                   # dated audit reports, including the 04-11-2026 live evals
 assets/
-├── banner.jpg
-└── src/banner.html       # banner source
+└── banner.svg            # animated README banner, rendered from docs/scene.js
+docs/
+├── index.html            # 3D explainer page, served by GitHub Pages from /docs
+├── scene.js              # the three.js scene shared by the page and the banner
+├── review-atlas.html     # offline review atlas
+└── vendor/               # three.js r170, bundled with its MIT license
 CHANGELOG.md
 LICENSE                   # CC BY 4.0
 README.md
