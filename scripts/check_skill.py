@@ -36,14 +36,13 @@ DASH_RES = (
 )
 FENCE_RE = re.compile(r"^(`{3,}|~{3,}).*?^\1[^\n]*$", re.M | re.S)
 INLINE_CODE_RE = re.compile(r"`[^`\n]+`")
-LINK_RES = [
+MARKDOWN_LINK_RES = [
     # [text](target) and [text](<target> "title")
     re.compile(r"\]\(\s*<([^>]+)>[^)]*\)|\]\(\s*([^)\s]+)(?:\s+[\"'(][^)]*)?\s*\)"),
     # [ref]: target
     re.compile(r"^\s{0,3}\[[^\]]+\]:\s*<?([^\s>]+)>?", re.M),
-    # <img src="..."> and <a href="...">
-    re.compile(r"<(?:img|a)\b[^>]*?\s(?:src|href)\s*=\s*[\"']([^\"']+)[\"']", re.I),
 ]
+HTML_LINK_RE = re.compile(r"<(?:img|a)\b[^>]*?\s(?:src|href)\s*=\s*[\"']([^\"']+)[\"']", re.I)
 EXTERNAL_RE = re.compile(r"^(?:[A-Za-z][A-Za-z0-9+.-]+:|//)")
 REF_DEF_RE = re.compile(r"^\s{0,3}\[([^\]]+)\]:", re.M)
 REF_USE_RE = re.compile(r"!?\[([^\]]+)\]\s*\[([^\]]*)\]")
@@ -125,8 +124,13 @@ def check_text(errors):
             for pattern, label in DASH_RES:
                 if pattern.search(line):
                     errors.append(f"{rel}:{lineno}: {label}")
-        prose = INLINE_CODE_RE.sub("", FENCE_RE.sub("", text))
-        for pattern in LINK_RES:
+        prose = text
+        patterns = [HTML_LINK_RE]
+        if path.suffix == ".md":
+            prose = INLINE_CODE_RE.sub("", FENCE_RE.sub("", text))
+            patterns.extend(MARKDOWN_LINK_RES)
+            check_undefined_references(prose, rel, errors)
+        for pattern in patterns:
             for match in pattern.finditer(prose):
                 target = next(group for group in match.groups() if group)
                 if EXTERNAL_RE.match(target) or target.startswith("#"):
@@ -136,7 +140,6 @@ def check_text(errors):
                 resolved = (base / target.lstrip("/")).resolve()
                 if not resolved.is_relative_to(ROOT) or not resolved.exists():
                     errors.append(f"{rel}: broken relative link '{target}'")
-        check_undefined_references(prose, rel, errors)
 
 
 LABEL_RULES = (

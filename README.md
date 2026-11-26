@@ -14,6 +14,7 @@
 
 <p>
 <a href="#quick-start">Quick&nbsp;start</a> ·
+<a href="#offline-review-atlas">Review&nbsp;atlas</a> ·
 <a href="#how-it-decides">How&nbsp;it&nbsp;decides</a> ·
 <a href="#three-formations">Formations</a> ·
 <a href="#reference-mode">Reference&nbsp;mode</a> ·
@@ -65,6 +66,8 @@ For the Claude apps, turn on code execution, download [gauntlet-verify.zip](http
 cd gauntlet-verify/.claude/skills && zip -r gauntlet-verify.zip gauntlet-verify
 ```
 
+The published v1.0.0 ZIP predates the medium formation added on 04-11-2026. For that formation in the Claude apps, build the ZIP from the current checkout using the command above.
+
 > [!IMPORTANT]
 > The skill is named `gauntlet-verify`, so it installs beside upstream's `gauntlet-loop` without replacing it. Keep only one of the two enabled, or both may answer the same request.
 
@@ -83,6 +86,16 @@ medium gauntlet on the figures in this draft, full is overkill for this one
 ```
 
 For a full-formation loop, the keyword `ultracode` in a typed prompt runs that one task as an orchestrated workflow; `/effort ultracode` does the same for the whole session. The keyword does not fire in `-p` runs or scheduled tasks, so a scheduled loop fans out with subagents instead.
+
+## Offline review atlas
+
+Open `docs/review-atlas.html` from a checkout, or open the [atlas file](docs/review-atlas.html), use GitHub’s **Download raw file** control, and open the downloaded HTML. The page runs directly from disk.
+
+- Select a stage in the rotatable 3D map to inspect its decision, handoffs, and source section. The stage directory also works with JavaScript disabled.
+- Filter the map to follow the reference or verification path.
+- Compare reviewer seats across both modes and all three formations.
+- Download a Markdown run brief for the selected mode and formation, with a space for the ceiling and the evidence to collect.
+- Open **Inspect graph data** for the read-only stage records and outgoing connections. The data is embedded in the page.
 
 ## How it decides
 
