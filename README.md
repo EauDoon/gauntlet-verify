@@ -1,10 +1,10 @@
 <div align="center">
 
-<img src="assets/banner.svg" alt="gauntlet-verify, a Claude skill: build to a shipped bar, and verify claims with agents that never saw your reasoning. One beam runs a gauntlet of rings into a glass prism and splits into verified, reported and unverified rays." width="100%">
+<img src="assets/banner.svg" alt="gauntlet-verify, an LLM skill: build to a shipped bar, and verify claims with agents that never saw your reasoning. One beam runs a gauntlet of rings into a glass prism and splits into verified, reported and unverified rays." width="100%">
 
 <h1>gauntlet-verify</h1>
 
-<p><b>A Claude skill for work that cannot afford to be mediocre or wrong.</b></p>
+<p><b>An LLM skill for work that cannot afford to be mediocre or wrong.</b></p>
 
 <p>
 <a href="https://github.com/EauDoon/gauntlet-verify/actions"><img src="https://img.shields.io/github/actions/workflow/status/EauDoon/gauntlet-verify/check.yml?branch=main" alt="build"></a>
@@ -39,7 +39,7 @@
 
 Spend has three levels. **Light** is the default. **Medium** runs when being wrong costs you, and only you act on the result. **Full** runs when the result goes public or to another party.
 
-The Gauntlet Loop is [Matt Shumer's](https://github.com/mshumer) technique. This repo forks [robonuggets/gauntlet-loop](https://github.com/robonuggets/gauntlet-loop) and rebuilds it for day-to-day use.
+It is plain Markdown, so it runs on any agent that can start a fresh context. The Gauntlet Loop is [Matt Shumer's](https://github.com/mshumer) technique. This repo forks [robonuggets/gauntlet-loop](https://github.com/robonuggets/gauntlet-loop) and rebuilds it for day-to-day use.
 
 ## Quick start
 
@@ -49,25 +49,27 @@ It needs an agent that can run subagents or fresh contexts (sequential works), a
 git clone https://github.com/EauDoon/gauntlet-verify
 ```
 
-For every project (personal skills):
+The skill is one Markdown file in the Agent Skills layout, and its rules are not tied to one model. The install paths below are for Claude Code and the Claude apps, one runtime among several. Every measured run in this README was on Claude models.
+
+Claude Code, every project (personal skills):
 
 ```bash
 mkdir -p ~/.claude/skills && cp -r gauntlet-verify/.claude/skills/gauntlet-verify ~/.claude/skills/
 ```
 
-For one project:
+Claude Code, one project:
 
 ```bash
 mkdir -p your-project/.claude/skills && cp -r gauntlet-verify/.claude/skills/gauntlet-verify your-project/.claude/skills/
 ```
+
+Any other agent or model: give it `.claude/skills/gauntlet-verify/SKILL.md` as instructions, and run each seat as a fresh context that gets only its brief. Sequential works; a shared context does not. The skill's Portability section says what changes.
 
 For the Claude apps, turn on code execution, download [gauntlet-verify.zip](https://github.com/EauDoon/gauntlet-verify/releases/latest/download/gauntlet-verify.zip) from the latest release, and upload it under Customize > Skills. The apps trigger it from its description. To build the zip yourself, keep the skill folder at the zip root:
 
 ```bash
 cd gauntlet-verify/.claude/skills && zip -r gauntlet-verify.zip gauntlet-verify
 ```
-
-The published v1.0.0 ZIP predates the medium formation added on 04-11-2026. For that formation in the Claude apps, build the ZIP from the current checkout using the command above.
 
 > [!IMPORTANT]
 > The skill is named `gauntlet-verify`, so it installs beside upstream's `gauntlet-loop` without replacing it. Keep only one of the two enabled, or both may answer the same request.
