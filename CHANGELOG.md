@@ -15,6 +15,7 @@ Changed
 - The Boundaries table names [cold-read](https://github.com/EauDoon/cold-read) as an example of the rubric review at ship, and the README gains a companion skill line. Instructions went from 19,874 to 19,933 bytes.
 - The 04-11-2026 live eval record, the run log line for that day's verification smoke test, and the README rows that cite it now describe the test subject and the neighbor skills by role. No result, count, or finding changed. The log line was reworded in place: a privacy edit, and the one exception to the append-only rule.
 - The pull request template lists the checks this repository runs.
+- The README, the banner, the explainer page and its share image call this an LLM skill, not a Claude skill, and the Quick start names Claude Code and the Claude apps as one runtime among several, with a line for any other agent.
 
 Removed
 
