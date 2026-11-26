@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/banner.jpg" alt="gauntlet verify: the gauntlet loop, in reference mode and verification mode, on cyan glass" width="100%">
+<img src="assets/banner.svg" alt="gauntlet-verify, a Claude skill: build to a shipped bar, and verify claims with agents that never saw your reasoning. One beam runs a gauntlet of rings into a glass prism and splits into verified, reported and unverified rays." width="100%">
 
 <h1>gauntlet-verify</h1>
 
@@ -13,6 +13,7 @@
 </p>
 
 <p>
+<a href="https://eaudoon.github.io/gauntlet-verify/">3D&nbsp;explainer</a> ·
 <a href="#quick-start">Quick&nbsp;start</a> ·
 <a href="#offline-review-atlas">Review&nbsp;atlas</a> ·
 <a href="#how-it-decides">How&nbsp;it&nbsp;decides</a> ·
@@ -337,8 +338,12 @@ logs/
 └── verification-runs.md  # one line per logged run of this repository's own tests
 audits/                   # the 04-11-2026 live eval record
 assets/
-├── banner.jpg
-└── src/banner.html       # banner source
+└── banner.svg            # animated README banner, rendered from docs/scene.js
+docs/
+├── index.html            # 3D explainer page, served by GitHub Pages from /docs
+├── scene.js              # the three.js scene shared by the page and the banner
+├── review-atlas.html     # offline review atlas
+└── vendor/               # three.js r170, bundled with its MIT license
 CHANGELOG.md
 LICENSE                   # CC BY 4.0
 README.md
