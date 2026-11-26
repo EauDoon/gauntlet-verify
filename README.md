@@ -251,7 +251,7 @@ The medium formation was tested before it merged, against a pass bar written bef
 | 29-09-2026 | One logged light skill test, including two additional test drives | About 750k subagent tokens over five leaves. This expanded run is not a baseline for a plain light run |
 | 08-10-2026 | Trigger eval v2 on the author's separate installed copy, blind router | Loaded on both prompts: first on the build prompt, second behind the research method on the research prompt. Not measured on this repository's description |
 | 04-11-2026 | Reference mode smoke test, medium: a tldr-style `xz` page driven at the tldr-pages `tar` page | 2 rounds, 1 critic per round, 1 calibrated judge in both orders per round, about 655k subagent tokens over 8 seat runs. Not there in both rounds; parked at the 2-round ceiling |
-| 04-11-2026 | Verification mode smoke test, medium: a private emergency-fund placement note | 2 rounds, 3 verifiers over 4 clusters, about 362k subagent tokens. 2 kills; every claim unverified, with the primary hosts blocked |
+| 04-11-2026 | Verification mode smoke test, medium: a private cash-placement note | 2 rounds, 3 verifiers over 4 clusters, about 362k subagent tokens. 2 kills; every claim unverified, with the primary hosts blocked |
 | 04-11-2026 | Live behavior evals and blind routing on this repository's description | 29 of 29 run behavior cases passed; routing 19 of 20 on both an Opus and a Sonnet router |
 
 </details>
@@ -287,7 +287,7 @@ They were checked through abstracts, summaries, and the repositories themselves,
 
 - Keep the description under 450 characters and lead with the trigger phrases. Skill listings have a character budget; in Claude Code it scales with the context window, and on overflow the least-used skills lose their descriptions first and keep only their names.
 - Verification mode knowingly risks collisions with the research method and the rubric review. If a request misroutes, add or sharpen a clause in the description that separates this skill from the one that took it. The open case is T13: an explicit request to verify, with no stakes, does not route today.
-- Keep the instructions, everything in SKILL.md before its `## Eval` section, under 20,000 bytes. After a conversation compacts, Claude Code re-attaches only the first 5,000 tokens of each invoked skill ([skill content lifecycle](https://code.claude.com/docs/en/skills)), and 20,000 bytes is about 5,000 tokens at an estimated 4 bytes per token. Past that point an instruction is lost mid-loop. The instructions are 19,874 bytes as of 04-11-2026, so the next addition needs a matching cut. Rationale and dated measurements belong in this README, not in the skill.
+- Keep the instructions, everything in SKILL.md before its `## Eval` section, under 20,000 bytes. After a conversation compacts, Claude Code re-attaches only the first 5,000 tokens of each invoked skill ([skill content lifecycle](https://code.claude.com/docs/en/skills)), and 20,000 bytes is about 5,000 tokens at an estimated 4 bytes per token. Past that point an instruction is lost mid-loop. The instructions are 19,933 bytes as of 26-11-2026, so the next addition needs a matching cut. Rationale and dated measurements belong in this README, not in the skill.
 
 `scripts/check_skill.py` enforces the description and size limits. `npm run evals` checks that every eval case's required sentence is in the skill, and `evals/mutation.test.mjs` checks that each case fails when its sentence is removed.
 
@@ -335,7 +335,7 @@ scripts/
 └── test_*.py             # unit tests for check_skill.py and the CI workflow
 logs/
 └── verification-runs.md  # one line per logged run of this repository's own tests
-audits/                   # dated audit reports, including the 04-11-2026 live evals
+audits/                   # the 04-11-2026 live eval record
 assets/
 ├── banner.jpg
 └── src/banner.html       # banner source
@@ -355,6 +355,8 @@ package.json              # npm test and npm run evals
 The Gauntlet Loop technique is **[Matt Shumer's](https://github.com/mshumer)**. He ran it in the [prompt](https://github.com/mshumer/Claude-of-Duty/blob/main/prompt.md) behind [Claude of Duty](https://github.com/mshumer/Claude-of-Duty) and named it in [his write-up](https://somethingbig.ai/gauntlet-loop) on 27-07-2026. The harsh critic, the blind side-by-side comparison, and the refusal to stop until the work holds up all come from that prompt.
 
 The original skill packaging is by Jay E at [RoboNuggets](https://robonuggets.com), in [robonuggets/gauntlet-loop](https://github.com/robonuggets/gauntlet-loop). This fork changes it substantially; see [CHANGELOG.md](CHANGELOG.md).
+
+Companion skill: [cold-read](https://github.com/EauDoon/cold-read) is the rubric review at ship that this skill's Boundaries table hands finished work to. gauntlet-verify drives work that is still being made; cold-read reads the finished artifact blind before it leaves. Run one loop at a time.
 
 Related reading: [Anthropic on building effective agents](https://www.anthropic.com/engineering/building-effective-agents) covers the evaluator-optimizer workflow. The loop applies it to bars that cannot be written as criteria.
 
