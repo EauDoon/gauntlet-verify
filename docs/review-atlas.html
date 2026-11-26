@@ -12,7 +12,10 @@ header,footer,.bar,.controls{display:flex;align-items:center;gap:1rem;flex-wrap:
 header strong,.kicker,summary,button,label,.stage-key{font-family:ui-monospace,monospace}.mark{display:inline-block;color:var(--aqua);margin-right:.4rem}h1{font:500 clamp(3.3rem,7vw,6.8rem)/1 Georgia,serif;letter-spacing:-.065em;margin:.3rem 0 .75rem}h2{font:500 clamp(1.75rem,3.5vw,2.75rem)/1.16 Georgia,serif;letter-spacing:-.035em;margin:.6rem 0}p{max-width:65ch}.kicker{letter-spacing:.14em;text-transform:uppercase;font-size:.79rem;color:var(--aqua);margin:.8rem 0}.intro{color:var(--muted);max-width:60ch;margin-bottom:1.8rem}a{color:var(--aqua);text-underline-offset:.25em}
 section,.panel{border:1px solid var(--line);border-radius:.7rem;background:#102128}.grid{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(16rem,1fr);gap:1rem}.inset,.panel{padding:clamp(1rem,2vw,1.5rem)}.canvas{width:100%;height:auto;display:block;aspect-ratio:640/395;background:radial-gradient(ellipse at 37% 50%,#24434b 0,transparent 60%),repeating-linear-gradient(0deg,#152930 0 1px,transparent 1px 28px),repeating-linear-gradient(90deg,#152930 0 1px,#0d1d24 1px 28px);touch-action:pan-y;user-select:none}
 .canvas text{font:15px ui-monospace,monospace;fill:#e3eeee;paint-order:stroke;stroke:#0d1d24;stroke-width:4px}.canvas g[role=button]{cursor:pointer}.canvas .active text{fill:white;font-weight:bold}.controls{gap:.5rem;padding:.8rem 1rem;border-top:1px solid var(--line)}
-button,select,input{font:inherit;color:var(--ink);background:#192f37;border:1px solid #59737a;padding:.5rem .7rem;border-radius:.35rem;min-height:2.65rem}button{cursor:pointer}button:hover,select:hover{border-color:var(--aqua)}:focus-visible{outline:3px solid var(--amber);outline-offset:3px}.canvas g:focus-visible circle{stroke:white;stroke-width:4px}.help,.sub{color:var(--muted);font-size:.93rem}.panel .links{display:flex;gap:.5rem;flex-wrap:wrap}.space{margin-top:1rem}details{border-top:1px solid var(--line);padding:.7rem 0}summary{cursor:pointer;font-weight:600}label{font-size:.9rem;display:grid;gap:.25rem}.plan{display:grid;grid-template-columns:1fr 1fr;gap:1rem}output{display:block;font-size:1.1rem;color:var(--ink);padding:1rem 0}.pin{display:inline-block;padding:.15rem .5rem;color:var(--amber);border:1px solid #73604a;border-radius:20px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.83rem}[hidden]{display:none!important}
+button,select,input{font:inherit;color:var(--ink);background:#192f37;border:1px solid #59737a;padding:.5rem .7rem;border-radius:.35rem;min-height:2.65rem}button{cursor:pointer}button:hover,select:hover{border-color:var(--aqua)}:focus-visible{outline:3px solid var(--amber);outline-offset:3px}.canvas g:focus-visible circle{stroke:white;stroke-width:4px}.help,.sub{color:var(--muted);font-size:.93rem}.panel .links{display:flex;gap:.5rem;flex-wrap:wrap}.space{margin-top:1rem}details{border-top:1px solid var(--line);padding:.7rem 0}summary{cursor:pointer;font-weight:600}label{font-size:.9rem;display:grid;gap:.25rem}.plan{display:grid;grid-template-columns:1fr 1fr;gap:1rem}output{display:block;font-size:1.1rem;color:var(--ink);padding:1rem 0}.pin{display:inline-block;padding:.15rem .5rem;color:var(--amber);border:1px solid #73604a;border-radius:20px}#index details{padding:0}#index summary{min-height:44px;padding:.6rem 0}#index details[open]{padding-bottom:.65rem}
+.plan-actions{display:flex;flex-wrap:wrap;align-items:center;gap:.65rem 1rem}.plan-actions a{display:inline-flex;align-items:center;min-height:44px}
+@media(max-width:500px){.canvas{aspect-ratio:640/510}}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.83rem}[hidden]{display:none!important}
 @media(max-width:760px){.grid,.plan{grid-template-columns:1fr}header,footer{font-size:.88rem}.canvas text{font-size:21px}.bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr))}.bar label,.bar select{min-width:0}.bar select{width:100%}.panel{min-height:12rem}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -23,12 +26,12 @@ button,select,input{font:inherit;color:var(--ink);background:#192f37;border:1px 
 <div class="grid">
 <section aria-label="Protocol map"><div class="inset bar"><label>Show path <select id="mode"><option value="all">Both modes</option><option value="reference">Reference</option><option value="verification">Verification</option></select></label><label>Inspect stage <select id="stage"></select></label></div><svg class="canvas" viewBox="0 0 640 395" aria-label="Rotatable protocol graph. Select a stage to inspect its handoffs." aria-describedby="navhelp" id="map"></svg>
 <div class="controls"><button id="left" aria-label="Rotate left">↶ Left</button><button id="right" aria-label="Rotate right">Right ↷</button><button id="reset">Reset view</button></div>
-<p class="inset help" id="navhelp">Tap or focus a stage and press Enter. Drag horizontally or use the rotation buttons to inspect depth.</p></section>
+<p class="inset help" id="navhelp">Arrows point from the selected stage to its next steps. Tap a stage or press Enter on it. Drag horizontally or use the buttons to rotate.</p></section>
 <aside class="panel" aria-live="polite"><span class="pin" id="lane"></span><h2 id="title"></h2><p id="description"></p><p><a id="source">Read the protocol ↗</a></p><p class="kicker" id="handoff">Hands off to</p><div class="links" id="neighbors"></div></aside>
 </div>
 <section class="inset space"><p class="kicker">Round preparation</p><h2>Plan the seats</h2><p class="sub">Choose a mode and formation to see who reviews the work. Download a blank brief to fill before a round starts.</p>
 <div class="plan"><label>Mode <select id="planmode"><option value="reference">Reference</option><option value="verification">Verification</option></select></label>
-<label>Formation <select id="formation"><option>Light</option><option>Medium</option><option>Full</option></select></label></div><output id="seats" aria-live="polite"></output><button id="brief">Download run brief (.md)</button> <a href="https://github.com/EauDoon/gauntlet-verify/blob/main/README.md#three-formations">Formation rules</a></section>
+<label>Formation <select id="formation"><option>Light</option><option>Medium</option><option>Full</option></select></label></div><output id="seats" aria-live="polite"></output><div class="plan-actions"><button id="brief">Download run brief (.md)</button> <a href="https://github.com/EauDoon/gauntlet-verify/blob/main/README.md#three-formations">Formation rules</a></div></section>
 </div>
 <section class="inset space" id="index"><p class="kicker">Stage directory</p><h2>Protocol handoffs</h2><p class="sub">Open a stage for its decision, next steps, and source. The directory works offline.</p>
 <details id="ceiling" data-mode="shared" data-point="-205,0,-70"><summary>Write ceiling</summary><p>Name the formation and the maximum rounds or tokens before seating anyone. The medium formation uses rounds until enough runs are logged.</p><a href="https://github.com/EauDoon/gauntlet-verify/blob/main/README.md#three-formations">Read the protocol</a> · Next <a href="#reference">Set reference</a> / <a href="#clusters">Split claims</a></details>
@@ -64,15 +67,60 @@ let active = byId.has(location.hash.slice(1)) ? location.hash.slice(1) : 'ceilin
 function visible(node) {
   return $('mode').value === 'all' || node.mode === 'shared' || node.mode === $('mode').value;
 }
-function project([x,y,z]) {
+function project([x,y,z], height) {
   const depth = z*Math.cos(angle)-x*Math.sin(angle);
   const scale = 700/(700-depth);
-  return {x:320+(x*Math.cos(angle)+z*Math.sin(angle))*scale,y:195+y*scale,scale,depth};
+  return {x:320+(x*Math.cos(angle)+z*Math.sin(angle))*scale,y:height/2+y*scale*(height/395),scale,depth};
+}
+// Try nearby positions first. Keep the label inside the canvas and outside
+// other captions and markers, including when two stages align in depth.
+function placeCaptions(captions, positions, height) {
+  const occupied = Array.from(positions.values(), ({x, y}) => ({
+    left: x-12, right: x+12, top: y-12, bottom: y+12
+  }));
+  const margin = 5;
+  for (const {label, group, point} of captions) {
+    const box = label.getBBox();
+    let best = null;
+    const step = box.height + 7;
+    // Anchor near the node horizontally; extra rows handle edge-on views.
+    for (let row = 0; row < Math.ceil(height/step); row++) {
+      for (const side of [-1, 1]) {
+        const cy = Math.max(margin+box.height/2, Math.min(height-margin-box.height/2,
+          point.y + side*(18+box.height/2+row*step)));
+        for (const offset of [0, -box.width/2, box.width/2]) {
+          const cx = Math.max(margin+box.width/2, Math.min(640-margin-box.width/2, point.x+offset));
+          const rect = {left:cx-box.width/2, right:cx+box.width/2, top:cy-box.height/2, bottom:cy+box.height/2};
+          const clear = occupied.every(other => rect.right+margin <= other.left || rect.left >= other.right+margin ||
+            rect.bottom+margin <= other.top || rect.top >= other.bottom+margin);
+          if (!clear) continue;
+          const cost = Math.hypot(cx-point.x, cy-point.y);
+          if (!best || cost < best.cost) best = {rect, cx, cy, cost};
+        }
+      }
+      if (best && best.cost <= 18+box.height/2+(row+1)*step) break;
+    }
+    if (!best) continue;
+    const {cx, cy, rect} = best;
+    label.setAttribute('x', cx-point.x);
+    label.setAttribute('y', rect.top-point.y-box.y);
+    occupied.push(rect);
+    // A leader identifies the owner of captions moved away from their node.
+    const endX = Math.max(rect.left, Math.min(point.x,rect.right))-point.x;
+    const endY = Math.max(rect.top, Math.min(point.y,rect.bottom))-point.y;
+    if (Math.hypot(endX,endY)>24) {
+      group.prepend(element('line', {x1:0,y1:0,x2:endX,y2:endY,stroke:'#91b5bd','stroke-width':1.4,'pointer-events':'none'}));
+    }
+  }
 }
 function paint() {
   svg.replaceChildren();
+  const width = svg.getBoundingClientRect().width || 640;
+  const height = window.matchMedia('(max-width:500px)').matches ? 510 : 395;
+  svg.setAttribute('viewBox','0 0 640 '+height);
+  const captions = [];
   // The fork's profile tile uses a prism to split one beam into evidence paths.
-  const prism = [[-45,32,-30],[35,32,-30],[0,-38,-30],[-45,32,30],[35,32,30],[0,-38,30]].map(project);
+  const prism = [[-45,32,-30],[35,32,-30],[0,-38,-30],[-45,32,30],[35,32,30],[0,-38,30]].map(point=>project(point,height));
   for (const face of [[0,1,2],[3,4,5],[0,1,4,3],[1,2,5,4],[2,0,3,5]]) {
     svg.append(element('polygon',{
       points:face.map(i=>prism[i].x+','+prism[i].y).join(' '),
@@ -81,15 +129,26 @@ function paint() {
     }));
   }
   const stages = nodes.filter(visible);
-  const hitRadius = Math.max(22, 22 * 640 / (svg.getBoundingClientRect().width || 640));
-  const positions = new Map(stages.map(n => [n.id, project(n.point)]));
+  const hitRadius = Math.max(22, 22 * 640 / width);
+  const positions = new Map(stages.map(n => [n.id, project(n.point,height)]));
   const colors = {shared:'#e2e9d6',reference:'#78e6df',verification:'#ffbd85'};
-  for (const node of stages) {
+  // Draw the selected handoffs last so return paths cannot cover their arrows.
+  const edgeOrder = stages.slice().sort((a,b)=>Number(a.id===active)-Number(b.id===active));
+  for (const node of edgeOrder) {
     const start = positions.get(node.id);
     for (const id of node.next) {
       if (!positions.has(id)) continue;
       const end = positions.get(id);
-      svg.append(element('line',{x1:start.x,y1:start.y,x2:end.x,y2:end.y,stroke:colors[byId.get(id).mode],'stroke-width':active===node.id?3:1.2,opacity:active===node.id?.95:.5}));
+      const selected = active === node.id;
+      const color = colors[byId.get(id).mode];
+      svg.append(element('line',{x1:start.x,y1:start.y,x2:end.x,y2:end.y,stroke:color,'stroke-width':selected?3:1.2,opacity:selected?1:.5}));
+      if (selected) {
+        const dx=end.x-start.x, dy=end.y-start.y;
+        const bearing=Math.atan2(dy,dx)*180/Math.PI;
+        const size=Math.min(8*640/width,Math.hypot(dx,dy)/5);
+        const transform='translate('+(start.x+.62*dx)+' '+(start.y+.62*dy)+') rotate('+bearing+') scale('+size+')';
+        svg.append(element('path',{d:'M 0.7 0 L -0.8 -0.6 L -0.45 0 L -0.8 0.6 Z',fill:color,transform,'aria-hidden':'true','data-handoff':id}));
+      }
     }
   }
   for (const node of stages.slice().sort((a,b)=>positions.get(a.id).depth-positions.get(b.id).depth)) {
@@ -98,7 +157,8 @@ function paint() {
     g.append(element('circle',{r:hitRadius,fill:'transparent'}));
     if(node.id===active) g.append(element('circle',{r:15*p.scale,fill:'none',stroke:color}));
     g.append(element('circle',{r:7*p.scale,fill:color,stroke:'#102128','stroke-width':2}));
-    const label = element('text',{'text-anchor':'middle',y:-19*p.scale});
+    const label = element('text',{'text-anchor':'middle'});
+    label.style.fontSize = Math.max(15, 13*640/width)+'px';
     label.textContent=node.title;
     g.append(label);
     g.onclick = () => select(node.id,true);
@@ -106,7 +166,9 @@ function paint() {
       if (event.key==='Enter'||event.key===' ') { event.preventDefault();select(node.id,true); }
     };
     svg.append(g);
+    captions.push({label, group:g, point:p});
   }
+  placeCaptions(captions,positions,height);
 }
 function select(id,focus=false) {
   active=id;
