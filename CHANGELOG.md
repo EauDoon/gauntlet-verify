@@ -2,7 +2,13 @@
 
 Dates are DD-MM-YYYY. Upstream dates are the upstream author's local time (UTC+10).
 
-## 26-11-2026, launch pass
+## v1.1.0, 26-11-2026
+
+Second release. It packages everything since v1.0.0: the run log for both modes, the 03-11-2026 judge, loop, and verifier rules, the medium formation (04-11-2026 entry below), and this launch pass. The skill is attached as `gauntlet-verify.zip` for the Claude apps.
+
+Added
+
+- A 3D explainer page in `docs/` and an SVG banner.
 
 Changed
 

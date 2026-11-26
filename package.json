@@ -1,6 +1,6 @@
 {
   "name": "gauntlet-verify",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "description": "Build-to-a-bar loop and isolated verifier formation evals",
   "type": "module",

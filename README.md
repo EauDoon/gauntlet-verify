@@ -67,8 +67,6 @@ For the Claude apps, turn on code execution, download [gauntlet-verify.zip](http
 cd gauntlet-verify/.claude/skills && zip -r gauntlet-verify.zip gauntlet-verify
 ```
 
-The published v1.0.0 ZIP predates the medium formation added on 04-11-2026. For that formation in the Claude apps, build the ZIP from the current checkout using the command above.
-
 > [!IMPORTANT]
 > The skill is named `gauntlet-verify`, so it installs beside upstream's `gauntlet-loop` without replacing it. Keep only one of the two enabled, or both may answer the same request.
 
